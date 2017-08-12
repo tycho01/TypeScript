@@ -1073,6 +1073,309 @@ interface ReadonlyArray<T> {
     readonly [n: number]: T;
 }
 
+// Tuple interface method overrides, sorted descendingly to avoid higher tuples from matching the lower interfaces
+
+interface Tuple9<T1, T2, T3, T4, T5, T6, T7, T8, T9> {
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: U[][]): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9>;
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: (U | U[])[]): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9>;
+    /**
+      * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
+      * @param start The zero-based location in the array from which to start removing elements.
+      * @param deleteCount The number of elements to remove.
+      * @param items Elements to insert into the array in place of the deleted elements.
+      */
+    splice<U>(start: number, deleteCount?: number, ...items: U[]): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9>;
+    /**
+      * Returns the this object after filling the section identified by start and end with value
+      * @param value value to fill array section with
+      * @param start index to start filling the array at. If start is negative, it is treated as
+      * length+start where length is the length of the array.
+      * @param end index to stop filling the array at. If end is negative, it is treated as
+      * length+end.
+      */
+    fill<U>(value: U, start?: number, end?: number): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9>;
+
+    [n: number]: T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8 | T9;
+}
+
+interface Tuple8<T1, T2, T3, T4, T5, T6, T7, T8> {
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: U[][]): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8>;
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: (U | U[])[]): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8>;
+    /**
+      * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
+      * @param start The zero-based location in the array from which to start removing elements.
+      * @param deleteCount The number of elements to remove.
+      * @param items Elements to insert into the array in place of the deleted elements.
+      */
+    splice<U>(start: number, deleteCount?: number, ...items: U[]): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8>;
+    /**
+      * Returns the this object after filling the section identified by start and end with value
+      * @param value value to fill array section with
+      * @param start index to start filling the array at. If start is negative, it is treated as
+      * length+start where length is the length of the array.
+      * @param end index to stop filling the array at. If end is negative, it is treated as
+      * length+end.
+      */
+    fill<U>(value: U, start?: number, end?: number): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8>;
+
+    [n: number]: T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8;
+}
+
+interface Tuple7<T1, T2, T3, T4, T5, T6, T7> {
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: U[][]): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7>;
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: (U | U[])[]): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7>;
+    /**
+      * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
+      * @param start The zero-based location in the array from which to start removing elements.
+      * @param deleteCount The number of elements to remove.
+      * @param items Elements to insert into the array in place of the deleted elements.
+      */
+    splice<U>(start: number, deleteCount?: number, ...items: U[]): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7>;
+    /**
+      * Returns the this object after filling the section identified by start and end with value
+      * @param value value to fill array section with
+      * @param start index to start filling the array at. If start is negative, it is treated as
+      * length+start where length is the length of the array.
+      * @param end index to stop filling the array at. If end is negative, it is treated as
+      * length+end.
+      */
+    fill<U>(value: U, start?: number, end?: number): Array<U | T1 | T2 | T3 | T4 | T5 | T6 | T7>;
+
+    [n: number]: T1 | T2 | T3 | T4 | T5 | T6 | T7;
+}
+
+interface Tuple6<T1, T2, T3, T4, T5, T6> {
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: U[][]): Array<U | T1 | T2 | T3 | T4 | T5 | T6>;
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: (U | U[])[]): Array<U | T1 | T2 | T3 | T4 | T5 | T6>;
+    /**
+      * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
+      * @param start The zero-based location in the array from which to start removing elements.
+      * @param deleteCount The number of elements to remove.
+      * @param items Elements to insert into the array in place of the deleted elements.
+      */
+    splice<U>(start: number, deleteCount?: number, ...items: U[]): Array<U | T1 | T2 | T3 | T4 | T5 | T6>;
+    /**
+      * Returns the this object after filling the section identified by start and end with value
+      * @param value value to fill array section with
+      * @param start index to start filling the array at. If start is negative, it is treated as
+      * length+start where length is the length of the array.
+      * @param end index to stop filling the array at. If end is negative, it is treated as
+      * length+end.
+      */
+    fill<U>(value: U, start?: number, end?: number): Array<U | T1 | T2 | T3 | T4 | T5 | T6>;
+
+    [n: number]: T1 | T2 | T3 | T4 | T5 | T6;
+}
+
+interface Tuple5<T1, T2, T3, T4, T5> {
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: U[][]): Array<U | T1 | T2 | T3 | T4 | T5>;
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: (U | U[])[]): Array<U | T1 | T2 | T3 | T4 | T5>;
+    /**
+      * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
+      * @param start The zero-based location in the array from which to start removing elements.
+      * @param deleteCount The number of elements to remove.
+      * @param items Elements to insert into the array in place of the deleted elements.
+      */
+    splice<U>(start: number, deleteCount?: number, ...items: U[]): Array<U | T1 | T2 | T3 | T4 | T5>;
+    /**
+      * Returns the this object after filling the section identified by start and end with value
+      * @param value value to fill array section with
+      * @param start index to start filling the array at. If start is negative, it is treated as
+      * length+start where length is the length of the array.
+      * @param end index to stop filling the array at. If end is negative, it is treated as
+      * length+end.
+      */
+    fill<U>(value: U, start?: number, end?: number): Array<U | T1 | T2 | T3 | T4 | T5>;
+
+    [n: number]: T1 | T2 | T3 | T4 | T5;
+}
+
+interface Tuple4<T1, T2, T3, T4> {
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: U[][]): Array<U | T1 | T2 | T3 | T4>;
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: (U | U[])[]): Array<U | T1 | T2 | T3 | T4>;
+    /**
+      * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
+      * @param start The zero-based location in the array from which to start removing elements.
+      * @param deleteCount The number of elements to remove.
+      * @param items Elements to insert into the array in place of the deleted elements.
+      */
+    splice<U>(start: number, deleteCount?: number, ...items: U[]): Array<U | T1 | T2 | T3 | T4>;
+    /**
+      * Returns the this object after filling the section identified by start and end with value
+      * @param value value to fill array section with
+      * @param start index to start filling the array at. If start is negative, it is treated as
+      * length+start where length is the length of the array.
+      * @param end index to stop filling the array at. If end is negative, it is treated as
+      * length+end.
+      */
+    fill<U>(value: U, start?: number, end?: number): Array<U | T1 | T2 | T3 | T4>;
+
+    [n: number]: T1 | T2 | T3 | T4;
+}
+
+interface Tuple3<T1, T2, T3> {
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: U[][]): Array<U | T1 | T2 | T3>;
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: (U | U[])[]): Array<U | T1 | T2 | T3>;
+    /**
+      * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
+      * @param start The zero-based location in the array from which to start removing elements.
+      * @param deleteCount The number of elements to remove.
+      * @param items Elements to insert into the array in place of the deleted elements.
+      */
+    splice<U>(start: number, deleteCount?: number, ...items: U[]): Array<U | T1 | T2 | T3>;
+    /**
+      * Returns the this object after filling the section identified by start and end with value
+      * @param value value to fill array section with
+      * @param start index to start filling the array at. If start is negative, it is treated as
+      * length+start where length is the length of the array.
+      * @param end index to stop filling the array at. If end is negative, it is treated as
+      * length+end.
+      */
+    fill<U>(value: U, start?: number, end?: number): Array<U | T1 | T2 | T3>;
+
+    [n: number]: T1 | T2 | T3;
+}
+
+interface Tuple2<T1, T2> {
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: U[][]): Array<U | T1 | T2>;
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: (U | U[])[]): Array<U | T1 | T2>;
+    /**
+      * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
+      * @param start The zero-based location in the array from which to start removing elements.
+      * @param deleteCount The number of elements to remove.
+      * @param items Elements to insert into the array in place of the deleted elements.
+      */
+    splice<U>(start: number, deleteCount?: number, ...items: U[]): Array<U | T1 | T2>;
+    /**
+      * Returns the this object after filling the section identified by start and end with value
+      * @param value value to fill array section with
+      * @param start index to start filling the array at. If start is negative, it is treated as
+      * length+start where length is the length of the array.
+      * @param end index to stop filling the array at. If end is negative, it is treated as
+      * length+end.
+      */
+    fill<U>(value: U, start?: number, end?: number): Array<U | T1 | T2>;
+
+    [n: number]: T1 | T2;
+}
+
+interface Tuple1<T1> {
+    /**
+      * Appends new elements to an array, and returns the new length of the array.
+      * @param items New elements of the Array.
+      */
+    push<U>(...items: U[]): number;
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: U[][]): Array<U | T1>;
+    /**
+      * Combines two or more arrays.
+      * @param items Additional items to add to the end of array1.
+      */
+    concat<U>(...items: (U | U[])[]): Array<U | T1>;
+    /**
+      * Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
+      * @param start The zero-based location in the array from which to start removing elements.
+      * @param deleteCount The number of elements to remove.
+      * @param items Elements to insert into the array in place of the deleted elements.
+      */
+    splice<U>(start: number, deleteCount?: number, ...items: U[]): Array<U | T1>;
+    /**
+      * Inserts new elements at the start of an array.
+      * @param items  Elements to insert at the start of the Array.
+      */
+    unshift(...items: any[]): number;
+    /**
+      * Returns the index of the first occurrence of a value in an array.
+      * @param searchElement The value to locate in the array.
+      * @param fromIndex The array index at which to begin the search. If fromIndex is omitted, the search starts at index 0.
+      */
+    indexOf(searchElement: any, fromIndex?: number): number;
+    /**
+      * Returns the index of the last occurrence of a specified value in an array.
+      * @param searchElement The value to locate in the array.
+      * @param fromIndex The array index at which to begin the search. If fromIndex is omitted, the search starts at the last index in the array.
+      */
+    lastIndexOf(searchElement: any, fromIndex?: number): number;
+    /**
+      * Returns the this object after filling the section identified by start and end with value
+      * @param value value to fill array section with
+      * @param start index to start filling the array at. If start is negative, it is treated as
+      * length+start where length is the length of the array.
+      * @param end index to stop filling the array at. If end is negative, it is treated as
+      * length+end.
+      */
+    fill<U>(value: U, start?: number, end?: number): Array<U | T1>;
+
+    [n: number]: T1;
+}
+
 interface Array<T> {
     /**
       * Gets or sets the length of the array. This is a number one higher than the highest element defined in an array.
@@ -1219,6 +1522,15 @@ interface Array<T> {
       * @param initialValue If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of an array value.
       */
     reduceRight<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U, initialValue: U): U;
+    /**
+      * Returns the this object after filling the section identified by start and end with value
+      * @param value value to fill array section with
+      * @param start index to start filling the array at. If start is negative, it is treated as
+      * length+start where length is the length of the array.
+      * @param end index to stop filling the array at. If end is negative, it is treated as
+      * length+end.
+      */
+    fill(value: T, start?: number, end?: number): T[];
 
     [n: number]: T;
 }
