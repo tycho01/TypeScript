@@ -999,6 +999,7 @@ namespace ts {
     export interface StringLiteral extends LiteralExpression {
         kind: SyntaxKind.StringLiteral;
         /* @internal */ textSourceNode?: Identifier | StringLiteral | NumericLiteral; // Allows a StringLiteral to get its text from another node (used by transforms).
+        /* @internal */ singleQuote?: boolean;
     }
 
     // Note: 'brands' in our syntax nodes serve to give us a small amount of nominal typing.
@@ -2631,9 +2632,8 @@ namespace ts {
          * Does not include properties of primitive types.
          */
         /* @internal */ getAllPossiblePropertiesOfType(type: Type): Symbol[];
-
+        /* @internal */ resolveName(name: string, location: Node, meaning: SymbolFlags): Symbol | undefined;
         /* @internal */ getJsxNamespace(): string;
-        /* @internal */ resolveNameAtLocation(location: Node, name: string, meaning: SymbolFlags): Symbol | undefined;
     }
 
     export enum NodeBuilderFlags {
@@ -3608,6 +3608,7 @@ namespace ts {
         paths?: MapLike<string[]>;
         /*@internal*/ plugins?: PluginImport[];
         preserveConstEnums?: boolean;
+        preserveSymlinks?: boolean;
         project?: string;
         /* @internal */ pretty?: DiagnosticStyle;
         reactNamespace?: string;
@@ -3923,6 +3924,10 @@ namespace ts {
         readFile(fileName: string): string | undefined;
         trace?(s: string): void;
         directoryExists?(directoryName: string): boolean;
+        /**
+         * Resolve a symbolic link.
+         * @see https://nodejs.org/api/fs.html#fs_fs_realpathsync_path_options
+         */
         realpath?(path: string): string;
         getCurrentDirectory?(): string;
         getDirectories?(path: string): string[];
