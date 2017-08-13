@@ -270,6 +270,13 @@ namespace ts {
             description: Diagnostics.Enable_strict_null_checks
         },
         {
+            name: "granularConst",
+            type: "boolean",
+            showInSimplifiedHelpView: true,
+            category: Diagnostics.Strict_Type_Checking_Options,
+            description: Diagnostics.Granular_Const
+        },
+        {
             name: "noImplicitThis",
             type: "boolean",
             showInSimplifiedHelpView: true,

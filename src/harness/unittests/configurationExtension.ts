@@ -16,6 +16,12 @@ namespace ts {
                 strictNullChecks: false
             }
         },
+        "/dev/tsconfig.granularconst.json": {
+            extends: "./tsconfig",
+            compilerOptions: {
+                granularConst: true
+            }
+        },
         "/dev/configs/base.json": {
             compilerOptions: {
                 allowJs: true,
