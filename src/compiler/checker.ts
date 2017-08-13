@@ -4473,7 +4473,7 @@ namespace ts {
                     reportErrorsFromWidening(declaration, type);
                 }
                 if (
-                    !(granularConst && (
+                    (granularConst && (
                         getCombinedNodeFlags(declaration) & NodeFlags.Const ||
                         getCombinedModifierFlags(declaration) & ModifierFlags.Readonly && !isParameterPropertyDeclaration(declaration)
                         // || isTypeAssertion(declaration.initializer)
