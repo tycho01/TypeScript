@@ -1,5 +1,7 @@
 /// <reference path="moduleNameResolver.ts"/>
 /// <reference path="binder.ts"/>
+/// <reference types="node" />
+declare var console: Console;
 
 /* @internal */
 namespace ts {
@@ -4483,6 +4485,7 @@ namespace ts {
                     // tools see the actual type.
                     declaration.kind === SyntaxKind.PropertyAssignment
                 ) {
+                    console.log("skipping widen");
                     return type;
                 }
                 return getWidenedType(type);
