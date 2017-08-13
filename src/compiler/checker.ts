@@ -4472,10 +4472,17 @@ namespace ts {
                 if (reportErrors) {
                     reportErrorsFromWidening(declaration, type);
                 }
-                // During a normal type check we'll never get to here with a property assignment (the check of the containing
-                // object literal uses a different path). We exclude widening only so that language services and type verification
-                // tools see the actual type.
-                if (declaration.kind === SyntaxKind.PropertyAssignment) {
+                if (
+                    !(granularConst && (
+                        getCombinedNodeFlags(declaration) & NodeFlags.Const ||
+                        getCombinedModifierFlags(declaration) & ModifierFlags.Readonly && !isParameterPropertyDeclaration(declaration)
+                        // || isTypeAssertion(declaration.initializer)
+                    )) ||
+                    // During a normal type check we'll never get to here with a property assignment (the check of the containing
+                    // object literal uses a different path). We exclude widening only so that language services and type verification
+                    // tools see the actual type.
+                    declaration.kind === SyntaxKind.PropertyAssignment
+                ) {
                     return type;
                 }
                 return getWidenedType(type);
