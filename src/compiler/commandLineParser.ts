@@ -274,7 +274,7 @@ namespace ts {
             type: "boolean",
             showInSimplifiedHelpView: true,
             category: Diagnostics.Strict_Type_Checking_Options,
-            description: Diagnostics.Granular_Const
+            description: Diagnostics.Enable_granular_type_inference_using_const
         },
         {
             name: "noImplicitThis",
