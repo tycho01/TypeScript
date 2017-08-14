@@ -4474,18 +4474,10 @@ namespace ts {
                 if (reportErrors) {
                     reportErrorsFromWidening(declaration, type);
                 }
-                if (
-                    // (granularConst && (
-                    //     getCombinedNodeFlags(declaration) & NodeFlags.Const ||
-                    //     getCombinedModifierFlags(declaration) & ModifierFlags.Readonly && !isParameterPropertyDeclaration(declaration)
-                    //     // || isTypeAssertion(declaration.initializer)
-                    // )) ||
-                    // During a normal type check we'll never get to here with a property assignment (the check of the containing
-                    // object literal uses a different path). We exclude widening only so that language services and type verification
-                    // tools see the actual type.
-                    declaration.kind === SyntaxKind.PropertyAssignment
-                ) {
-                    // console.log("getWidenedTypeForVariableLikeDeclaration", typeToString(type));
+                // During a normal type check we'll never get to here with a property assignment (the check of the containing
+                // object literal uses a different path). We exclude widening only so that language services and type verification
+                // tools see the actual type.
+                if (declaration.kind === SyntaxKind.PropertyAssignment) {
                     return type;
                 }
                 return getWidenedType(type);
@@ -13328,13 +13320,6 @@ namespace ts {
         }
 
         function checkArrayLiteral(node: ArrayLiteralExpression, checkMode?: CheckMode, granular?: boolean): Type {
-            if (granularConst) {
-                console.log("checkArrayLiteral:isTypeAssertion(node)", isTypeAssertion(node));
-                console.log("checkArrayLiteral:isLiteralContextualType(getContextualType(node))", isLiteralContextualType(getContextualType(node)));
-                console.log("checkArrayLiteral:keep?", isTypeAssertion(node) || isLiteralContextualType(getContextualType(node)));
-                console.log("checkArrayLiteral:getCombinedNodeFlags(node)", getCombinedNodeFlags(node));
-                console.log("checkArrayLiteral:getCombinedModifierFlags(node)", getCombinedModifierFlags(node));
-            }
             const elements = node.elements;
             let hasSpreadElement = false;
             const elementTypes: Type[] = [];
@@ -13399,9 +13384,10 @@ namespace ts {
                     }
                 }
             }
-            return createArrayType(elementTypes.length ?
-                getUnionType(elementTypes, /*subtypeReduction*/ true) :
-                strictNullChecks ? neverType : undefinedWideningType);
+            return granular ? createTupleType(elementTypes) :
+                createArrayType(elementTypes.length ?
+                    getUnionType(elementTypes, /*subtypeReduction*/ true) :
+                    strictNullChecks ? neverType : undefinedWideningType);
         }
 
         function isNumericName(name: DeclarationName): boolean {
@@ -13484,13 +13470,6 @@ namespace ts {
         }
 
         function checkObjectLiteral(node: ObjectLiteralExpression, checkMode?: CheckMode, granular?: boolean): Type {
-            if (granularConst) {
-                console.log("checkObjectLiteral:isTypeAssertion(node)", isTypeAssertion(node));
-                console.log("checkObjectLiteral:isLiteralContextualType(getContextualType(node))", isLiteralContextualType(getContextualType(node)));
-                console.log("checkObjectLiteral:keep?", isTypeAssertion(node) || isLiteralContextualType(getContextualType(node)));
-                console.log("checkObjectLiteral:getCombinedNodeFlags(node)", getCombinedNodeFlags(node));
-                console.log("checkObjectLiteral:getCombinedModifierFlags(node)", getCombinedModifierFlags(node));
-            }
             const inDestructuringPattern = isAssignmentTarget(node);
             // Grammar checking
             checkGrammarObjectLiteralExpression(node, inDestructuringPattern);
@@ -17870,18 +17849,6 @@ namespace ts {
 
         function checkExpressionForMutableLocation(node: Expression, checkMode?: CheckMode, granular?: boolean): Type {
             const type = checkExpression(node, checkMode, granular);
-            // if (granularConst) {
-            //     // console.log("isTypeAssertion(node)", isTypeAssertion(node));
-            //     // console.log("isLiteralContextualType(getContextualType(node))", isLiteralContextualType(getContextualType(node)));
-            //     console.log("keep?", isTypeAssertion(node) || isLiteralContextualType(getContextualType(node)));
-            //     console.log("checkExpressionForMutableLocation:getCombinedNodeFlags(node)", getCombinedNodeFlags(node));
-            //     console.log("checkExpressionForMutableLocation:getCombinedModifierFlags(node)", getCombinedModifierFlags(node));
-            // }
-            // (granularConst && (
-            //     getCombinedNodeFlags(declaration) & NodeFlags.Const ||
-            //     getCombinedModifierFlags(declaration) & ModifierFlags.Readonly && !isParameterPropertyDeclaration(declaration)
-            //     // || isTypeAssertion(declaration.initializer)
-            // )) ||
             return granular || isTypeAssertion(node) || isLiteralContextualType(getContextualType(node)) ? type : getWidenedLiteralType(type);
         }
 
