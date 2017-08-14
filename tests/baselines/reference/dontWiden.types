@@ -1,12 +1,12 @@
 === tests/cases/compiler/dontWiden.ts ===
 const a = [1, 'a'];
->a : (string | number)[]
+>a : (1 | "a")[]
 >[1, 'a'] : (string | number)[]
 >1 : 1
 >'a' : "a"
 
 const b = { a: 1, b: 'c' };
->b : { a: number; b: string; }
+>b : { a: 1; b: "c"; }
 >{ a: 1, b: 'c' } : { a: number; b: string; }
 >a : number
 >1 : 1
