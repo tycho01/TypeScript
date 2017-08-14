@@ -4485,7 +4485,8 @@ namespace ts {
                     // tools see the actual type.
                     declaration.kind === SyntaxKind.PropertyAssignment
                 ) {
-                    console.log("skipping widen");
+                    console.log("skipping widen", type);
+                    console.log("if it had been widened", getWidenedType(type));
                     return type;
                 }
                 return getWidenedType(type);
