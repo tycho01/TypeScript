@@ -1,7 +1,5 @@
 /// <reference path="moduleNameResolver.ts"/>
 /// <reference path="binder.ts"/>
-/// <reference types="node" />
-declare var console: Console;
 
 /* @internal */
 namespace ts {
