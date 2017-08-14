@@ -13313,12 +13313,12 @@ namespace ts {
             return result;
         }
 
-        function checkSpreadExpression(node: SpreadElement, checkMode?: CheckMode): Type {
+        function checkSpreadExpression(node: SpreadElement, checkMode?: CheckMode, granular?: boolean): Type {
             if (languageVersion < ScriptTarget.ES2015 && compilerOptions.downlevelIteration) {
                 checkExternalEmitHelpers(node, ExternalEmitHelpers.SpreadIncludes);
             }
 
-            const arrayOrIterableType = checkExpression(node.expression, checkMode);
+            const arrayOrIterableType = checkExpression(node.expression, checkMode, granular);
             return checkIteratedTypeOrElementType(arrayOrIterableType, node.expression, /*allowStringInput*/ false, /*allowAsyncIterables*/ false);
         }
 
@@ -13353,7 +13353,7 @@ namespace ts {
                     // get the contextual element type from it. So we do something similar to
                     // getContextualTypeForElementExpression, which will crucially not error
                     // if there is no index type / iterated type.
-                    const restArrayType = checkExpression((<SpreadElement>e).expression, checkMode);
+                    const restArrayType = checkExpression((<SpreadElement>e).expression, checkMode, granular);
                     const restElementType = getIndexTypeOfType(restArrayType, IndexKind.Number) ||
                         getIteratedTypeOrElementType(restArrayType, /*errorNode*/ undefined, /*allowStringInput*/ false, /*allowAsyncIterables*/ false, /*checkAssignability*/ false);
                     if (restElementType) {
