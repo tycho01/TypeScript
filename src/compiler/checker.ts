@@ -23060,7 +23060,7 @@ namespace ts {
             if (isRightSideOfQualifiedNameOrPropertyAccess(expr)) {
                 expr = <Expression>expr.parent;
             }
-            return getRegularTypeOfLiteralType(getTypeOfExpression(expr));
+            return getRegularTypeOfLiteralType(getTypeOfExpression(expr, granularConst));
         }
 
         /**

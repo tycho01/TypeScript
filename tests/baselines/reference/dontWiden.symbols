@@ -11,29 +11,40 @@ interface SomeInterface { a: boolean }
 >SomeInterface : Symbol(SomeInterface, Decl(dontWiden.ts, 1, 27))
 >a : Symbol(SomeInterface.a, Decl(dontWiden.ts, 3, 25))
 
-declare function foo(arg: number[]): void
+declare function foo<T extends any[]>(arg: T): { hi: T };
 >foo : Symbol(foo, Decl(dontWiden.ts, 3, 38))
->arg : Symbol(arg, Decl(dontWiden.ts, 4, 21))
+>T : Symbol(T, Decl(dontWiden.ts, 4, 21))
+>arg : Symbol(arg, Decl(dontWiden.ts, 4, 38))
+>T : Symbol(T, Decl(dontWiden.ts, 4, 21))
+>hi : Symbol(hi, Decl(dontWiden.ts, 4, 48))
+>T : Symbol(T, Decl(dontWiden.ts, 4, 21))
 
 declare function bar(arg: SomeInterface): void
->bar : Symbol(bar, Decl(dontWiden.ts, 4, 41))
+>bar : Symbol(bar, Decl(dontWiden.ts, 4, 57))
 >arg : Symbol(arg, Decl(dontWiden.ts, 5, 21))
 >SomeInterface : Symbol(SomeInterface, Decl(dontWiden.ts, 1, 27))
 
+declare function baz(arg: [number, 2, 3 | number]): void
+>baz : Symbol(baz, Decl(dontWiden.ts, 5, 46))
+>arg : Symbol(arg, Decl(dontWiden.ts, 6, 21))
+
 // As variable assignees
 const a: number[] = [1, 2, 3];
->a : Symbol(a, Decl(dontWiden.ts, 8, 5))
+>a : Symbol(a, Decl(dontWiden.ts, 9, 5))
 
 const b: SomeInterface = {a: true};
->b : Symbol(b, Decl(dontWiden.ts, 9, 5))
+>b : Symbol(b, Decl(dontWiden.ts, 10, 5))
 >SomeInterface : Symbol(SomeInterface, Decl(dontWiden.ts, 1, 27))
->a : Symbol(a, Decl(dontWiden.ts, 9, 26))
+>a : Symbol(a, Decl(dontWiden.ts, 10, 26))
 
 // Same, but as arguments
 foo([1, 2, 3]);
 >foo : Symbol(foo, Decl(dontWiden.ts, 3, 38))
 
 bar({a: true});
->bar : Symbol(bar, Decl(dontWiden.ts, 4, 41))
->a : Symbol(a, Decl(dontWiden.ts, 13, 5))
+>bar : Symbol(bar, Decl(dontWiden.ts, 4, 57))
+>a : Symbol(a, Decl(dontWiden.ts, 14, 5))
+
+baz([1, 2, 3]);
+>baz : Symbol(baz, Decl(dontWiden.ts, 5, 46))
 

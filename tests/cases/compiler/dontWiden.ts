@@ -4,8 +4,9 @@ const c = [1, 'a'];
 const d = { a: 1, b: 'c' };
 
 interface SomeInterface { a: boolean }
-declare function foo(arg: number[]): void
+declare function foo<T extends any[]>(arg: T): { hi: T };
 declare function bar(arg: SomeInterface): void
+declare function baz(arg: [number, 2, 3 | number]): void
 
 // As variable assignees
 const a: number[] = [1, 2, 3];
@@ -14,3 +15,4 @@ const b: SomeInterface = {a: true};
 // Same, but as arguments
 foo([1, 2, 3]);
 bar({a: true});
+baz([1, 2, 3]);
