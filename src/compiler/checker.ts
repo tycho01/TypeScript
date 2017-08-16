@@ -17821,7 +17821,7 @@ namespace ts {
         }
 
         function checkDeclarationInitializer(declaration: VariableLikeDeclaration): Type {
-            let granular = granularConst && !!(getCombinedNodeFlags(declaration) & NodeFlags.Const);
+            const granular = granularConst && !!(getCombinedNodeFlags(declaration) & NodeFlags.Const);
             const type = getTypeOfExpression(declaration.initializer, /*cache*/ true, granular);
             return getCombinedNodeFlags(declaration) & NodeFlags.Const ||
                 getCombinedModifierFlags(declaration) & ModifierFlags.Readonly && !isParameterPropertyDeclaration(declaration) ||
@@ -17912,7 +17912,7 @@ namespace ts {
             // Otherwise simply call checkExpression. Ideally, the entire family of checkXXX functions
             // should have a parameter that indicates whether full error checking is required such that
             // we can perform the optimizations locally.
-            let checkMode = CheckMode.Normal;
+            const checkMode = CheckMode.Normal;
             return cache ? checkExpressionCached(node, checkMode, granular) : checkExpression(node, checkMode, granular);
         }
 
