@@ -64,7 +64,7 @@ namespace ts {
         const noUnusedIdentifiers = !!compilerOptions.noUnusedLocals || !!compilerOptions.noUnusedParameters;
         const allowSyntheticDefaultImports = typeof compilerOptions.allowSyntheticDefaultImports !== "undefined" ? compilerOptions.allowSyntheticDefaultImports : modulekind === ModuleKind.System;
         const strictNullChecks = compilerOptions.strictNullChecks === undefined ? compilerOptions.strict : compilerOptions.strictNullChecks;
-        const granularConst = true; //compilerOptions.granularConst;
+        const granularConst = compilerOptions.granularConst;
         const noImplicitAny = compilerOptions.noImplicitAny === undefined ? compilerOptions.strict : compilerOptions.noImplicitAny;
         const noImplicitThis = compilerOptions.noImplicitThis === undefined ? compilerOptions.strict : compilerOptions.noImplicitThis;
 

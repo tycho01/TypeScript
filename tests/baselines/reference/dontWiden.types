@@ -1,15 +1,59 @@
 === tests/cases/compiler/dontWiden.ts ===
-const a = [1, 'a'];
->a : [1, "a"]
+const c = [1, 'a'];
+>c : [1, "a"]
 >[1, 'a'] : (string | number)[]
 >1 : 1
 >'a' : "a"
 
-const b = { a: 1, b: 'c' };
->b : { a: 1; b: "c"; }
+const d = { a: 1, b: 'c' };
+>d : { a: 1; b: "c"; }
 >{ a: 1, b: 'c' } : { a: number; b: string; }
 >a : number
 >1 : 1
 >b : string
 >'c' : "c"
+
+interface SomeInterface { a: boolean }
+>SomeInterface : SomeInterface
+>a : boolean
+
+declare function foo(arg: number[]): void
+>foo : (arg: number[]) => void
+>arg : number[]
+
+declare function bar(arg: SomeInterface): void
+>bar : (arg: SomeInterface) => void
+>arg : SomeInterface
+>SomeInterface : SomeInterface
+
+// As variable assignees
+const a: number[] = [1, 2, 3];
+>a : number[]
+>[1, 2, 3] : number[]
+>1 : 1
+>2 : 2
+>3 : 3
+
+const b: SomeInterface = {a: true};
+>b : SomeInterface
+>SomeInterface : SomeInterface
+>{a: true} : { a: true; }
+>a : boolean
+>true : true
+
+// Same, but as arguments
+foo([1, 2, 3]);
+>foo([1, 2, 3]) : void
+>foo : (arg: number[]) => void
+>[1, 2, 3] : number[]
+>1 : 1
+>2 : 2
+>3 : 3
+
+bar({a: true});
+>bar({a: true}) : void
+>bar : (arg: SomeInterface) => void
+>{a: true} : { a: true; }
+>a : boolean
+>true : true
 
