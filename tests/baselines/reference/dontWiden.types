@@ -25,6 +25,14 @@ declare function foo<T extends any[]>(arg: T): { hi: T };
 >hi : T
 >T : T
 
+declare function boo<T extends number[]>(arg: T): { hi: T };
+>boo : <T extends number[]>(arg: T) => { hi: T; }
+>T : T
+>arg : T
+>T : T
+>hi : T
+>T : T
+
 declare function bar(arg: SomeInterface): void
 >bar : (arg: SomeInterface) => void
 >arg : SomeInterface
@@ -95,5 +103,18 @@ bag([1, 2, 3]);
 bag(e);
 >bag(e) : void
 >bag : (arg: number[]) => void
+>e : [1, 2, 3]
+
+boo([1, 2, 3]);
+>boo([1, 2, 3]) : { hi: [1, 2, 3]; }
+>boo : <T extends number[]>(arg: T) => { hi: T; }
+>[1, 2, 3] : [1, 2, 3]
+>1 : 1
+>2 : 2
+>3 : 3
+
+boo(e);
+>boo(e) : { hi: [1, 2, 3]; }
+>boo : <T extends number[]>(arg: T) => { hi: T; }
 >e : [1, 2, 3]
 
