@@ -28,14 +28,21 @@ declare function baz(arg: [number, 2, 3 | number]): void
 >baz : Symbol(baz, Decl(dontWiden.ts, 5, 46))
 >arg : Symbol(arg, Decl(dontWiden.ts, 6, 21))
 
+declare function bag(arg: number[]): void
+>bag : Symbol(bag, Decl(dontWiden.ts, 6, 56))
+>arg : Symbol(arg, Decl(dontWiden.ts, 7, 21))
+
 // As variable assignees
 const a: number[] = [1, 2, 3];
->a : Symbol(a, Decl(dontWiden.ts, 9, 5))
+>a : Symbol(a, Decl(dontWiden.ts, 10, 5))
 
 const b: SomeInterface = {a: true};
->b : Symbol(b, Decl(dontWiden.ts, 10, 5))
+>b : Symbol(b, Decl(dontWiden.ts, 11, 5))
 >SomeInterface : Symbol(SomeInterface, Decl(dontWiden.ts, 1, 27))
->a : Symbol(a, Decl(dontWiden.ts, 10, 26))
+>a : Symbol(a, Decl(dontWiden.ts, 11, 26))
+
+const e = [1, 2, 3];
+>e : Symbol(e, Decl(dontWiden.ts, 12, 5))
 
 // Same, but as arguments
 foo([1, 2, 3]);
@@ -43,8 +50,15 @@ foo([1, 2, 3]);
 
 bar({a: true});
 >bar : Symbol(bar, Decl(dontWiden.ts, 4, 57))
->a : Symbol(a, Decl(dontWiden.ts, 14, 5))
+>a : Symbol(a, Decl(dontWiden.ts, 16, 5))
 
 baz([1, 2, 3]);
 >baz : Symbol(baz, Decl(dontWiden.ts, 5, 46))
+
+bag([1, 2, 3]);
+>bag : Symbol(bag, Decl(dontWiden.ts, 6, 56))
+
+bag(e);
+>bag : Symbol(bag, Decl(dontWiden.ts, 6, 56))
+>e : Symbol(e, Decl(dontWiden.ts, 12, 5))
 

@@ -34,6 +34,10 @@ declare function baz(arg: [number, 2, 3 | number]): void
 >baz : (arg: [number, 2, number]) => void
 >arg : [number, 2, number]
 
+declare function bag(arg: number[]): void
+>bag : (arg: number[]) => void
+>arg : number[]
+
 // As variable assignees
 const a: number[] = [1, 2, 3];
 >a : number[]
@@ -48,6 +52,13 @@ const b: SomeInterface = {a: true};
 >{a: true} : { a: true; }
 >a : boolean
 >true : true
+
+const e = [1, 2, 3];
+>e : [1, 2, 3]
+>[1, 2, 3] : [1, 2, 3]
+>1 : 1
+>2 : 2
+>3 : 3
 
 // Same, but as arguments
 foo([1, 2, 3]);
@@ -72,4 +83,17 @@ baz([1, 2, 3]);
 >1 : 1
 >2 : 2
 >3 : 3
+
+bag([1, 2, 3]);
+>bag([1, 2, 3]) : void
+>bag : (arg: number[]) => void
+>[1, 2, 3] : number[]
+>1 : 1
+>2 : 2
+>3 : 3
+
+bag(e);
+>bag(e) : void
+>bag : (arg: number[]) => void
+>e : [1, 2, 3]
 
