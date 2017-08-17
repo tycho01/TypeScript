@@ -48,26 +48,26 @@ namespace ts {
             const program = createProgram(["./nonexistent.ts"], options, testCompilerHost);
             const missing = program.getMissingFilePaths();
             assert.isDefined(missing);
-            assert.deepEqual(missing, ["d:/pretend/nonexistent.ts"]); // Absolute path
+            assert.deepEqual(missing, ["d:/pretend/nonexistent.ts"] as string[]); // Absolute path
         });
 
         it("handles multiple missing root files", () => {
             const program = createProgram(["./nonexistent0.ts", "./nonexistent1.ts"], options, testCompilerHost);
             const missing = program.getMissingFilePaths().sort();
-            assert.deepEqual(missing, ["d:/pretend/nonexistent0.ts", "d:/pretend/nonexistent1.ts"]);
+            assert.deepEqual(missing, ["d:/pretend/nonexistent0.ts", "d:/pretend/nonexistent1.ts"] as string[]);
         });
 
         it("handles a mix of present and missing root files", () => {
             const program = createProgram(["./nonexistent0.ts", emptyFileRelativePath, "./nonexistent1.ts"], options, testCompilerHost);
             const missing = program.getMissingFilePaths().sort();
-            assert.deepEqual(missing, ["d:/pretend/nonexistent0.ts", "d:/pretend/nonexistent1.ts"]);
+            assert.deepEqual(missing, ["d:/pretend/nonexistent0.ts", "d:/pretend/nonexistent1.ts"] as string[]);
         });
 
         it("handles repeatedly specified root files", () => {
             const program = createProgram(["./nonexistent.ts", "./nonexistent.ts"], options, testCompilerHost);
             const missing = program.getMissingFilePaths();
             assert.isDefined(missing);
-            assert.deepEqual(missing, ["d:/pretend/nonexistent.ts"]);
+            assert.deepEqual(missing, ["d:/pretend/nonexistent.ts"] as string[]);
         });
 
         it("normalizes file paths", () => {
@@ -97,7 +97,7 @@ namespace ts {
                 "d:/pretend/nonexistent4.d.ts",
                 "d:/pretend/nonexistent4.ts",
                 "d:/pretend/nonexistent4.tsx"
-            ]);
+            ] as string[]);
         });
     });
 }

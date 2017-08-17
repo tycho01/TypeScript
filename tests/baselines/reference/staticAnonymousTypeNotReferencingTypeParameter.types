@@ -267,9 +267,9 @@ class ListWrapper {
 
     return array.indexOf(value, startIndex);
 >array.indexOf(value, startIndex) : number
->array.indexOf : (searchElement: T, fromIndex?: number) => number
+>array.indexOf : (searchElement: any, fromIndex?: number) => number
 >array : T[]
->indexOf : (searchElement: T, fromIndex?: number) => number
+>indexOf : (searchElement: any, fromIndex?: number) => number
 >value : T
 >startIndex : number
   }
@@ -284,9 +284,9 @@ class ListWrapper {
 >T : T
 >list.indexOf(el) !== -1 : boolean
 >list.indexOf(el) : number
->list.indexOf : (searchElement: T, fromIndex?: number) => number
+>list.indexOf : (searchElement: any, fromIndex?: number) => number
 >list : T[]
->indexOf : (searchElement: T, fromIndex?: number) => number
+>indexOf : (searchElement: any, fromIndex?: number) => number
 >el : T
 >-1 : -1
 >1 : 1
@@ -422,9 +422,9 @@ class ListWrapper {
       var index = list.indexOf(items[i]);
 >index : number
 >list.indexOf(items[i]) : number
->list.indexOf : (searchElement: T, fromIndex?: number) => number
+>list.indexOf : (searchElement: any, fromIndex?: number) => number
 >list : T[]
->indexOf : (searchElement: T, fromIndex?: number) => number
+>indexOf : (searchElement: any, fromIndex?: number) => number
 >items[i] : T
 >items : T[]
 >i : number
@@ -451,9 +451,9 @@ class ListWrapper {
     var index = list.indexOf(el);
 >index : number
 >list.indexOf(el) : number
->list.indexOf : (searchElement: T, fromIndex?: number) => number
+>list.indexOf : (searchElement: any, fromIndex?: number) => number
 >list : T[]
->indexOf : (searchElement: T, fromIndex?: number) => number
+>indexOf : (searchElement: any, fromIndex?: number) => number
 >el : T
 
     if (index > -1) {
@@ -750,13 +750,13 @@ class ListWrapper {
   }
 }
 let cloned = ListWrapper.clone(ListWrapper, [1,2,3,4]);
->cloned : number[]
->ListWrapper.clone(ListWrapper, [1,2,3,4]) : number[]
+>cloned : (1 | 3 | 2 | 4)[]
+>ListWrapper.clone(ListWrapper, [1,2,3,4]) : (1 | 3 | 2 | 4)[]
 >ListWrapper.clone : <T>(dit: typeof ListWrapper, array: T[]) => T[]
 >ListWrapper : typeof ListWrapper
 >clone : <T>(dit: typeof ListWrapper, array: T[]) => T[]
 >ListWrapper : typeof ListWrapper
->[1,2,3,4] : number[]
+>[1,2,3,4] : (1 | 3 | 2 | 4)[]
 >1 : 1
 >2 : 2
 >3 : 3

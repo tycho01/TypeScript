@@ -1,7 +1,7 @@
 === tests/cases/compiler/controlFlowOuterVariable.ts ===
 // Repros from #10641
 
-const CONFIG = {
+let CONFIG = {
 >CONFIG : { foo: string; setFoo: (foo: string) => void; }
 >{    foo: '',    setFoo: function(foo: string) {        CONFIG.foo = foo;    }} : { foo: string; setFoo: (foo: string) => void; }
 

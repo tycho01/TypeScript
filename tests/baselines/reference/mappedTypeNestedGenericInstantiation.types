@@ -44,15 +44,15 @@ const v = chain({a: 1, b: 2}).mapValues(square).value();
 >chain({a: 1, b: 2}).mapValues(square).value() : { a: number; b: number; }
 >chain({a: 1, b: 2}).mapValues(square).value : () => { a: number; b: number; }
 >chain({a: 1, b: 2}).mapValues(square) : Chainable<{ a: number; b: number; }>
->chain({a: 1, b: 2}).mapValues : <U>(func: (v: number) => U) => Chainable<{ a: U; b: U; }>
->chain({a: 1, b: 2}) : Chainable<{ a: number; b: number; }>
+>chain({a: 1, b: 2}).mapValues : <U>(func: (v: 1 | 2) => U) => Chainable<{ a: U; b: U; }>
+>chain({a: 1, b: 2}) : Chainable<{ a: 1; b: 2; }>
 >chain : <T>(t: T) => Chainable<T>
->{a: 1, b: 2} : { a: number; b: number; }
+>{a: 1, b: 2} : { a: 1; b: 2; }
 >a : number
 >1 : 1
 >b : number
 >2 : 2
->mapValues : <U>(func: (v: number) => U) => Chainable<{ a: U; b: U; }>
+>mapValues : <U>(func: (v: 1 | 2) => U) => Chainable<{ a: U; b: U; }>
 >square : (x: number) => number
 >value : () => { a: number; b: number; }
 

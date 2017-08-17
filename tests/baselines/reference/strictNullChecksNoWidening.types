@@ -59,8 +59,8 @@ var c2 = f(undefined);
 >undefined : undefined
 
 var c3 = f([]);
->c3 : never[]
->f([]) : never[]
+>c3 : []
+>f([]) : []
 >f : <T>(x: T) => T
 >[] : never[]
 

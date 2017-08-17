@@ -11,8 +11,8 @@ let empty2: {};
 >empty2 : {}
 
 const names1 = { a: "foo", b: "bar" };
->names1 : { a: string; b: string; }
->{ a: "foo", b: "bar" } : { a: string; b: string; }
+>names1 : { a: "foo"; b: "bar"; }
+>{ a: "foo", b: "bar" } : { a: "foo"; b: "bar"; }
 >a : string
 >"foo" : "foo"
 >b : string
@@ -47,9 +47,9 @@ map = empty2;
 >empty2 : {}
 
 map = names1;
->map = names1 : { a: string; b: string; }
+>map = names1 : { a: "foo"; b: "bar"; }
 >map : StringMap
->names1 : { a: string; b: string; }
+>names1 : { a: "foo"; b: "bar"; }
 
 map = names2;
 >map = names2 : { a: string; b: string; }
@@ -76,8 +76,8 @@ function f1() {
 >f1 : () => void
 
     const o1 = { a: 1, b: 2 };
->o1 : { a: number; b: number; }
->{ a: 1, b: 2 } : { a: number; b: number; }
+>o1 : { a: 1; b: 2; }
+>{ a: 1, b: 2 } : { a: 1; b: 2; }
 >a : number
 >1 : 1
 >b : number
@@ -89,10 +89,10 @@ function f1() {
 >b : number
 
     const v1 = getStringIndexValue(o1);
->v1 : number
->getStringIndexValue(o1) : number
+>v1 : 1 | 2
+>getStringIndexValue(o1) : 1 | 2
 >getStringIndexValue : <T>(map: { [x: string]: T; }) => T
->o1 : { a: number; b: number; }
+>o1 : { a: 1; b: 2; }
 
     const v2 = getStringIndexValue(o2);
 >v2 : number
@@ -105,8 +105,8 @@ function f2() {
 >f2 : () => void
 
     const o1 = { a: "1", b: "2" };
->o1 : { a: string; b: string; }
->{ a: "1", b: "2" } : { a: string; b: string; }
+>o1 : { a: "1"; b: "2"; }
+>{ a: "1", b: "2" } : { a: "1"; b: "2"; }
 >a : string
 >"1" : "1"
 >b : string
@@ -118,10 +118,10 @@ function f2() {
 >b : string
 
     const v1 = getStringIndexValue(o1);
->v1 : string
->getStringIndexValue(o1) : string
+>v1 : "1" | "2"
+>getStringIndexValue(o1) : "1" | "2"
 >getStringIndexValue : <T>(map: { [x: string]: T; }) => T
->o1 : { a: string; b: string; }
+>o1 : { a: "1"; b: "2"; }
 
     const v2 = getStringIndexValue(o2);
 >v2 : string
@@ -134,8 +134,8 @@ function f3() {
 >f3 : () => void
 
     const o1 = { a: 1, b: "2" };
->o1 : { a: number; b: string; }
->{ a: 1, b: "2" } : { a: number; b: string; }
+>o1 : { a: 1; b: "2"; }
+>{ a: 1, b: "2" } : { a: 1; b: "2"; }
 >a : number
 >1 : 1
 >b : string
@@ -147,10 +147,10 @@ function f3() {
 >b : string
 
     const v1 = getStringIndexValue(o1);
->v1 : string | number
->getStringIndexValue(o1) : string | number
+>v1 : 1 | "2"
+>getStringIndexValue(o1) : 1 | "2"
 >getStringIndexValue : <T>(map: { [x: string]: T; }) => T
->o1 : { a: number; b: string; }
+>o1 : { a: 1; b: "2"; }
 
     const v2 = getStringIndexValue(o2);
 >v2 : string | number
@@ -163,8 +163,8 @@ function f4() {
 >f4 : () => void
 
     const o1 = { 0: "0", 1: "1", count: 2 };
->o1 : { 0: string; 1: string; count: number; }
->{ 0: "0", 1: "1", count: 2 } : { 0: string; 1: string; count: number; }
+>o1 : { 0: "0"; 1: "1"; count: 2; }
+>{ 0: "0", 1: "1", count: 2 } : { 0: "0"; 1: "1"; count: 2; }
 >"0" : "0"
 >"1" : "1"
 >count : number
@@ -175,10 +175,10 @@ function f4() {
 >count : number
 
     const v1 = getStringIndexValue(o1);
->v1 : string | number
->getStringIndexValue(o1) : string | number
+>v1 : 2 | "1" | "0"
+>getStringIndexValue(o1) : 2 | "1" | "0"
 >getStringIndexValue : <T>(map: { [x: string]: T; }) => T
->o1 : { 0: string; 1: string; count: number; }
+>o1 : { 0: "0"; 1: "1"; count: 2; }
 
     const v2 = getStringIndexValue(o2);
 >v2 : string | number
@@ -187,10 +187,10 @@ function f4() {
 >o2 : { 0: string; 1: string; count: number; }
 
     const v3 = getNumberIndexValue(o1);
->v3 : string
->getNumberIndexValue(o1) : string
+>v3 : "1" | "0"
+>getNumberIndexValue(o1) : "1" | "0"
 >getNumberIndexValue : <T>(map: { [x: number]: T; }) => T
->o1 : { 0: string; 1: string; count: number; }
+>o1 : { 0: "0"; 1: "1"; count: 2; }
 
     const v4 = getNumberIndexValue(o2);
 >v4 : string

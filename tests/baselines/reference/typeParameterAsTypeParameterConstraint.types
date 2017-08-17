@@ -56,14 +56,16 @@ var r2 = foo(a, b);
 >a : A
 >b : B
 
-var r3 = foo({ x: 1 }, { x: 2, y: 3 });
->r3 : { x: number; y: number; }
->foo({ x: 1 }, { x: 2, y: 3 }) : { x: number; y: number; }
+var r3 = foo(<{ x: number }> { x: 1 }, { x: 2, y: 3 });
+>r3 : { x: 2; y: 3; }
+>foo(<{ x: number }> { x: 1 }, { x: 2, y: 3 }) : { x: 2; y: 3; }
 >foo : <T, U extends T>(x: T, y: U) => U
+><{ x: number }> { x: 1 } : { x: number; }
+>x : number
 >{ x: 1 } : { x: number; }
 >x : number
 >1 : 1
->{ x: 2, y: 3 } : { x: number; y: number; }
+>{ x: 2, y: 3 } : { x: 2; y: 3; }
 >x : number
 >2 : 2
 >y : number
@@ -88,33 +90,33 @@ foo2(1, '');
 >'' : ""
 
 foo2({}, { length: 2 }); 
->foo2({}, { length: 2 }) : { length: number; }
+>foo2({}, { length: 2 }) : { length: 2; }
 >foo2 : <T, U extends { length: T; }>(x: T, y: U) => U
 >{} : {}
->{ length: 2 } : { length: number; }
+>{ length: 2 } : { length: 2; }
 >length : number
 >2 : 2
 
 foo2(1, { width: 3, length: 2 }); 
->foo2(1, { width: 3, length: 2 }) : { width: number; length: number; }
+>foo2(1, { width: 3, length: 2 }) : { width: 3; length: 2; }
 >foo2 : <T, U extends { length: T; }>(x: T, y: U) => U
 >1 : 1
->{ width: 3, length: 2 } : { width: number; length: number; }
+>{ width: 3, length: 2 } : { width: 3; length: 2; }
 >width : number
 >3 : 3
 >length : number
 >2 : 2
 
 foo2(1, []);
->foo2(1, []) : any[]
+>foo2(1, []) : []
 >foo2 : <T, U extends { length: T; }>(x: T, y: U) => U
 >1 : 1
 >[] : undefined[]
 
 foo2(1, ['']);
->foo2(1, ['']) : string[]
+>foo2(1, ['']) : [""]
 >foo2 : <T, U extends { length: T; }>(x: T, y: U) => U
 >1 : 1
->[''] : string[]
+>[''] : [""]
 >'' : ""
 

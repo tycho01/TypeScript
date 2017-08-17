@@ -32,8 +32,8 @@ export function extent<T extends Numeric>(array: Array<T | Primitive>): [T | Pri
 }
 
 
-let extentMixed: [Primitive | NumCoercible, Primitive | NumCoercible] | [undefined, undefined];
-extentMixed = extent([new NumCoercible(10), 13, '12', true]);
+// let extentMixed: [Primitive | NumCoercible, Primitive | NumCoercible] | [undefined, undefined];
+let extentMixed = extent([new NumCoercible(10), 13, '12', true]);
 
 
 //// [typeInferenceLiteralUnion.js]
@@ -56,5 +56,5 @@ function extent(array) {
     return [undefined, undefined];
 }
 exports.extent = extent;
-var extentMixed;
-extentMixed = extent([new NumCoercible(10), 13, '12', true]);
+// let extentMixed: [Primitive | NumCoercible, Primitive | NumCoercible] | [undefined, undefined];
+var extentMixed = extent([new NumCoercible(10), 13, '12', true]);

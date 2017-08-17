@@ -121,11 +121,11 @@ export let [y] = [1];
 
 export const {a: z0, b: {c: z1}} = {a: true, b: {c: "123"}};
 >a : any
->z0 : boolean
+>z0 : true
 >b : any
 >c : any
->z1 : string
->{a: true, b: {c: "123"}} : { a: boolean; b: { c: string; }; }
+>z1 : "123"
+>{a: true, b: {c: "123"}} : { a: true; b: { c: "123"; }; }
 >a : boolean
 >true : true
 >b : { c: string; }

@@ -13,7 +13,7 @@ declare module JSX {
 	}
 }
 
-const t = {tag:'h1'}
+const t = { tag: 'h1' as string }
 >t : Symbol(t, Decl(tsxDynamicTagName6.tsx, 7, 5))
 >tag : Symbol(tag, Decl(tsxDynamicTagName6.tsx, 7, 11))
 

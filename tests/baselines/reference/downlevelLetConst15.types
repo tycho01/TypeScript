@@ -26,19 +26,19 @@ var z0, z1, z2, z3;
 >x : 20
 
     const [z0] = [1];
->z0 : number
->[1] : [number]
+>z0 : 1
+>[1] : [1]
 >1 : 1
 
     use(z0);
 >use(z0) : any
 >use : (a: any) => any
->z0 : number
+>z0 : 1
 
     const [{a: z1}] = [{a: 1}]
 >a : any
->z1 : number
->[{a: 1}] : [{ a: number; }]
+>z1 : 1
+>[{a: 1}] : [{ a: 1; }]
 >{a: 1} : { a: number; }
 >a : number
 >1 : 1
@@ -46,25 +46,25 @@ var z0, z1, z2, z3;
     use(z1);
 >use(z1) : any
 >use : (a: any) => any
->z1 : number
+>z1 : 1
 
     const {a: z2} = { a: 1 };
 >a : any
->z2 : number
->{ a: 1 } : { a: number; }
+>z2 : 1
+>{ a: 1 } : { a: 1; }
 >a : number
 >1 : 1
 
     use(z2);
 >use(z2) : any
 >use : (a: any) => any
->z2 : number
+>z2 : 1
 
     const {a: {b: z3}} = { a: {b: 1} };
 >a : any
 >b : any
->z3 : number
->{ a: {b: 1} } : { a: { b: number; }; }
+>z3 : 1
+>{ a: {b: 1} } : { a: { b: 1; }; }
 >a : { b: number; }
 >{b: 1} : { b: number; }
 >b : number
@@ -73,7 +73,7 @@ var z0, z1, z2, z3;
     use(z3);
 >use(z3) : any
 >use : (a: any) => any
->z3 : number
+>z3 : 1
 }
 use(x);
 >use(x) : any
@@ -112,8 +112,8 @@ var y = true;
 >"" : ""
 
     const [z6] = [true]
->z6 : boolean
->[true] : [boolean]
+>z6 : true
+>[true] : [true]
 >true : true
     {
         const y = 1;
@@ -122,8 +122,8 @@ var y = true;
 
         const {a: z6} = { a: 1 }
 >a : any
->z6 : number
->{ a: 1 } : { a: number; }
+>z6 : 1
+>{ a: 1 } : { a: 1; }
 >a : number
 >1 : 1
 
@@ -135,7 +135,7 @@ var y = true;
         use(z6);
 >use(z6) : any
 >use : (a: any) => any
->z6 : number
+>z6 : 1
     }
     use(y);
 >use(y) : any
@@ -145,7 +145,7 @@ var y = true;
     use(z6);
 >use(z6) : any
 >use : (a: any) => any
->z6 : boolean
+>z6 : true
 }
 use(y);
 >use(y) : any
@@ -170,8 +170,8 @@ var z5 = 1;
 >"" : ""
 
     const [z5] = [5];
->z5 : number
->[5] : [number]
+>z5 : 5
+>[5] : [5]
 >5 : 5
     {
         const _z = 1;
@@ -180,8 +180,8 @@ var z5 = 1;
 
         const {a: _z5} = { a: 1 };
 >a : any
->_z5 : number
->{ a: 1 } : { a: number; }
+>_z5 : 1
+>{ a: 1 } : { a: 1; }
 >a : number
 >1 : 1
 

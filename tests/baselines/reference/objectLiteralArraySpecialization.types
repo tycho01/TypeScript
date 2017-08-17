@@ -25,16 +25,16 @@ interface MyArrayWrapper<T> {
 >T : T
 }
 var thing = create([ { name: "bob", id: 24 }, { name: "doug", id: 32 } ]); // should not error
->thing : MyArrayWrapper<{ name: string; id: number; }>
->create([ { name: "bob", id: 24 }, { name: "doug", id: 32 } ]) : MyArrayWrapper<{ name: string; id: number; }>
+>thing : MyArrayWrapper<{ name: "bob"; id: 24; } | { name: "doug"; id: 32; }>
+>create([ { name: "bob", id: 24 }, { name: "doug", id: 32 } ]) : MyArrayWrapper<{ name: "bob"; id: 24; } | { name: "doug"; id: 32; }>
 >create : <T>(initialValues?: T[]) => MyArrayWrapper<T>
->[ { name: "bob", id: 24 }, { name: "doug", id: 32 } ] : { name: string; id: number; }[]
->{ name: "bob", id: 24 } : { name: string; id: number; }
+>[ { name: "bob", id: 24 }, { name: "doug", id: 32 } ] : ({ name: "bob"; id: 24; } | { name: "doug"; id: 32; })[]
+>{ name: "bob", id: 24 } : { name: "bob"; id: 24; }
 >name : string
 >"bob" : "bob"
 >id : number
 >24 : 24
->{ name: "doug", id: 32 } : { name: string; id: number; }
+>{ name: "doug", id: 32 } : { name: "doug"; id: 32; }
 >name : string
 >"doug" : "doug"
 >id : number
@@ -42,15 +42,15 @@ var thing = create([ { name: "bob", id: 24 }, { name: "doug", id: 32 } ]); // sh
 
 thing.doSomething((x, y) => x.name === "bob"); // should not error
 >thing.doSomething((x, y) => x.name === "bob") : void
->thing.doSomething : (predicate: (x: { name: string; id: number; }, y: { name: string; id: number; }) => boolean) => void
->thing : MyArrayWrapper<{ name: string; id: number; }>
->doSomething : (predicate: (x: { name: string; id: number; }, y: { name: string; id: number; }) => boolean) => void
->(x, y) => x.name === "bob" : (x: { name: string; id: number; }, y: { name: string; id: number; }) => boolean
->x : { name: string; id: number; }
->y : { name: string; id: number; }
+>thing.doSomething : (predicate: (x: { name: "bob"; id: 24; } | { name: "doug"; id: 32; }, y: { name: "bob"; id: 24; } | { name: "doug"; id: 32; }) => boolean) => void
+>thing : MyArrayWrapper<{ name: "bob"; id: 24; } | { name: "doug"; id: 32; }>
+>doSomething : (predicate: (x: { name: "bob"; id: 24; } | { name: "doug"; id: 32; }, y: { name: "bob"; id: 24; } | { name: "doug"; id: 32; }) => boolean) => void
+>(x, y) => x.name === "bob" : (x: { name: "bob"; id: 24; } | { name: "doug"; id: 32; }, y: { name: "bob"; id: 24; } | { name: "doug"; id: 32; }) => boolean
+>x : { name: "bob"; id: 24; } | { name: "doug"; id: 32; }
+>y : { name: "bob"; id: 24; } | { name: "doug"; id: 32; }
 >x.name === "bob" : boolean
->x.name : string
->x : { name: string; id: number; }
->name : string
+>x.name : "bob" | "doug"
+>x : { name: "bob"; id: 24; } | { name: "doug"; id: 32; }
+>name : "bob" | "doug"
 >"bob" : "bob"
 

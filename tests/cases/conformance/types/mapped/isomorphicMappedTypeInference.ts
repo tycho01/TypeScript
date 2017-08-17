@@ -60,13 +60,14 @@ function f2() {
     let x: number = v.a;
 }
 
+type Bar = { a?: number; b?: string; c: boolean; };
 function f3() {
     let b = {
         a: box(42),
         b: box("hello"),
         c: box(true)
     };
-    assignBoxified(b, { c: false });
+    assignBoxified(<Boxified<Bar>> b, { c: false });
 }
 
 function f4() {

@@ -1,18 +1,18 @@
 === tests/cases/compiler/circularObjectLiteralAccessors.ts ===
 // Repro from #6000
 
-const a = {
->a : Symbol(a, Decl(circularObjectLiteralAccessors.ts, 2, 5))
+let a = {
+>a : Symbol(a, Decl(circularObjectLiteralAccessors.ts, 2, 3))
 
     b: {
->b : Symbol(b, Decl(circularObjectLiteralAccessors.ts, 2, 11))
+>b : Symbol(b, Decl(circularObjectLiteralAccessors.ts, 2, 9))
 
         get foo(): string {
 >foo : Symbol(foo, Decl(circularObjectLiteralAccessors.ts, 3, 8), Decl(circularObjectLiteralAccessors.ts, 6, 10))
 
             return a.foo;
 >a.foo : Symbol(foo, Decl(circularObjectLiteralAccessors.ts, 10, 6))
->a : Symbol(a, Decl(circularObjectLiteralAccessors.ts, 2, 5))
+>a : Symbol(a, Decl(circularObjectLiteralAccessors.ts, 2, 3))
 >foo : Symbol(foo, Decl(circularObjectLiteralAccessors.ts, 10, 6))
 
         },
@@ -22,7 +22,7 @@ const a = {
 
             a.foo = value;
 >a.foo : Symbol(foo, Decl(circularObjectLiteralAccessors.ts, 10, 6))
->a : Symbol(a, Decl(circularObjectLiteralAccessors.ts, 2, 5))
+>a : Symbol(a, Decl(circularObjectLiteralAccessors.ts, 2, 3))
 >foo : Symbol(foo, Decl(circularObjectLiteralAccessors.ts, 10, 6))
 >value : Symbol(value, Decl(circularObjectLiteralAccessors.ts, 7, 16))
         }

@@ -9,15 +9,15 @@ declare var dec: any;
 }
 
 const o = { a: 1 };
->o : { a: number; }
->{ a: 1 } : { a: number; }
+>o : { a: 1; }
+>{ a: 1 } : { a: 1; }
 >a : number
 >1 : 1
 
 const y = { ...o };
->y : { a: number; }
->{ ...o } : { a: number; }
->o : { a: number; }
+>y : { a: 1; }
+>{ ...o } : { a: 1; }
+>o : { a: 1; }
 
 === tests/cases/compiler/tslib.d.ts ===
 export declare function __extends(d: Function, b: Function): void;

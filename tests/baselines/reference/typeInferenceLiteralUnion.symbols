@@ -65,15 +65,9 @@ export function extent<T extends Numeric>(array: Array<T | Primitive>): [T | Pri
 }
 
 
-let extentMixed: [Primitive | NumCoercible, Primitive | NumCoercible] | [undefined, undefined];
->extentMixed : Symbol(extentMixed, Decl(typeInferenceLiteralUnion.ts, 33, 3))
->Primitive : Symbol(Primitive, Decl(typeInferenceLiteralUnion.ts, 0, 0))
->NumCoercible : Symbol(NumCoercible, Decl(typeInferenceLiteralUnion.ts, 11, 1))
->Primitive : Symbol(Primitive, Decl(typeInferenceLiteralUnion.ts, 0, 0))
->NumCoercible : Symbol(NumCoercible, Decl(typeInferenceLiteralUnion.ts, 11, 1))
-
-extentMixed = extent([new NumCoercible(10), 13, '12', true]);
->extentMixed : Symbol(extentMixed, Decl(typeInferenceLiteralUnion.ts, 33, 3))
+// let extentMixed: [Primitive | NumCoercible, Primitive | NumCoercible] | [undefined, undefined];
+let extentMixed = extent([new NumCoercible(10), 13, '12', true]);
+>extentMixed : Symbol(extentMixed, Decl(typeInferenceLiteralUnion.ts, 34, 3))
 >extent : Symbol(extent, Decl(typeInferenceLiteralUnion.ts, 23, 1))
 >NumCoercible : Symbol(NumCoercible, Decl(typeInferenceLiteralUnion.ts, 11, 1))
 

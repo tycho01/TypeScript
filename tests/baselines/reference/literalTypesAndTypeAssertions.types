@@ -1,7 +1,7 @@
 === tests/cases/conformance/types/literal/literalTypesAndTypeAssertions.ts ===
 const obj = {
->obj : { a: "foo"; b: "foo"; c: string; }
->{    a: "foo" as "foo",    b: <"foo">"foo",    c: "foo"} : { a: "foo"; b: "foo"; c: string; }
+>obj : { a: "foo"; b: "foo"; c: "foo"; }
+>{    a: "foo" as "foo",    b: <"foo">"foo",    c: "foo"} : { a: "foo"; b: "foo"; c: "foo"; }
 
     a: "foo" as "foo",
 >a : "foo"

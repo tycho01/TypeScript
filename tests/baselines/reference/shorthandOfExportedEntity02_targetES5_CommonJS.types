@@ -7,8 +7,8 @@ export function foo () {
 >foo : () => void
 
   const x = { test };
->x : { test: string; }
->{ test } : { test: string; }
+>x : { test: "test"; }
+>{ test } : { test: "test"; }
 >test : "test"
 }
 

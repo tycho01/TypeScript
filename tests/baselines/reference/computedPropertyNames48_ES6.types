@@ -15,9 +15,9 @@ var a: any;
 >a : any
 
 extractIndexer({
->extractIndexer({    [a]: ""}) : string
+>extractIndexer({    [a]: ""}) : ""
 >extractIndexer : <T>(p: { [n: number]: T; }) => T
->{    [a]: ""} : { [x: number]: string; }
+>{    [a]: ""} : { [x: number]: ""; }
 
     [a]: ""
 >a : any
@@ -26,9 +26,9 @@ extractIndexer({
 }); // Should return string
 
 extractIndexer({
->extractIndexer({    [E.x]: ""}) : string
+>extractIndexer({    [E.x]: ""}) : ""
 >extractIndexer : <T>(p: { [n: number]: T; }) => T
->{    [E.x]: ""} : { [x: number]: string; }
+>{    [E.x]: ""} : { [x: number]: ""; }
 
     [E.x]: ""
 >E.x : E
@@ -39,9 +39,9 @@ extractIndexer({
 }); // Should return string
 
 extractIndexer({
->extractIndexer({    ["" || 0]: ""}) : string
+>extractIndexer({    ["" || 0]: ""}) : ""
 >extractIndexer : <T>(p: { [n: number]: T; }) => T
->{    ["" || 0]: ""} : { [x: number]: string; }
+>{    ["" || 0]: ""} : { [x: number]: ""; }
 
     ["" || 0]: ""
 >"" || 0 : 0

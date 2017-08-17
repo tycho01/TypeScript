@@ -9,7 +9,7 @@ function foo<T>(t: T) {
 >t : Symbol(t, Decl(genericCallWithArrayLiteralArgs.ts, 0, 16))
 }
 
-var r = foo([1, 2]); // number[]
+var r = foo(<number[]> [1, 2]); // number[]
 >r : Symbol(r, Decl(genericCallWithArrayLiteralArgs.ts, 4, 3), Decl(genericCallWithArrayLiteralArgs.ts, 5, 3))
 >foo : Symbol(foo, Decl(genericCallWithArrayLiteralArgs.ts, 0, 0))
 

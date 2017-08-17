@@ -297,8 +297,8 @@ function f4() {
 >f4 : () => void
 
     const rec = { foo: "hello", bar: "world", baz: "bye" };
->rec : { foo: string; bar: string; baz: string; }
->{ foo: "hello", bar: "world", baz: "bye" } : { foo: string; bar: string; baz: string; }
+>rec : { foo: "hello"; bar: "world"; baz: "bye"; }
+>{ foo: "hello", bar: "world", baz: "bye" } : { foo: "hello"; bar: "world"; baz: "bye"; }
 >foo : string
 >"hello" : "hello"
 >bar : string
@@ -310,11 +310,11 @@ function f4() {
 >lengths : Record<"foo" | "bar" | "baz", number>
 >mapObject(rec, s => s.length) : Record<"foo" | "bar" | "baz", number>
 >mapObject : <K extends string, T, U>(obj: Record<K, T>, f: (x: T) => U) => Record<K, U>
->rec : { foo: string; bar: string; baz: string; }
->s => s.length : (s: string) => number
->s : string
+>rec : { foo: "hello"; bar: "world"; baz: "bye"; }
+>s => s.length : (s: "hello" | "world" | "bye") => number
+>s : "hello" | "world" | "bye"
 >s.length : number
->s : string
+>s : "hello" | "world" | "bye"
 >length : number
 }
 

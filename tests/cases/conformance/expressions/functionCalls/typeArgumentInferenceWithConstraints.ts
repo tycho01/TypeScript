@@ -86,11 +86,10 @@ interface A92 {
 }
 var a9e = someGenerics9(undefined, { x: 6, z: window }, { x: 6, y: '' });
 var a9e: {};
-var a9f = someGenerics9<A92>(undefined, { x: 6, z: window }, { x: 6, y: '' });
-var a9f: A92;
+var a9f: A92 = someGenerics9<A92>(undefined, { x: 6, z: window }, { x: 6, y: '' });
 
 // Generic call with multiple parameters of generic type passed arguments with a single best common type
-var a9d = someGenerics9({ x: 3 }, { x: 6 }, { x: 6 });
+var a9d = someGenerics9(<A91> { x: 3 }, { x: 6 }, { x: 6 });
 var a9d: { x: number; };
 
 // Generic call with multiple parameters of generic type where one argument is of type 'any'
@@ -99,6 +98,4 @@ var a = someGenerics9(7, anyVar, 4);
 var a: any;
 
 // Generic call with multiple parameters of generic type where one argument is [] and the other is not 'any'
-var arr = someGenerics9([], null, undefined);
-var arr: any[];
-
+var arr: any[] = someGenerics9([], null, undefined);

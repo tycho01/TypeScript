@@ -157,7 +157,7 @@ namespace ts.JsTyping {
 
             filesToWatch.push(jsonPath);
             const jsonConfig: PackageJson = readConfigFile(jsonPath, path => host.readFile(path)).config;
-            const jsonTypingNames = flatMap([jsonConfig.dependencies, jsonConfig.devDependencies, jsonConfig.optionalDependencies, jsonConfig.peerDependencies], getOwnKeys);
+            const jsonTypingNames = flatMap(<MapLike<string>[]> [jsonConfig.dependencies, jsonConfig.devDependencies, jsonConfig.optionalDependencies, jsonConfig.peerDependencies], getOwnKeys);
             addInferredTypings(jsonTypingNames, `Typing names in '${jsonPath}' dependencies`);
         }
 

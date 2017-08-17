@@ -4,11 +4,11 @@ var k: string, v: boolean;
 >v : boolean
 
 var map = new Map([["", true]]);
->map : Map<string, boolean>
->new Map([["", true]]) : Map<string, boolean>
+>map : Map<"", true>
+>new Map([["", true]]) : Map<"", true>
 >Map : MapConstructor
->[["", true]] : [string, true][]
->["", true] : [string, true]
+>[["", true]] : ["", true][]
+>["", true] : ["", true]
 >"" : ""
 >true : true
 
@@ -20,7 +20,7 @@ for ([k = "", v = false] of map) {
 >v = false : false
 >v : boolean
 >false : false
->map : Map<string, boolean>
+>map : Map<"", true>
 
     k;
 >k : string

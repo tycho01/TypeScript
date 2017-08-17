@@ -7,5 +7,5 @@ declare module JSX {
 	}
 }
 
-const t = {tag:'h1'}
+const t = { tag: 'h1' as string }
 const foo = <t.tag/>  // No error

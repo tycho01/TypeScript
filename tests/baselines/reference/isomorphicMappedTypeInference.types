@@ -215,6 +215,12 @@ function f2() {
 >a : number
 }
 
+type Bar = { a?: number; b?: string; c: boolean; };
+>Bar : Bar
+>a : number | undefined
+>b : string | undefined
+>c : boolean
+
 function f3() {
 >f3 : () => void
 
@@ -241,9 +247,12 @@ function f3() {
 >true : true
 
     };
-    assignBoxified(b, { c: false });
->assignBoxified(b, { c: false }) : void
+    assignBoxified(<Boxified<Bar>> b, { c: false });
+>assignBoxified(<Boxified<Bar>> b, { c: false }) : void
 >assignBoxified : <T>(obj: Boxified<T>, values: T) => void
+><Boxified<Bar>> b : Boxified<Bar>
+>Boxified : Boxified<T>
+>Bar : Bar
 >b : { a: Box<number>; b: Box<string>; c: Box<boolean>; }
 >{ c: false } : { c: false; }
 >c : boolean

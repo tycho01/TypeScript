@@ -537,11 +537,12 @@ declare function defineProps<T, U>(obj: T, descs: PropDescMap<U> & ThisType<T>):
 >T : Symbol(T, Decl(thisTypeInObjectLiterals2.ts, 165, 29))
 >U : Symbol(U, Decl(thisTypeInObjectLiterals2.ts, 165, 31))
 
-let p10 = defineProp(p1, "foo", { value: 42 });
+let p10 = defineProp(p1, "foo", <{ value: number }> { value: 42 });
 >p10 : Symbol(p10, Decl(thisTypeInObjectLiterals2.ts, 167, 3))
 >defineProp : Symbol(defineProp, Decl(thisTypeInObjectLiterals2.ts, 161, 1))
 >p1 : Symbol(p1, Decl(thisTypeInObjectLiterals2.ts, 35, 3))
->value : Symbol(value, Decl(thisTypeInObjectLiterals2.ts, 167, 33))
+>value : Symbol(value, Decl(thisTypeInObjectLiterals2.ts, 167, 34))
+>value : Symbol(value, Decl(thisTypeInObjectLiterals2.ts, 167, 53))
 
 p10.foo = p10.foo + 1;
 >p10.foo : Symbol(foo)
@@ -592,7 +593,7 @@ let p12 = defineProps(p1, {
     foo: {
 >foo : Symbol(foo, Decl(thisTypeInObjectLiterals2.ts, 180, 27))
 
-        value: 42
+        value: 42 as number
 >value : Symbol(value, Decl(thisTypeInObjectLiterals2.ts, 181, 10))
 
     },

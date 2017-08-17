@@ -62,9 +62,9 @@ declare const c6 = -123;
 declare const c7: boolean;
 declare const c8: E;
 declare const c9: {
-    x: string;
+    x: "abc";
 };
-declare const c10: number[];
+declare const c10: [123];
 declare const c11: string;
 declare const c12: number;
 declare const c13: string;

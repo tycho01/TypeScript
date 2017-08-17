@@ -13,10 +13,11 @@ declare module JSX {
 	}
 }
 
-const t = {tag:'h1'}
+const t = { tag: 'h1' as string }
 >t : { tag: string; }
->{tag:'h1'} : { tag: string; }
+>{ tag: 'h1' as string } : { tag: string; }
 >tag : string
+>'h1' as string : string
 >'h1' : "h1"
 
 const foo = <t.tag/>  // No error

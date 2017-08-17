@@ -2,7 +2,7 @@
 
 // Repros from #10641
 
-const CONFIG = {
+let CONFIG = {
     foo: '',
     setFoo: function(foo: string) {
         CONFIG.foo = foo;

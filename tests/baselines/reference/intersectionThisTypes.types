@@ -117,29 +117,29 @@ function test(label: Label) {
 >Label : Label
 
     const extended = label.extend({ id: 67 }).extend({ tag: "hello" });
->extended : Label & { id: number; } & { tag: string; }
->label.extend({ id: 67 }).extend({ tag: "hello" }) : Label & { id: number; } & { tag: string; }
->label.extend({ id: 67 }).extend : <T>(props: T) => Label & { id: number; } & T
->label.extend({ id: 67 }) : Label & { id: number; }
+>extended : Label & { id: 67; } & { tag: "hello"; }
+>label.extend({ id: 67 }).extend({ tag: "hello" }) : Label & { id: 67; } & { tag: "hello"; }
+>label.extend({ id: 67 }).extend : <T>(props: T) => Label & { id: 67; } & T
+>label.extend({ id: 67 }) : Label & { id: 67; }
 >label.extend : <T>(props: T) => Label & T
 >label : Label
 >extend : <T>(props: T) => Label & T
->{ id: 67 } : { id: number; }
+>{ id: 67 } : { id: 67; }
 >id : number
 >67 : 67
->extend : <T>(props: T) => Label & { id: number; } & T
->{ tag: "hello" } : { tag: string; }
+>extend : <T>(props: T) => Label & { id: 67; } & T
+>{ tag: "hello" } : { tag: "hello"; }
 >tag : string
 >"hello" : "hello"
 
     extended.id;  // Ok
->extended.id : number
->extended : Label & { id: number; } & { tag: string; }
->id : number
+>extended.id : 67
+>extended : Label & { id: 67; } & { tag: "hello"; }
+>id : 67
 
     extended.tag;  // Ok
->extended.tag : string
->extended : Label & { id: number; } & { tag: string; }
->tag : string
+>extended.tag : "hello"
+>extended : Label & { id: 67; } & { tag: "hello"; }
+>tag : "hello"
 }
 

@@ -94,8 +94,8 @@ type bar = {
 };
 
 const bBar = { elem1: 7, elem2: aFoo };
->bBar : { elem1: number; elem2: foo; }
->{ elem1: 7, elem2: aFoo } : { elem1: number; elem2: foo; }
+>bBar : { elem1: 7; elem2: foo; }
+>{ elem1: 7, elem2: aFoo } : { elem1: 7; elem2: foo; }
 >elem1 : number
 >7 : 7
 >elem2 : foo
@@ -105,17 +105,17 @@ if (bBar.elem2 && bBar.elem2.bar && bBar.elem2.nested.b) {
 >bBar.elem2 && bBar.elem2.bar && bBar.elem2.nested.b : string | 0 | null
 >bBar.elem2 && bBar.elem2.bar : number | null
 >bBar.elem2 : foo
->bBar : { elem1: number; elem2: foo; }
+>bBar : { elem1: 7; elem2: foo; }
 >elem2 : foo
 >bBar.elem2.bar : number | null
 >bBar.elem2 : foo
->bBar : { elem1: number; elem2: foo; }
+>bBar : { elem1: 7; elem2: foo; }
 >elem2 : foo
 >bar : number | null
 >bBar.elem2.nested.b : string | null
 >bBar.elem2.nested : { a: number; b: string | null; }
 >bBar.elem2 : foo
->bBar : { elem1: number; elem2: foo; }
+>bBar : { elem1: 7; elem2: foo; }
 >elem2 : foo
 >nested : { a: number; b: string | null; }
 >b : string | null
@@ -128,14 +128,14 @@ if (bBar.elem2 && bBar.elem2.bar && bBar.elem2.nested.b) {
 >b : any
 >text : string
 >bBar.elem2 : foo
->bBar : { elem1: number; elem2: foo; }
+>bBar : { elem1: 7; elem2: foo; }
 >elem2 : foo
 
   const right: number = bBar.elem2.bar;
 >right : number
 >bBar.elem2.bar : number
 >bBar.elem2 : foo
->bBar : { elem1: number; elem2: foo; }
+>bBar : { elem1: 7; elem2: foo; }
 >elem2 : foo
 >bar : number
 

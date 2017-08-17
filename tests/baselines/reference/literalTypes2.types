@@ -400,8 +400,8 @@ function f4() {
 >f4 : () => void
 
     const c1 = { a: 1, b: "foo" };
->c1 : { a: number; b: string; }
->{ a: 1, b: "foo" } : { a: number; b: string; }
+>c1 : { a: 1; b: "foo"; }
+>{ a: 1, b: "foo" } : { a: 1; b: "foo"; }
 >a : number
 >1 : 1
 >b : string
@@ -440,8 +440,8 @@ function f5() {
 >f5 : () => void
 
     const c1 = [1, "foo"];
->c1 : (string | number)[]
->[1, "foo"] : (string | number)[]
+>c1 : [1, "foo"]
+>[1, "foo"] : [1, "foo"]
 >1 : 1
 >"foo" : "foo"
 
@@ -718,10 +718,10 @@ const x6 = g5(1, 2);  // Type (1 | 2)[]
 >2 : 2
 
 const x7 = g6([1, 2]);  // Type number
->x7 : number
->g6([1, 2]) : number
+>x7 : 1 | 2
+>g6([1, 2]) : 1 | 2
 >g6 : <T>(x: T[]) => T
->[1, 2] : number[]
+>[1, 2] : (1 | 2)[]
 >1 : 1
 >2 : 2
 

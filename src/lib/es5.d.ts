@@ -1002,13 +1002,13 @@ interface ReadonlyArray<T> {
       * @param searchElement The value to locate in the array.
       * @param fromIndex The array index at which to begin the search. If fromIndex is omitted, the search starts at index 0.
       */
-    indexOf(searchElement: T, fromIndex?: number): number;
+    indexOf(searchElement: any, fromIndex?: number): number;
     /**
       * Returns the index of the last occurrence of a specified value in an array.
       * @param searchElement The value to locate in the array.
       * @param fromIndex The array index at which to begin the search. If fromIndex is omitted, the search starts at the last index in the array.
       */
-    lastIndexOf(searchElement: T, fromIndex?: number): number;
+    lastIndexOf(searchElement: any, fromIndex?: number): number;
     /**
       * Determines whether all the members of an array satisfy the specified test.
       * @param callbackfn A function that accepts up to three arguments. The every method calls the callbackfn function for each element in array1 until the callbackfn returns false, or until the end of the array.
@@ -1152,13 +1152,13 @@ interface Array<T> {
       * @param searchElement The value to locate in the array.
       * @param fromIndex The array index at which to begin the search. If fromIndex is omitted, the search starts at index 0.
       */
-    indexOf(searchElement: T, fromIndex?: number): number;
+    indexOf(searchElement: any, fromIndex?: number): number;
     /**
       * Returns the index of the last occurrence of a specified value in an array.
       * @param searchElement The value to locate in the array.
       * @param fromIndex The array index at which to begin the search. If fromIndex is omitted, the search starts at the last index in the array.
       */
-    lastIndexOf(searchElement: T, fromIndex?: number): number;
+    lastIndexOf(searchElement: any, fromIndex?: number): number;
     /**
       * Determines whether all the members of an array satisfy the specified test.
       * @param callbackfn A function that accepts up to three arguments. The every method calls the callbackfn function for each element in array1 until the callbackfn returns false, or until the end of the array.

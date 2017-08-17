@@ -1,7 +1,7 @@
 //// [circularObjectLiteralAccessors.ts]
 // Repro from #6000
 
-const a = {
+let a = {
     b: {
         get foo(): string {
             return a.foo;

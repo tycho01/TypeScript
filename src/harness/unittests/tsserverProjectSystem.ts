@@ -6,7 +6,7 @@ namespace ts.projectSystem {
     import protocol = server.protocol;
     import CommandNames = server.CommandNames;
 
-    const safeList = {
+    const safeList: FileOrFolder = {
         path: <Path>"/safeList.json",
         content: JSON.stringify({
             commander: "commander",
@@ -58,7 +58,7 @@ namespace ts.projectSystem {
             installTypingHost: server.ServerHost,
             readonly typesRegistry = createMap<void>(),
             log?: TI.Log) {
-            super(installTypingHost, globalTypingsCacheLocation, safeList.path, throttleLimit, log);
+            super(installTypingHost, globalTypingsCacheLocation, safeList.path as Path, throttleLimit, log);
         }
 
         protected postExecActions: PostExecAction[] = [];
@@ -1496,7 +1496,7 @@ namespace ts.projectSystem {
             try {
                 projectService.openExternalProject({ projectFileName: "project", options: {}, rootFiles: toExternalFiles([file1.path, office.path]) });
                 const proj = projectService.externalProjects[0];
-                assert.deepEqual(proj.getFileNames(/*excludeFilesFromExternalLibraries*/ true), [file1.path]);
+                assert.deepEqual(proj.getFileNames(/*excludeFilesFromExternalLibraries*/ true), [file1.path] as string[]);
                 assert.deepEqual(proj.getTypeAcquisition().include, ["duck-types"]);
             } finally {
                 projectService.resetSafeList();
@@ -1534,7 +1534,7 @@ namespace ts.projectSystem {
             try {
                 projectService.openExternalProject({ projectFileName: "project", options: {}, rootFiles: toExternalFiles(files.map(f => f.path)) });
                 const proj = projectService.externalProjects[0];
-                assert.deepEqual(proj.getFileNames(/*excludeFilesFromExternalLibraries*/ true), [file1.path]);
+                assert.deepEqual(proj.getFileNames(/*excludeFilesFromExternalLibraries*/ true), [file1.path] as string[]);
                 assert.deepEqual(proj.getTypeAcquisition().include, ["kendo-ui", "office"]);
             } finally {
                 projectService.resetSafeList();
@@ -2895,7 +2895,7 @@ namespace ts.projectSystem {
 
     describe("rename a module file and rename back", () => {
         it("should restore the states for inferred projects", () => {
-            const moduleFile = {
+            /* tslint:disable:prefer-const */ let moduleFile = {
                 path: "/a/b/moduleFile.ts",
                 content: "export function bar() { };"
             };
@@ -2943,7 +2943,7 @@ namespace ts.projectSystem {
         });
 
         it("should restore the states for configured projects", () => {
-            const moduleFile = {
+            /* tslint:disable:prefer-const */ let moduleFile = {
                 path: "/a/b/moduleFile.ts",
                 content: "export function bar() { };"
             };
@@ -3131,7 +3131,7 @@ namespace ts.projectSystem {
                 path: "/a/b/app.ts",
                 content: "let x = 10"
             };
-            const configFile = {
+            /* tslint:disable:prefer-const */ let configFile = {
                 path: "/a/b/tsconfig.json",
                 content: `{
                     "compilerOptions": {}

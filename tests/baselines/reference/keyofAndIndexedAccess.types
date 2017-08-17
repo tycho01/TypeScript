@@ -944,10 +944,10 @@ function f71(func: <T, U>(x: T, y: U) => Partial<T & U>) {
 >U : U
 
     let x = func({ a: 1, b: "hello" }, { c: true });
->x : Partial<{ a: number; b: string; } & { c: boolean; }>
->func({ a: 1, b: "hello" }, { c: true }) : Partial<{ a: number; b: string; } & { c: boolean; }>
+>x : Partial<{ a: 1; b: "hello"; } & { c: true; }>
+>func({ a: 1, b: "hello" }, { c: true }) : Partial<{ a: 1; b: "hello"; } & { c: true; }>
 >func : <T, U>(x: T, y: U) => Partial<T & U>
->{ a: 1, b: "hello" } : { a: number; b: string; }
+>{ a: 1, b: "hello" } : { a: 1; b: "hello"; }
 >a : number
 >1 : 1
 >b : string
@@ -957,19 +957,19 @@ function f71(func: <T, U>(x: T, y: U) => Partial<T & U>) {
 >true : true
 
     x.a;  // number | undefined
->x.a : number | undefined
->x : Partial<{ a: number; b: string; } & { c: boolean; }>
->a : number | undefined
+>x.a : 1 | undefined
+>x : Partial<{ a: 1; b: "hello"; } & { c: true; }>
+>a : 1 | undefined
 
     x.b;  // string | undefined
->x.b : string | undefined
->x : Partial<{ a: number; b: string; } & { c: boolean; }>
->b : string | undefined
+>x.b : "hello" | undefined
+>x : Partial<{ a: 1; b: "hello"; } & { c: true; }>
+>b : "hello" | undefined
 
     x.c;  // boolean | undefined
->x.c : boolean | undefined
->x : Partial<{ a: number; b: string; } & { c: boolean; }>
->c : boolean | undefined
+>x.c : true | undefined
+>x : Partial<{ a: 1; b: "hello"; } & { c: true; }>
+>c : true | undefined
 }
 
 function f72(func: <T, U, K extends keyof T | keyof U>(x: T, y: U, k: K) => (T & U)[K]) {
@@ -992,9 +992,9 @@ function f72(func: <T, U, K extends keyof T | keyof U>(x: T, y: U, k: K) => (T &
 
     let a = func({ a: 1, b: "hello" }, { c: true }, 'a');  // number
 >a : number
->func({ a: 1, b: "hello" }, { c: true }, 'a') : number
+>func({ a: 1, b: "hello" }, { c: true }, 'a') : 1
 >func : <T, U, K extends keyof T | keyof U>(x: T, y: U, k: K) => (T & U)[K]
->{ a: 1, b: "hello" } : { a: number; b: string; }
+>{ a: 1, b: "hello" } : { a: 1; b: "hello"; }
 >a : number
 >1 : 1
 >b : string
@@ -1006,9 +1006,9 @@ function f72(func: <T, U, K extends keyof T | keyof U>(x: T, y: U, k: K) => (T &
 
     let b = func({ a: 1, b: "hello" }, { c: true }, 'b');  // string
 >b : string
->func({ a: 1, b: "hello" }, { c: true }, 'b') : string
+>func({ a: 1, b: "hello" }, { c: true }, 'b') : "hello"
 >func : <T, U, K extends keyof T | keyof U>(x: T, y: U, k: K) => (T & U)[K]
->{ a: 1, b: "hello" } : { a: number; b: string; }
+>{ a: 1, b: "hello" } : { a: 1; b: "hello"; }
 >a : number
 >1 : 1
 >b : string
@@ -1020,9 +1020,9 @@ function f72(func: <T, U, K extends keyof T | keyof U>(x: T, y: U, k: K) => (T &
 
     let c = func({ a: 1, b: "hello" }, { c: true }, 'c');  // boolean
 >c : boolean
->func({ a: 1, b: "hello" }, { c: true }, 'c') : boolean
+>func({ a: 1, b: "hello" }, { c: true }, 'c') : true
 >func : <T, U, K extends keyof T | keyof U>(x: T, y: U, k: K) => (T & U)[K]
->{ a: 1, b: "hello" } : { a: number; b: string; }
+>{ a: 1, b: "hello" } : { a: 1; b: "hello"; }
 >a : number
 >1 : 1
 >b : string
@@ -1053,9 +1053,9 @@ function f73(func: <T, U, K extends keyof (T & U)>(x: T, y: U, k: K) => (T & U)[
 
     let a = func({ a: 1, b: "hello" }, { c: true }, 'a');  // number
 >a : number
->func({ a: 1, b: "hello" }, { c: true }, 'a') : number
+>func({ a: 1, b: "hello" }, { c: true }, 'a') : 1
 >func : <T, U, K extends keyof (T & U)>(x: T, y: U, k: K) => (T & U)[K]
->{ a: 1, b: "hello" } : { a: number; b: string; }
+>{ a: 1, b: "hello" } : { a: 1; b: "hello"; }
 >a : number
 >1 : 1
 >b : string
@@ -1067,9 +1067,9 @@ function f73(func: <T, U, K extends keyof (T & U)>(x: T, y: U, k: K) => (T & U)[
 
     let b = func({ a: 1, b: "hello" }, { c: true }, 'b');  // string
 >b : string
->func({ a: 1, b: "hello" }, { c: true }, 'b') : string
+>func({ a: 1, b: "hello" }, { c: true }, 'b') : "hello"
 >func : <T, U, K extends keyof (T & U)>(x: T, y: U, k: K) => (T & U)[K]
->{ a: 1, b: "hello" } : { a: number; b: string; }
+>{ a: 1, b: "hello" } : { a: 1; b: "hello"; }
 >a : number
 >1 : 1
 >b : string
@@ -1081,9 +1081,9 @@ function f73(func: <T, U, K extends keyof (T & U)>(x: T, y: U, k: K) => (T & U)[
 
     let c = func({ a: 1, b: "hello" }, { c: true }, 'c');  // boolean
 >c : boolean
->func({ a: 1, b: "hello" }, { c: true }, 'c') : boolean
+>func({ a: 1, b: "hello" }, { c: true }, 'c') : true
 >func : <T, U, K extends keyof (T & U)>(x: T, y: U, k: K) => (T & U)[K]
->{ a: 1, b: "hello" } : { a: number; b: string; }
+>{ a: 1, b: "hello" } : { a: 1; b: "hello"; }
 >a : number
 >1 : 1
 >b : string
@@ -1114,14 +1114,14 @@ function f74(func: <T, U, K extends keyof (T | U)>(x: T, y: U, k: K) => (T | U)[
 
     let a = func({ a: 1, b: "hello" }, { a: 2, b: true }, 'a');  // number
 >a : number
->func({ a: 1, b: "hello" }, { a: 2, b: true }, 'a') : number
+>func({ a: 1, b: "hello" }, { a: 2, b: true }, 'a') : 1 | 2
 >func : <T, U, K extends keyof (T | U)>(x: T, y: U, k: K) => (T | U)[K]
->{ a: 1, b: "hello" } : { a: number; b: string; }
+>{ a: 1, b: "hello" } : { a: 1; b: "hello"; }
 >a : number
 >1 : 1
 >b : string
 >"hello" : "hello"
->{ a: 2, b: true } : { a: number; b: true; }
+>{ a: 2, b: true } : { a: 2; b: true; }
 >a : number
 >2 : 2
 >b : boolean
@@ -1130,14 +1130,14 @@ function f74(func: <T, U, K extends keyof (T | U)>(x: T, y: U, k: K) => (T | U)[
 
     let b = func({ a: 1, b: "hello" }, { a: 2, b: true }, 'b');  // string | boolean
 >b : string | boolean
->func({ a: 1, b: "hello" }, { a: 2, b: true }, 'b') : string | boolean
+>func({ a: 1, b: "hello" }, { a: 2, b: true }, 'b') : true | "hello"
 >func : <T, U, K extends keyof (T | U)>(x: T, y: U, k: K) => (T | U)[K]
->{ a: 1, b: "hello" } : { a: number; b: string; }
+>{ a: 1, b: "hello" } : { a: 1; b: "hello"; }
 >a : number
 >1 : 1
 >b : string
 >"hello" : "hello"
->{ a: 2, b: true } : { a: number; b: true; }
+>{ a: 2, b: true } : { a: 2; b: true; }
 >a : number
 >2 : 2
 >b : boolean
@@ -1223,21 +1223,21 @@ function f82() {
 
     let x1 = f81({ a: { x: "hello" } });  // string
 >x1 : string
->f81({ a: { x: "hello" } }) : string
+>f81({ a: { x: "hello" } }) : "hello"
 >f81 : <T extends { a: { x: any; }; }>(obj: T) => T["a"]["x"]
->{ a: { x: "hello" } } : { a: { x: string; }; }
->a : { x: string; }
->{ x: "hello" } : { x: string; }
+>{ a: { x: "hello" } } : { a: { x: "hello"; }; }
+>a : { x: "hello"; }
+>{ x: "hello" } : { x: "hello"; }
 >x : string
 >"hello" : "hello"
 
     let x2 = f81({ a: { x: 42 } });  // number
 >x2 : number
->f81({ a: { x: 42 } }) : number
+>f81({ a: { x: 42 } }) : 42
 >f81 : <T extends { a: { x: any; }; }>(obj: T) => T["a"]["x"]
->{ a: { x: 42 } } : { a: { x: number; }; }
->a : { x: number; }
->{ x: 42 } : { x: number; }
+>{ a: { x: 42 } } : { a: { x: 42; }; }
+>a : { x: 42; }
+>{ x: 42 } : { x: 42; }
 >x : number
 >42 : 42
 }
@@ -1270,22 +1270,22 @@ function f84() {
 
     let x1 = f83({ foo: { x: "hello" } }, "foo");  // string
 >x1 : string
->f83({ foo: { x: "hello" } }, "foo") : string
+>f83({ foo: { x: "hello" } }, "foo") : "hello"
 >f83 : <T extends { [x: string]: { x: any; }; }, K extends keyof T>(obj: T, key: K) => T[K]["x"]
->{ foo: { x: "hello" } } : { foo: { x: string; }; }
->foo : { x: string; }
->{ x: "hello" } : { x: string; }
+>{ foo: { x: "hello" } } : { foo: { x: "hello"; }; }
+>foo : { x: "hello"; }
+>{ x: "hello" } : { x: "hello"; }
 >x : string
 >"hello" : "hello"
 >"foo" : "foo"
 
     let x2 = f83({ bar: { x: 42 } }, "bar");  // number
 >x2 : number
->f83({ bar: { x: 42 } }, "bar") : number
+>f83({ bar: { x: 42 } }, "bar") : 42
 >f83 : <T extends { [x: string]: { x: any; }; }, K extends keyof T>(obj: T, key: K) => T[K]["x"]
->{ bar: { x: 42 } } : { bar: { x: number; }; }
->bar : { x: number; }
->{ x: 42 } : { x: number; }
+>{ bar: { x: 42 } } : { bar: { x: 42; }; }
+>bar : { x: 42; }
+>{ x: 42 } : { x: 42; }
 >x : number
 >42 : 42
 >"bar" : "bar"
@@ -1849,14 +1849,14 @@ declare class Component1<Data, Computed> {
 }
 
 let c1 = new Component1({
->c1 : Component1<{ hello: string; }, {}>
->new Component1({    data: {        hello: ""    }}) : Component1<{ hello: string; }, {}>
+>c1 : Component1<{ hello: ""; }, {}>
+>new Component1({    data: {        hello: ""    }}) : Component1<{ hello: ""; }, {}>
 >Component1 : typeof Component1
->{    data: {        hello: ""    }} : { data: { hello: string; }; }
+>{    data: {        hello: ""    }} : { data: { hello: ""; }; }
 
     data: {
->data : { hello: string; }
->{        hello: ""    } : { hello: string; }
+>data : { hello: ""; }
+>{        hello: ""    } : { hello: ""; }
 
         hello: ""
 >hello : string
@@ -1865,10 +1865,10 @@ let c1 = new Component1({
 });
 
 c1.get("hello");
->c1.get("hello") : string
->c1.get : <K extends "hello">(key: K) => { hello: string; }[K]
->c1 : Component1<{ hello: string; }, {}>
->get : <K extends "hello">(key: K) => { hello: string; }[K]
+>c1.get("hello") : ""
+>c1.get : <K extends "hello">(key: K) => { hello: ""; }[K]
+>c1 : Component1<{ hello: ""; }, {}>
+>get : <K extends "hello">(key: K) => { hello: ""; }[K]
 >"hello" : "hello"
 
 // Repro from #12625

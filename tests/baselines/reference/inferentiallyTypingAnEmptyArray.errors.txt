@@ -1,0 +1,8 @@
+tests/cases/compiler/inferentiallyTypingAnEmptyArray.ts(2,9): error TS2339: Property 'bar' does not exist on type 'never'.
+
+
+==== tests/cases/compiler/inferentiallyTypingAnEmptyArray.ts (1 errors) ====
+    declare function foo<T>(arr: T[]): T;
+    foo([]).bar;
+            ~~~
+!!! error TS2339: Property 'bar' does not exist on type 'never'.

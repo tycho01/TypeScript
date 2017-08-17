@@ -37,8 +37,8 @@ var entries1 = Object.entries(1); // <-- entries: [string, any][]
 >1 : 1
 
 var entries2 = Object.entries({a: true, b: 2}) // ['a' | 'b', number | boolean][]
->entries2 : [string, number | boolean][]
->Object.entries({a: true, b: 2}) : [string, number | boolean][]
+>entries2 : [string, true | 2][]
+>Object.entries({a: true, b: 2}) : [string, true | 2][]
 >Object.entries : { <T>(o: { [s: string]: T; }): [string, T][]; (o: any): [string, any][]; }
 >Object : ObjectConstructor
 >entries : { <T>(o: { [s: string]: T; }): [string, T][]; (o: any): [string, any][]; }

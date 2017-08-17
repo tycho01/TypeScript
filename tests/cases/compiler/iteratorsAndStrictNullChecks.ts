@@ -7,6 +7,6 @@ for (const x of ["a", "b"]) {
 }
 
 // Spread
-const xs = [1, 2, 3];
+let xs = [1, 2, 3];
 const ys = [4, 5];
 xs.push(...ys);

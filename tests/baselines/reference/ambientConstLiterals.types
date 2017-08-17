@@ -56,14 +56,14 @@ const c8 = E.A;
 >A : E.A
 
 const c9 = { x: "abc" };
->c9 : { x: string; }
->{ x: "abc" } : { x: string; }
+>c9 : { x: "abc"; }
+>{ x: "abc" } : { x: "abc"; }
 >x : string
 >"abc" : "abc"
 
 const c10 = [123];
->c10 : number[]
->[123] : number[]
+>c10 : [123]
+>[123] : [123]
 >123 : 123
 
 const c11 = "abc" + "def";

@@ -99,27 +99,27 @@ function zip<T, U>(array1: T[], array2: U[]): [[T, U]] {
 }
 
 var zipResult = zip(["foo", "bar"], [5, 6]);
->zipResult : [[string, number]]
->zip(["foo", "bar"], [5, 6]) : [[string, number]]
+>zipResult : [["foo" | "bar", 5 | 6]]
+>zip(["foo", "bar"], [5, 6]) : [["foo" | "bar", 5 | 6]]
 >zip : <T, U>(array1: T[], array2: U[]) => [[T, U]]
->["foo", "bar"] : string[]
+>["foo", "bar"] : ("foo" | "bar")[]
 >"foo" : "foo"
 >"bar" : "bar"
->[5, 6] : number[]
+>[5, 6] : (5 | 6)[]
 >5 : 5
 >6 : 6
 
 var zipResultEle = zipResult[0]; // [string, number]
->zipResultEle : [string, number]
->zipResult[0] : [string, number]
->zipResult : [[string, number]]
+>zipResultEle : ["foo" | "bar", 5 | 6]
+>zipResult[0] : ["foo" | "bar", 5 | 6]
+>zipResult : [["foo" | "bar", 5 | 6]]
 >0 : 0
 
 var zipResultEleEle = zipResult[0][0]; // string
 >zipResultEleEle : string
->zipResult[0][0] : string
->zipResult[0] : [string, number]
->zipResult : [[string, number]]
+>zipResult[0][0] : "foo" | "bar"
+>zipResult[0] : ["foo" | "bar", 5 | 6]
+>zipResult : [["foo" | "bar", 5 | 6]]
 >0 : 0
 >0 : 0
 

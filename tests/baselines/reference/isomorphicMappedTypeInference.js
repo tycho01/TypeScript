@@ -57,13 +57,14 @@ function f2() {
     let x: number = v.a;
 }
 
+type Bar = { a?: number; b?: string; c: boolean; };
 function f3() {
     let b = {
         a: box(42),
         b: box("hello"),
         c: box(true)
     };
-    assignBoxified(b, { c: false });
+    assignBoxified(<Boxified<Bar>> b, { c: false });
 }
 
 function f4() {
@@ -271,6 +272,11 @@ declare function unboxify<T>(obj: Boxified<T>): T;
 declare function assignBoxified<T>(obj: Boxified<T>, values: T): void;
 declare function f1(): void;
 declare function f2(): void;
+declare type Bar = {
+    a?: number;
+    b?: string;
+    c: boolean;
+};
 declare function f3(): void;
 declare function f4(): void;
 declare function makeRecord<T, K extends string>(obj: {

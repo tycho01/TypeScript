@@ -1,11 +1,12 @@
 tests/cases/conformance/expressions/functionCalls/typeArgumentInference.ts(68,29): error TS2345: Argument of type '0' is not assignable to parameter of type '""'.
-tests/cases/conformance/expressions/functionCalls/typeArgumentInference.ts(82,69): error TS2345: Argument of type '{ x: number; y: string; }' is not assignable to parameter of type '{ x: number; z: Date; }'.
-  Object literal may only specify known properties, and 'y' does not exist in type '{ x: number; z: Date; }'.
-tests/cases/conformance/expressions/functionCalls/typeArgumentInference.ts(84,74): error TS2345: Argument of type '{ x: number; y: string; }' is not assignable to parameter of type 'A92'.
+tests/cases/conformance/expressions/functionCalls/typeArgumentInference.ts(82,69): error TS2345: Argument of type '{ x: 6; y: ""; }' is not assignable to parameter of type '{ x: 6; z: Date; }'.
+  Object literal may only specify known properties, and 'y' does not exist in type '{ x: 6; z: Date; }'.
+tests/cases/conformance/expressions/functionCalls/typeArgumentInference.ts(84,85): error TS2345: Argument of type '{ x: 6; y: ""; }' is not assignable to parameter of type 'A92'.
   Object literal may only specify known properties, and 'y' does not exist in type 'A92'.
+tests/cases/conformance/expressions/functionCalls/typeArgumentInference.ts(88,5): error TS2403: Subsequent variable declarations must have the same type.  Variable 'a9d' must be of type 'A91', but here has type '{ x: number; }'.
 
 
-==== tests/cases/conformance/expressions/functionCalls/typeArgumentInference.ts (3 errors) ====
+==== tests/cases/conformance/expressions/functionCalls/typeArgumentInference.ts (4 errors) ====
     // Generic call with no parameters
     function noParams<T>() { }
     noParams();
@@ -91,18 +92,19 @@ tests/cases/conformance/expressions/functionCalls/typeArgumentInference.ts(84,74
     }
     var a9e = someGenerics9(undefined, { x: 6, z: new Date() }, { x: 6, y: '' });
                                                                         ~~~~~
-!!! error TS2345: Argument of type '{ x: number; y: string; }' is not assignable to parameter of type '{ x: number; z: Date; }'.
-!!! error TS2345:   Object literal may only specify known properties, and 'y' does not exist in type '{ x: number; z: Date; }'.
+!!! error TS2345: Argument of type '{ x: 6; y: ""; }' is not assignable to parameter of type '{ x: 6; z: Date; }'.
+!!! error TS2345:   Object literal may only specify known properties, and 'y' does not exist in type '{ x: 6; z: Date; }'.
     var a9e: {};
-    var a9f = someGenerics9<A92>(undefined, { x: 6, z: new Date() }, { x: 6, y: '' });
-                                                                             ~~~~~
-!!! error TS2345: Argument of type '{ x: number; y: string; }' is not assignable to parameter of type 'A92'.
+    var a9f: A91 & A92 = someGenerics9<A92>(undefined, { x: 6, z: new Date() }, { x: 6, y: '' });
+                                                                                        ~~~~~
+!!! error TS2345: Argument of type '{ x: 6; y: ""; }' is not assignable to parameter of type 'A92'.
 !!! error TS2345:   Object literal may only specify known properties, and 'y' does not exist in type 'A92'.
-    var a9f: A92;
     
     // Generic call with multiple parameters of generic type passed arguments with a single best common type
-    var a9d = someGenerics9({ x: 3 }, { x: 6 }, { x: 6 });
+    var a9d = someGenerics9(<A91> { x: 3 }, { x: 6 }, { x: 6 });
     var a9d: { x: number; };
+        ~~~
+!!! error TS2403: Subsequent variable declarations must have the same type.  Variable 'a9d' must be of type 'A91', but here has type '{ x: number; }'.
     
     // Generic call with multiple parameters of generic type where one argument is of type 'any'
     var anyVar: any;
@@ -110,7 +112,5 @@ tests/cases/conformance/expressions/functionCalls/typeArgumentInference.ts(84,74
     var a: any;
     
     // Generic call with multiple parameters of generic type where one argument is [] and the other is not 'any'
-    var arr = someGenerics9([], null, undefined);
-    var arr: any[];
-    
+    var arr: any[] = someGenerics9([], null, undefined);
     

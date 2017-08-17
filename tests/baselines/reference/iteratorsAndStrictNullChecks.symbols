@@ -10,15 +10,15 @@ for (const x of ["a", "b"]) {
 }
 
 // Spread
-const xs = [1, 2, 3];
->xs : Symbol(xs, Decl(iteratorsAndStrictNullChecks.ts, 6, 5))
+let xs = [1, 2, 3];
+>xs : Symbol(xs, Decl(iteratorsAndStrictNullChecks.ts, 6, 3))
 
 const ys = [4, 5];
 >ys : Symbol(ys, Decl(iteratorsAndStrictNullChecks.ts, 7, 5))
 
 xs.push(...ys);
 >xs.push : Symbol(Array.push, Decl(lib.es5.d.ts, --, --))
->xs : Symbol(xs, Decl(iteratorsAndStrictNullChecks.ts, 6, 5))
+>xs : Symbol(xs, Decl(iteratorsAndStrictNullChecks.ts, 6, 3))
 >push : Symbol(Array.push, Decl(lib.es5.d.ts, --, --))
 >ys : Symbol(ys, Decl(iteratorsAndStrictNullChecks.ts, 7, 5))
 

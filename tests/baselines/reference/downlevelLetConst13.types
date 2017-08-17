@@ -18,8 +18,8 @@ export let [bar1] = [1];
 >1 : 1
 
 export const [bar2] = [2];
->bar2 : number
->[2] : [number]
+>bar2 : 2
+>[2] : [2]
 >2 : 2
 
 export let {a: bar3} = { a: 1 };
@@ -31,8 +31,8 @@ export let {a: bar3} = { a: 1 };
 
 export const {a: bar4} = { a: 1 };
 >a : any
->bar4 : number
->{ a: 1 } : { a: number; }
+>bar4 : 1
+>{ a: 1 } : { a: 1; }
 >a : number
 >1 : 1
 
@@ -53,8 +53,8 @@ export module M {
 >1 : 1
 
     export const [bar6] = [2];
->bar6 : number
->[2] : [number]
+>bar6 : 2
+>[2] : [2]
 >2 : 2
 
     export let {a: bar7} = { a: 1 };
@@ -66,8 +66,8 @@ export module M {
 
     export const {a: bar8} = { a: 1 };
 >a : any
->bar8 : number
->{ a: 1 } : { a: number; }
+>bar8 : 1
+>{ a: 1 } : { a: 1; }
 >a : number
 >1 : 1
 }

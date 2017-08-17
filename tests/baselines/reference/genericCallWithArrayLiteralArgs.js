@@ -3,7 +3,7 @@ function foo<T>(t: T) {
     return t;
 }
 
-var r = foo([1, 2]); // number[]
+var r = foo(<number[]> [1, 2]); // number[]
 var r = foo<number[]>([1, 2]); // number[]
 var ra = foo<any[]>([1, 2]); // any[]
 var r2 = foo([]); // any[]

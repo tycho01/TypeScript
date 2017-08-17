@@ -1,16 +1,16 @@
 === tests/cases/conformance/es6/destructuring/iterableArrayPattern30.ts ===
 const [[k1, v1], [k2, v2]] = new Map([["", true], ["hello", true]])
->k1 : string
->v1 : boolean
->k2 : string
->v2 : boolean
->new Map([["", true], ["hello", true]]) : Map<string, boolean>
+>k1 : "" | "hello"
+>v1 : true
+>k2 : "" | "hello"
+>v2 : true
+>new Map([["", true], ["hello", true]]) : Map<"" | "hello", true>
 >Map : MapConstructor
->[["", true], ["hello", true]] : [string, true][]
->["", true] : [string, true]
+>[["", true], ["hello", true]] : (["", true] | ["hello", true])[]
+>["", true] : ["", true]
 >"" : ""
 >true : true
->["hello", true] : [string, true]
+>["hello", true] : ["hello", true]
 >"hello" : "hello"
 >true : true
 

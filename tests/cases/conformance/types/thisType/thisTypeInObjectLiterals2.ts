@@ -169,7 +169,7 @@ declare function defineProp<T, K extends string, U>(obj: T, name: K, desc: PropD
 
 declare function defineProps<T, U>(obj: T, descs: PropDescMap<U> & ThisType<T>): T & U;
 
-let p10 = defineProp(p1, "foo", { value: 42 });
+let p10 = defineProp(p1, "foo", <{ value: number }> { value: 42 });
 p10.foo = p10.foo + 1;
 
 let p11 = defineProp(p1, "bar", {
@@ -184,7 +184,7 @@ p11.bar = p11.bar + 1;
 
 let p12 = defineProps(p1, {
     foo: {
-        value: 42
+        value: 42 as number
     },
     bar: {
         get(): number {

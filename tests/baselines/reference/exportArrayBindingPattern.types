@@ -1,15 +1,15 @@
 === tests/cases/compiler/exportArrayBindingPattern.ts ===
 // issue: https://github.com/Microsoft/TypeScript/issues/10778
 const [a, , b] = [1, 2, 3];
->a : number
+>a : 1
 > : undefined
->b : number
->[1, 2, 3] : [number, number, number]
+>b : 3
+>[1, 2, 3] : [1, 2, 3]
 >1 : 1
 >2 : 2
 >3 : 3
 
 export { a, b };
->a : number
->b : number
+>a : 1
+>b : 3
 

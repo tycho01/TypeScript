@@ -7,16 +7,16 @@ const obj = {};
 >{} : {}
 
 const obj1 = {
->obj1 : { x: number; }
->{    x: 2} : { x: number; }
+>obj1 : { x: 2; }
+>{    x: 2} : { x: 2; }
 
     x: 2
 >x : number
 >2 : 2
 }
 const obj3 = {
->obj3 : { y: boolean; overwrite: string; }
->{    y: true,    overwrite: "hi"} : { y: boolean; overwrite: string; }
+>obj3 : { y: true; overwrite: "hi"; }
+>{    y: true,    overwrite: "hi"} : { y: true; overwrite: "hi"; }
 
     y: true,
 >y : boolean
@@ -65,12 +65,12 @@ let x = <OverWriteAttr {...obj} y overwrite="hi" {...obj1} />
 >obj : {}
 >y : true
 >overwrite : string
->obj1 : { x: number; }
+>obj1 : { x: 2; }
 
 let x1 = <OverWriteAttr {...obj1} {...obj3}  />
 >x1 : JSX.Element
 ><OverWriteAttr {...obj1} {...obj3}  /> : JSX.Element
 >OverWriteAttr : typeof OverWriteAttr
->obj1 : { x: number; }
->obj3 : { y: boolean; overwrite: string; }
+>obj1 : { x: 2; }
+>obj3 : { y: true; overwrite: "hi"; }
 
