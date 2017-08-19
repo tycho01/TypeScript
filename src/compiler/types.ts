@@ -3395,7 +3395,7 @@ namespace ts {
     }
 
     // type spread types (TypeFlags.TypeSpread)
-    export interface TypeSpreadType extends TypeVariable {
+    export interface TypeSpreadType extends Type {
         type: Type;
     }
 

@@ -5366,13 +5366,21 @@ namespace ts {
         }
 
         function resolveDeclaredMembers(type: InterfaceType): InterfaceTypeWithDeclaredMembers {
+            if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers");
             if (!(<InterfaceTypeWithDeclaredMembers>type).declaredProperties) {
                 const symbol = type.symbol;
+                if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:type.symbol", type.symbol);
+                if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:type.symbol.members", type.symbol.members);
                 (<InterfaceTypeWithDeclaredMembers>type).declaredProperties = getNamedMembers(symbol.members);
+                if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:(<InterfaceTypeWithDeclaredMembers>type).declaredProperties", (<InterfaceTypeWithDeclaredMembers>type).declaredProperties);
                 (<InterfaceTypeWithDeclaredMembers>type).declaredCallSignatures = getSignaturesOfSymbol(symbol.members.get(InternalSymbolName.Call));
+                // if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:(<InterfaceTypeWithDeclaredMembers>type).declaredCallSignatures", (<InterfaceTypeWithDeclaredMembers>type).declaredCallSignatures);
                 (<InterfaceTypeWithDeclaredMembers>type).declaredConstructSignatures = getSignaturesOfSymbol(symbol.members.get(InternalSymbolName.New));
+                // if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:(<InterfaceTypeWithDeclaredMembers>type).declaredConstructSignatures", (<InterfaceTypeWithDeclaredMembers>type).declaredConstructSignatures);
                 (<InterfaceTypeWithDeclaredMembers>type).declaredStringIndexInfo = getIndexInfoOfSymbol(symbol, IndexKind.String);
+                // if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:(<InterfaceTypeWithDeclaredMembers>type).declaredStringIndexInfo", (<InterfaceTypeWithDeclaredMembers>type).declaredStringIndexInfo);
                 (<InterfaceTypeWithDeclaredMembers>type).declaredNumberIndexInfo = getIndexInfoOfSymbol(symbol, IndexKind.Number);
+                // if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:(<InterfaceTypeWithDeclaredMembers>type).declaredNumberIndexInfo", (<InterfaceTypeWithDeclaredMembers>type).declaredNumberIndexInfo);
             }
             return <InterfaceTypeWithDeclaredMembers>type;
         }
@@ -5393,6 +5401,8 @@ namespace ts {
 
         function resolveObjectTypeMembers(type: ObjectType, source: InterfaceTypeWithDeclaredMembers, typeParameters: TypeParameter[], typeArguments: Type[]) {
             if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers", typeToString(type));
+            if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers:type", type);
+            // if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers:type.target", type.target);
             let mapper: TypeMapper;
             let members: SymbolTable;
             let callSignatures: Signature[];
@@ -5416,12 +5426,15 @@ namespace ts {
                 numberIndexInfo = instantiateIndexInfo(source.declaredNumberIndexInfo, mapper);
             }
             const baseTypes = getBaseTypes(source);
+            if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers:baseTypes.length", baseTypes.length);
             if (baseTypes.length) {
                 if (source.symbol && members === source.symbol.members) {
                     members = createSymbolTable(source.declaredProperties);
                 }
                 const thisArgument = lastOrUndefined(typeArguments);
                 for (const baseType of baseTypes) {
+                    if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers:baseType:1", baseType ? typeToString(baseType): baseType);
+                    if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers:baseType:2", baseType);
                     const instantiatedBaseType = thisArgument ? getTypeWithThisArgument(instantiateType(baseType, mapper), thisArgument) : baseType;
                     addInheritedMembers(members, getPropertiesOfType(instantiatedBaseType));
                     callSignatures = concatenate(callSignatures, getSignaturesOfType(instantiatedBaseType, SignatureKind.Call));
@@ -5438,14 +5451,24 @@ namespace ts {
         }
 
         function resolveClassOrInterfaceMembers(type: InterfaceType): void {
+            if (allowSyntheticDefaultImports) console.log("resolveClassOrInterfaceMembers");
             resolveObjectTypeMembers(type, resolveDeclaredMembers(type), emptyArray, emptyArray);
         }
 
         function resolveTypeReferenceMembers(type: TypeReference): void {
+            if (allowSyntheticDefaultImports) {
+                console.log("resolveTypeReferenceMembers:type", typeToString(type));
+                // console.log("resolveTypeReferenceMembers:type.target", type.target ? typeToString(type.target) : type.target);
+                console.log("resolveTypeReferenceMembers:type.target", type.target);
+            }
             const source = resolveDeclaredMembers(type.target);
             const typeParameters = concatenate(source.typeParameters, [source.thisType]);
             const typeArguments = type.typeArguments && type.typeArguments.length === typeParameters.length ?
                 type.typeArguments : concatenate(type.typeArguments, [type]);
+            if (allowSyntheticDefaultImports) {
+                console.log("resolveTypeReferenceMembers:typeParameters", typeParameters);
+                console.log("resolveTypeReferenceMembers:typeArguments", typeArguments);
+            }
             resolveObjectTypeMembers(type, source, typeParameters, typeArguments);
         }
 
@@ -5812,26 +5835,40 @@ namespace ts {
         }
 
         function resolveStructuredTypeMembers(type: StructuredType): ResolvedType {
+            if (allowSyntheticDefaultImports) console.log("resolveStructuredTypeMembers");
             if (!(<ResolvedType>type).members) {
                 if (type.flags & TypeFlags.Object) {
+                    if (allowSyntheticDefaultImports) console.log("resolveStructuredTypeMembers:TypeFlags.Object");
                     if ((<ObjectType>type).objectFlags & ObjectFlags.Reference) {
+                        if (allowSyntheticDefaultImports) console.log("resolveStructuredTypeMembers:ObjectFlags.Reference");
                         resolveTypeReferenceMembers(<TypeReference>type);
                     }
                     else if ((<ObjectType>type).objectFlags & ObjectFlags.ClassOrInterface) {
+                        if (allowSyntheticDefaultImports) console.log("resolveStructuredTypeMembers:ObjectFlags.ClassOrInterface");
                         resolveClassOrInterfaceMembers(<InterfaceType>type);
                     }
                     else if ((<ObjectType>type).objectFlags & ObjectFlags.Anonymous) {
+                        if (allowSyntheticDefaultImports) console.log("resolveStructuredTypeMembers:ObjectFlags.Anonymous");
                         resolveAnonymousTypeMembers(<AnonymousType>type);
                     }
                     else if ((<MappedType>type).objectFlags & ObjectFlags.Mapped) {
+                        if (allowSyntheticDefaultImports) console.log("resolveStructuredTypeMembers:ObjectFlags.Mapped");
                         resolveMappedTypeMembers(<MappedType>type);
                     }
                 }
                 else if (type.flags & TypeFlags.Union) {
+                    if (allowSyntheticDefaultImports) console.log("resolveStructuredTypeMembers:TypeFlags.Union");
                     resolveUnionTypeMembers(<UnionType>type);
                 }
                 else if (type.flags & TypeFlags.Intersection) {
+                    if (allowSyntheticDefaultImports) console.log("resolveStructuredTypeMembers:TypeFlags.Intersection");
                     resolveIntersectionTypeMembers(<IntersectionType>type);
+                }
+                else if (type.flags & TypeFlags.TypeSpread) {
+                    if (allowSyntheticDefaultImports) {
+                        console.log("resolveStructuredTypeMembers:TypeSpread");
+                    }
+                    // resolveTypeSpreadType(<TypeSpreadType>type);
                 }
             }
             return <ResolvedType>type;
@@ -5839,8 +5876,19 @@ namespace ts {
 
         /** Return properties of an object type or an empty array for other types */
         function getPropertiesOfObjectType(type: Type): Symbol[] {
+            if (allowSyntheticDefaultImports) {
+                console.log("getPropertiesOfObjectType:A");
+                console.log("type", typeToString(type));
+                console.log("type.properties", (type as ResolvedType).properties);
+            }
             if (type.flags & TypeFlags.Object) {
-                return resolveStructuredTypeMembers(<ObjectType>type).properties;
+                // return resolveStructuredTypeMembers(<ObjectType>type).properties;
+                const res = resolveStructuredTypeMembers(<ObjectType>type);
+                if (allowSyntheticDefaultImports) {
+                    console.log("res", typeToString(res));
+                    console.log("res.properties", res.properties);
+                }
+                return res.properties;
             }
             return emptyArray;
         }
@@ -5882,7 +5930,14 @@ namespace ts {
         }
 
         function getPropertiesOfType(type: Type): Symbol[] {
+            if (allowSyntheticDefaultImports) {
+                console.log("getPropertiesOfType:A");
+                console.log("type:1", typeToString(type));
+            }
             type = getApparentType(type);
+            if (allowSyntheticDefaultImports) {
+                console.log("type:2", typeToString(type));
+            }
             return type.flags & TypeFlags.UnionOrIntersection ?
                 getPropertiesOfUnionOrIntersectionType(<UnionType>type) :
                 getPropertiesOfObjectType(type);
@@ -7186,6 +7241,7 @@ namespace ts {
                 properties.push(property);
             }
             const type = <GenericType & InterfaceTypeWithDeclaredMembers>createObjectType(ObjectFlags.Tuple | ObjectFlags.Reference);
+            // console.log("createTupleTypeOfArity:A", type);
             type.typeParameters = typeParameters;
             type.outerTypeParameters = undefined;
             type.localTypeParameters = typeParameters;
@@ -7201,6 +7257,10 @@ namespace ts {
             type.declaredConstructSignatures = emptyArray;
             type.declaredStringIndexInfo = undefined;
             type.declaredNumberIndexInfo = undefined;
+            if (allowSyntheticDefaultImports) {
+                console.log("createTupleTypeOfArity:target.symbol", type.target.symbol);
+                console.log("createTupleTypeOfArity:B", type);
+            }
             return type;
         }
 
@@ -7213,14 +7273,26 @@ namespace ts {
         }
 
         function getTypeFromTupleTypeNode(node: TupleTypeNode): Type {
+            if (allowSyntheticDefaultImports) {
+                console.log("getTypeFromTupleTypeNode:A");
+            }
             const links = getNodeLinks(node);
-            if (!links.resolvedType) {
+            // if (!links.resolvedType) {
                 links.resolvedType = createTupleType(flatMap(node.elementTypes, getTypeFromTupleElement));
+            // }
+            if (allowSyntheticDefaultImports) {
+                console.log("getTypeFromTupleTypeNode:B", typeToString(links.resolvedType));
             }
             return links.resolvedType;
         }
 
         function getTypeSpreadTypes(tuple: Type): Type[] {
+            if (allowSyntheticDefaultImports) {
+                console.log("getTypeSpreadTypes");
+                console.log("tuple", typeToString(tuple));
+                console.log("isTupleLikeType(tuple)", isTupleLikeType(tuple));
+                console.log("isGenericTupleType(tuple)", isGenericTupleType(tuple));
+            }
             if (isGenericTupleType(tuple)) {
                 // Defer the operation by creating a spread type.
                 const id = "" + tuple.id;
@@ -7228,16 +7300,17 @@ namespace ts {
                 if (!type) {
                     spreadTypes.set(id, type = createTypeSpreadType(tuple));
                 }
+                if (allowSyntheticDefaultImports) {
+                    console.log("type", typeToString(type));
+                }
                 return [type];
             }
             else {
                 // const type = getApparentType(nodeType);
-                if (allowSyntheticDefaultImports) {
-                    console.log("type", typeToString(tuple));
-                    console.log("isTupleLikeType(type)", isTupleLikeType(tuple));
-                }
                 if (isTupleLikeType(tuple)) {
                     // return map(getPropertiesOfType(tuple), getTypeOfSymbol);
+                    // console.log("getTypeSpreadTypes:methods", typeToString(createTupleType(map(getPropertiesOfType(tuple), getTypeOfSymbol))));
+                    console.log("getTypeSpreadTypes:methods", map(getPropertiesOfType(tuple), (sym: Symbol) => sym.escapedName));
                     return getTupleTypeElementTypes(tuple);
                 }
                 else {
@@ -7255,6 +7328,10 @@ namespace ts {
         }
 
         function getTupleTypeElementTypes(type: Type): Type[] {
+            if (allowSyntheticDefaultImports) {
+                console.log("getTupleTypeElementTypes");
+                console.log("type", typeToString(type));
+            }
             Debug.assert(isTupleLikeType(type));
             const types = [];
             let idx = 0;
@@ -7266,15 +7343,28 @@ namespace ts {
         }
 
         function getTypeFromTupleElement(node: TypeNode | TypeSpreadTypeNode): Type | Type[] {
+            if (allowSyntheticDefaultImports) {
+                console.log("getTypeFromTupleElement", node.kind === SyntaxKind.TypeSpread);
+            }
             if (node.kind === SyntaxKind.TypeSpread) {
                 const links = getNodeLinks(node);
                 if (!links.resolvedType) {
                     links.resolvedType = getTypeFromTypeNode((node as TypeSpreadTypeNode).type);
                 }
-                return getTypeSpreadTypes(links.resolvedType);
+                // return getTypeSpreadTypes(links.resolvedType);
+                const ret = getTypeSpreadTypes(links.resolvedType);
+                if (allowSyntheticDefaultImports) {
+                    // console.log("getTypeFromTupleElement:A" /*, typeToString(links.resolvedType)*/);
+                    console.log("getTypeFromTupleElement:A", ret.map((tp: Type) => typeToString(tp)));
+                }
+                return ret;
             }
             else {
                 return getTypeFromTypeNode(node as TypeNode);
+                // const ret = getTypeFromTypeNode(node as TypeNode);
+                // if (allowSyntheticDefaultImports) {
+                //     console.log("getTypeFromTupleElement:B", typeToString(ret));
+                // }
             }
         }
 
@@ -7616,7 +7706,7 @@ namespace ts {
         }
 
         function createTypeSpreadType(tuple: Type) {
-            console.log("createTypeSpreadType");
+            if (allowSyntheticDefaultImports) console.log("createTypeSpreadType");
             const type = <TypeSpreadType>createType(TypeFlags.TypeSpread);
             type.type = tuple;
             return type;
@@ -7725,6 +7815,10 @@ namespace ts {
             }
             return false;
         }
+
+        // function resolveTypeSpreadType(type: TypeSpreadType): Type {
+        //     return type.type;
+        // }
 
         // Given an indexed access type T[K], if T is an intersection containing one or more generic types and one or
         // more object types with only a string index signature, e.g. '(U & V & { [x: string]: D })[K]', return a
@@ -8437,9 +8531,13 @@ namespace ts {
             if (type.flags & TypeFlags.IndexedAccess) {
                 return getIndexedAccessType(instantiateType((<IndexedAccessType>type).objectType, mapper), instantiateType((<IndexedAccessType>type).indexType, mapper));
             }
-            // if (type.flags & TypeFlags.TypeSpread) {
-            //     return getTypeSpreadTypes(instantiateType((<TypeSpreadType>type).type, mapper));
-            // }
+            if (type.flags & TypeFlags.TypeSpread) {
+                console.trace("instantiateTypeNoAlias:A");
+                // const ret = getTypeSpreadTypes(instantiateType((<TypeSpreadType>type).type, mapper));
+                const ret = instantiateType((<TypeSpreadType>type).type, mapper);
+                console.trace("instantiateTypeNoAlias:B", typeToString(ret));
+                return ret;
+            }
             return type;
         }
 

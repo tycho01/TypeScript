@@ -1,7 +1,6 @@
 === tests/cases/compiler/tupleTypeSpread.ts ===
-type a = [1, ...[2]];
->a : [1, 2]
-
+// type a = [1, ...[2]];
+// type Boom<T extends string> = [...T];
 type Combine<Head, Tail extends any[]> = [Head, ...Tail];
 >Combine : [Head, ...Tail]
 >Head : Head
@@ -10,6 +9,6 @@ type Combine<Head, Tail extends any[]> = [Head, ...Tail];
 >Tail : Tail
 
 type b = Combine<1, [2, 3]>;
->b : [1, ...Tail]
+>b : [1, [2, 3]]
 >Combine : [Head, ...Tail]
 
