@@ -5844,19 +5844,8 @@ namespace ts {
 
         /** Return properties of an object type or an empty array for other types */
         function getPropertiesOfObjectType(type: Type): Symbol[] {
-            if (allowSyntheticDefaultImports) {
-                console.log("getPropertiesOfObjectType:A");
-                console.log("type", typeToString(type));
-                console.log("type.properties", (type as ResolvedType).properties);
-            }
             if (type.flags & TypeFlags.Object) {
-                // return resolveStructuredTypeMembers(<ObjectType>type).properties;
-                const res = resolveStructuredTypeMembers(<ObjectType>type);
-                if (allowSyntheticDefaultImports) {
-                    console.log("res", typeToString(res));
-                    console.log("res.properties", res.properties);
-                }
-                return res.properties;
+                return resolveStructuredTypeMembers(<ObjectType>type).properties;
             }
             return emptyArray;
         }
