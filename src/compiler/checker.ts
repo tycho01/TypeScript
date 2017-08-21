@@ -5366,21 +5366,13 @@ namespace ts {
         }
 
         function resolveDeclaredMembers(type: InterfaceType): InterfaceTypeWithDeclaredMembers {
-            if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers");
             if (!(<InterfaceTypeWithDeclaredMembers>type).declaredProperties) {
                 const symbol = type.symbol;
-                if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:type.symbol", type.symbol);
-                if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:type.symbol.members", type.symbol.members);
                 (<InterfaceTypeWithDeclaredMembers>type).declaredProperties = getNamedMembers(symbol.members);
-                if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:(<InterfaceTypeWithDeclaredMembers>type).declaredProperties", (<InterfaceTypeWithDeclaredMembers>type).declaredProperties);
                 (<InterfaceTypeWithDeclaredMembers>type).declaredCallSignatures = getSignaturesOfSymbol(symbol.members.get(InternalSymbolName.Call));
-                // if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:(<InterfaceTypeWithDeclaredMembers>type).declaredCallSignatures", (<InterfaceTypeWithDeclaredMembers>type).declaredCallSignatures);
                 (<InterfaceTypeWithDeclaredMembers>type).declaredConstructSignatures = getSignaturesOfSymbol(symbol.members.get(InternalSymbolName.New));
-                // if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:(<InterfaceTypeWithDeclaredMembers>type).declaredConstructSignatures", (<InterfaceTypeWithDeclaredMembers>type).declaredConstructSignatures);
                 (<InterfaceTypeWithDeclaredMembers>type).declaredStringIndexInfo = getIndexInfoOfSymbol(symbol, IndexKind.String);
-                // if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:(<InterfaceTypeWithDeclaredMembers>type).declaredStringIndexInfo", (<InterfaceTypeWithDeclaredMembers>type).declaredStringIndexInfo);
                 (<InterfaceTypeWithDeclaredMembers>type).declaredNumberIndexInfo = getIndexInfoOfSymbol(symbol, IndexKind.Number);
-                // if (allowSyntheticDefaultImports) console.log("resolveDeclaredMembers:(<InterfaceTypeWithDeclaredMembers>type).declaredNumberIndexInfo", (<InterfaceTypeWithDeclaredMembers>type).declaredNumberIndexInfo);
             }
             return <InterfaceTypeWithDeclaredMembers>type;
         }
@@ -5400,9 +5392,6 @@ namespace ts {
         }
 
         function resolveObjectTypeMembers(type: ObjectType, source: InterfaceTypeWithDeclaredMembers, typeParameters: TypeParameter[], typeArguments: Type[]) {
-            if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers", typeToString(type));
-            if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers:type", type);
-            // if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers:type.target", type.target);
             let mapper: TypeMapper;
             let members: SymbolTable;
             let callSignatures: Signature[];
@@ -5426,15 +5415,12 @@ namespace ts {
                 numberIndexInfo = instantiateIndexInfo(source.declaredNumberIndexInfo, mapper);
             }
             const baseTypes = getBaseTypes(source);
-            if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers:baseTypes.length", baseTypes.length);
             if (baseTypes.length) {
                 if (source.symbol && members === source.symbol.members) {
                     members = createSymbolTable(source.declaredProperties);
                 }
                 const thisArgument = lastOrUndefined(typeArguments);
                 for (const baseType of baseTypes) {
-                    if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers:baseType:1", baseType ? typeToString(baseType): baseType);
-                    if (allowSyntheticDefaultImports) console.log("resolveObjectTypeMembers:baseType:2", baseType);
                     const instantiatedBaseType = thisArgument ? getTypeWithThisArgument(instantiateType(baseType, mapper), thisArgument) : baseType;
                     addInheritedMembers(members, getPropertiesOfType(instantiatedBaseType));
                     callSignatures = concatenate(callSignatures, getSignaturesOfType(instantiatedBaseType, SignatureKind.Call));
@@ -5451,24 +5437,14 @@ namespace ts {
         }
 
         function resolveClassOrInterfaceMembers(type: InterfaceType): void {
-            if (allowSyntheticDefaultImports) console.log("resolveClassOrInterfaceMembers");
             resolveObjectTypeMembers(type, resolveDeclaredMembers(type), emptyArray, emptyArray);
         }
 
         function resolveTypeReferenceMembers(type: TypeReference): void {
-            if (allowSyntheticDefaultImports) {
-                console.log("resolveTypeReferenceMembers:type", typeToString(type));
-                // console.log("resolveTypeReferenceMembers:type.target", type.target ? typeToString(type.target) : type.target);
-                console.log("resolveTypeReferenceMembers:type.target", type.target);
-            }
             const source = resolveDeclaredMembers(type.target);
             const typeParameters = concatenate(source.typeParameters, [source.thisType]);
             const typeArguments = type.typeArguments && type.typeArguments.length === typeParameters.length ?
                 type.typeArguments : concatenate(type.typeArguments, [type]);
-            if (allowSyntheticDefaultImports) {
-                console.log("resolveTypeReferenceMembers:typeParameters", typeParameters);
-                console.log("resolveTypeReferenceMembers:typeArguments", typeArguments);
-            }
             resolveObjectTypeMembers(type, source, typeParameters, typeArguments);
         }
 
@@ -5930,14 +5906,7 @@ namespace ts {
         }
 
         function getPropertiesOfType(type: Type): Symbol[] {
-            if (allowSyntheticDefaultImports) {
-                console.log("getPropertiesOfType:A");
-                console.log("type:1", typeToString(type));
-            }
             type = getApparentType(type);
-            if (allowSyntheticDefaultImports) {
-                console.log("type:2", typeToString(type));
-            }
             return type.flags & TypeFlags.UnionOrIntersection ?
                 getPropertiesOfUnionOrIntersectionType(<UnionType>type) :
                 getPropertiesOfObjectType(type);
@@ -7241,7 +7210,6 @@ namespace ts {
                 properties.push(property);
             }
             const type = <GenericType & InterfaceTypeWithDeclaredMembers>createObjectType(ObjectFlags.Tuple | ObjectFlags.Reference);
-            // console.log("createTupleTypeOfArity:A", type);
             type.typeParameters = typeParameters;
             type.outerTypeParameters = undefined;
             type.localTypeParameters = typeParameters;
@@ -7257,10 +7225,6 @@ namespace ts {
             type.declaredConstructSignatures = emptyArray;
             type.declaredStringIndexInfo = undefined;
             type.declaredNumberIndexInfo = undefined;
-            if (allowSyntheticDefaultImports) {
-                console.log("createTupleTypeOfArity:target.symbol", type.target.symbol);
-                console.log("createTupleTypeOfArity:B", type);
-            }
             return type;
         }
 
