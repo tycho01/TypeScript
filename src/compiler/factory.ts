@@ -674,15 +674,41 @@ namespace ts {
             : node;
     }
 
-    export function createTupleTypeNode(elementTypes: ReadonlyArray<TypeNode>) {
+    export function createTupleTypeNode(elementTypes: ReadonlyArray<TypeNode>) { // , spreadIndices = {}
         const node = createSynthesizedNode(SyntaxKind.TupleType) as TupleTypeNode;
         node.elementTypes = createNodeArray(elementTypes);
+        // node.spreadIndices = new Set<number>();
+        // node.spreadIndices = spreadIndices;
+        // for (let i = 0; i < node.elementTypes.length; i++) {
+        //     if (node.elementTypes[i].kind) {
+        //         node.spreadIndices[i] = true;
+        //     }
+        // }
         return node;
     }
 
-    export function updateTypleTypeNode(node: TupleTypeNode, elementTypes: ReadonlyArray<TypeNode>) {
+    export function updateTupleTypeNode(node: TupleTypeNode, elementTypes: ReadonlyArray<TypeNode>) { // , spreadIndices = {}
         return node.elementTypes !== elementTypes
-            ? updateNode(createTupleTypeNode(elementTypes), node)
+            ? updateNode(createTupleTypeNode(elementTypes), node) // , spreadIndices
+            : node;
+    }
+
+    export function createSpreadTupleTypeNode(elementTypes: ReadonlyArray<TypeNode>, spreadIndices: number[]) {
+        const node = createSynthesizedNode(SyntaxKind.SpreadTuple) as SpreadTupleTypeNode;
+        node.elementTypes = createNodeArray(elementTypes);
+        // node.spreadIndices = new Set<number>();
+        node.spreadIndices = spreadIndices;
+        // for (let i = 0; i < node.elementTypes.length; i++) {
+        //     if (node.elementTypes[i].kind) {
+        //         node.spreadIndices[i] = true;
+        //     }
+        // }
+        return node;
+    }
+
+    export function updateSpreadTupleTypeNode(node: SpreadTupleTypeNode, elementTypes: ReadonlyArray<TypeNode>, spreadIndices: number[]) {
+        return node.elementTypes !== elementTypes
+            ? updateNode(createSpreadTupleTypeNode(elementTypes, spreadIndices), node)
             : node;
     }
 
@@ -2186,7 +2212,7 @@ namespace ts {
     }
 
     export function createTypeSpread(type: TypeNode) {
-        console.log("createTypeSpread");
+        console.log("createTypeSpread TypeNode -> TypeSpreadTypeNode");
         const node = <TypeSpreadTypeNode>createSynthesizedNode(SyntaxKind.TypeSpread);
         node.type = type !== undefined ? parenthesizeElementTypeMember(type) : undefined;
         return node;

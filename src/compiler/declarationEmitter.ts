@@ -380,18 +380,23 @@ namespace ts {
         }
 
         function emitSeparatedList(nodes: ReadonlyArray<Node>, separator: string, eachNodeEmitFn: (node: Node) => void, canEmitFn?: (node: Node) => boolean) {
+        // function emitSeparatedList(nodes: ReadonlyArray<Node>, separator: string, eachNodeEmitFn: (node: Node, i?: number) => void, canEmitFn?: (node: Node) => boolean) {
             let currentWriterPos = writer.getTextPos();
             for (const node of nodes) {
+            // for (let i = 0; i < nodes.length; i++) {
+            //     const node = nodes[i];
                 if (!canEmitFn || canEmitFn(node)) {
                     if (currentWriterPos !== writer.getTextPos()) {
                         write(separator);
                     }
                     currentWriterPos = writer.getTextPos();
                     eachNodeEmitFn(node);
+                    // eachNodeEmitFn(node, i);
                 }
             }
         }
 
+        // function emitCommaList(nodes: ReadonlyArray<Node>, eachNodeEmitFn: (node: Node, i?: number) => void, canEmitFn?: (node: Node) => boolean) {
         function emitCommaList(nodes: ReadonlyArray<Node>, eachNodeEmitFn: (node: Node) => void, canEmitFn?: (node: Node) => boolean) {
             emitSeparatedList(nodes, ", ", eachNodeEmitFn, canEmitFn);
         }
@@ -523,6 +528,12 @@ namespace ts {
             function emitTupleType(type: TupleTypeNode) {
                 write("[");
                 emitCommaList(type.elementTypes, emitType);
+                // emitCommaList(type.elementTypes, (node: TypeNode, i: number) => {
+                //     if (type.spreadIndices[i]) {
+                //         write("...");
+                //     }
+                //     emitType(node);
+                // });
                 write("]");
             }
 

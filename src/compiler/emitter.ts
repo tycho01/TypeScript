@@ -1052,6 +1052,7 @@ namespace ts {
         function emitTupleType(node: TupleTypeNode) {
             write("[");
             emitList(node, node.elementTypes, ListFormat.TupleTypeElements);
+            // ^ todo: somehow cram spread crap in here too? ugh.
             write("]");
         }
 

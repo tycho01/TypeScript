@@ -26,6 +26,16 @@ namespace ts {
         clear(): void;
     }
 
+    /** ES6 Set interface. */
+    export interface Set<T> {
+        add(value: T): this;
+        clear(): void;
+        delete(value: T): boolean;
+        forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void;
+        has(value: T): boolean;
+        readonly size: number;
+    }
+
     /** ES6 Iterator type. */
     export interface Iterator<T> {
         next(): { value: T, done: false } | { value: never, done: true };
@@ -232,6 +242,7 @@ namespace ts {
         TypeLiteral,
         ArrayType,
         TupleType,
+        SpreadTuple,
         UnionType,
         IntersectionType,
         ParenthesizedType,
@@ -952,6 +963,18 @@ namespace ts {
     export interface TupleTypeNode extends TypeNode {
         kind: SyntaxKind.TupleType;
         elementTypes: NodeArray<TypeNode | TypeSpreadTypeNode>;
+        // elementTypes: NodeArray<TypeNode>;
+        // spreadIndices: Set<number>;
+        // spreadIndices: { [k: number]: true };
+    }
+
+    export interface SpreadTupleTypeNode extends TypeNode {
+        kind: SyntaxKind.SpreadTuple;
+        elementTypes: NodeArray<TypeNode | TypeSpreadTypeNode>;
+        // elementTypes: NodeArray<TypeNode>;
+        // spreadIndices: Set<number>;
+        // spreadIndices: { [k: number]: true };
+        spreadIndices: number[];
     }
 
     export interface TypeSpreadTypeNode extends TypeNode {
@@ -3147,6 +3170,7 @@ namespace ts {
         /* @internal */
         JsxAttributes           = 1 << 25,  // Jsx attributes type
         TypeSpread              = 1 << 26,  // spread in tuple types
+        SpreadTuple             = 1 << 27,  // tuple type containing spreads
 
         /* @internal */
         Nullable = Undefined | Null,
@@ -3397,6 +3421,13 @@ namespace ts {
     // type spread types (TypeFlags.TypeSpread)
     export interface TypeSpreadType extends Type {
         type: Type;
+    }
+
+    // type of a tuple containing spreads (TypeFlags.SpreadTuple), to be distinguished from the tuple type *being* spread
+    export interface SpreadTupleType extends Type {
+        elementTypes: Type[];
+        // spreadIndices: Set<number>;
+        spreadIndices: number[];
     }
 
     // keyof T types (TypeFlags.Index)

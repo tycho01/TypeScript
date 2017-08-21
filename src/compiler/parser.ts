@@ -2588,7 +2588,20 @@ namespace ts {
 
         function parseTupleType(): TupleTypeNode {
             const node = <TupleTypeNode>createNode(SyntaxKind.TupleType);
-            node.elementTypes = parseBracketedList(ParsingContext.TupleElementTypes, parseTupleElement, SyntaxKind.OpenBracketToken, SyntaxKind.CloseBracketToken);
+            // node.elementTypes = parseBracketedList(ParsingContext.TupleElementTypes, parseTupleElement, SyntaxKind.OpenBracketToken, SyntaxKind.CloseBracketToken);
+            // node.spreadIndices = new Set<number>();
+            // node.spreadIndices = {};
+            let i = 0;
+            node.elementTypes = parseBracketedList(ParsingContext.TupleElementTypes, () => {
+                // console.log("parseTupleType", i);
+                if (token() === SyntaxKind.DotDotDotToken) {
+                    // parseExpected(SyntaxKind.DotDotDotToken);
+                    // node.spreadIndices[i] = true;
+                }
+                i++;
+                // return parseType();
+                return parseTupleElement();
+            }, SyntaxKind.OpenBracketToken, SyntaxKind.CloseBracketToken);
             return finishNode(node);
         }
 
@@ -5164,6 +5177,7 @@ namespace ts {
         }
 
         function parseTupleElement(): TypeSpreadTypeNode | TypeNode {
+            // console.log("parseTupleElement");
             return (token() === SyntaxKind.DotDotDotToken) ?
                 parseTypeSpread() :
                 parseType();
@@ -5173,6 +5187,7 @@ namespace ts {
             const node = <TypeSpreadTypeNode>createNode(SyntaxKind.TypeSpread);
             parseExpected(SyntaxKind.DotDotDotToken);
             node.type = parseTypeOperatorOrHigher();
+            // console.log("parseTypeSpread", node.type);
             return finishNode(node);
         }
 
