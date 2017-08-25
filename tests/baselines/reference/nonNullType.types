@@ -1,0 +1,23 @@
+=== tests/cases/compiler/nonNullType.ts ===
+type z = string | undefined | null | never;
+>z : a
+>null : null
+
+type a = string | undefined | null | never;
+>a : a
+>null : null
+
+type b = a!;
+>b : string
+>a : a
+
+type Assert<T> = T!;
+>Assert : T
+>T : T
+>T : T
+
+type c = Assert<a>;
+>c : a
+>Assert : T
+>a : a
+

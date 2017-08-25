@@ -4539,10 +4539,6 @@ namespace ts {
         return node.kind === SyntaxKind.JSDocNullableType;
     }
 
-    export function isJSDocNonNullableType(node: Node): node is JSDocNonNullableType {
-        return node.kind === SyntaxKind.JSDocNonNullableType;
-    }
-
     export function isJSDocOptionalType(node: Node): node is JSDocOptionalType {
         return node.kind === SyntaxKind.JSDocOptionalType;
     }

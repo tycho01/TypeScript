@@ -562,6 +562,10 @@ namespace ts {
                 return updateNonNullExpression(<NonNullExpression>node,
                     visitNode((<NonNullExpression>node).expression, visitor, isExpression));
 
+            case SyntaxKind.NonNullTypeNode:
+                return updateNonNullTypeNode(<NonNullTypeNode>node,
+                    visitNode((<NonNullTypeNode>node).type, visitor, isTypeNode));
+
             case SyntaxKind.MetaProperty:
                 return updateMetaProperty(<MetaProperty>node,
                     visitNode((<MetaProperty>node).name, visitor, isIdentifier));

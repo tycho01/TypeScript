@@ -1,0 +1,21 @@
+=== tests/cases/compiler/nonNullType.ts ===
+type z = string | undefined | null | never;
+>z : Symbol(z, Decl(nonNullType.ts, 0, 0))
+
+type a = string | undefined | null | never;
+>a : Symbol(a, Decl(nonNullType.ts, 0, 43))
+
+type b = a!;
+>b : Symbol(b, Decl(nonNullType.ts, 1, 43))
+>a : Symbol(a, Decl(nonNullType.ts, 0, 43))
+
+type Assert<T> = T!;
+>Assert : Symbol(Assert, Decl(nonNullType.ts, 2, 12))
+>T : Symbol(T, Decl(nonNullType.ts, 3, 12))
+>T : Symbol(T, Decl(nonNullType.ts, 3, 12))
+
+type c = Assert<a>;
+>c : Symbol(c, Decl(nonNullType.ts, 3, 20))
+>Assert : Symbol(Assert, Decl(nonNullType.ts, 2, 12))
+>a : Symbol(a, Decl(nonNullType.ts, 0, 43))
+

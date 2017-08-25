@@ -272,6 +272,7 @@ namespace ts {
         ExpressionWithTypeArguments,
         AsExpression,
         NonNullExpression,
+        NonNullTypeNode,
         MetaProperty,
 
         // Misc
@@ -357,7 +358,6 @@ namespace ts {
         // The ? type
         JSDocUnknownType,
         JSDocNullableType,
-        JSDocNonNullableType,
         JSDocOptionalType,
         JSDocFunctionType,
         JSDocVariadicType,
@@ -1545,6 +1545,11 @@ namespace ts {
         expression: Expression;
     }
 
+    export interface NonNullTypeNode extends TypeNode {
+        kind: SyntaxKind.NonNullTypeNode;
+        type: TypeNode;
+    }
+
     // NOTE: MetaProperty is really a MemberExpression, but we consider it a PrimaryExpression
     //       for the same reasons we treat NewExpression as a PrimaryExpression.
     export interface MetaProperty extends PrimaryExpression {
@@ -2055,11 +2060,6 @@ namespace ts {
         kind: SyntaxKind.JSDocUnknownType;
     }
 
-    export interface JSDocNonNullableType extends JSDocType {
-        kind: SyntaxKind.JSDocNonNullableType;
-        type: TypeNode;
-    }
-
     export interface JSDocNullableType extends JSDocType {
         kind: SyntaxKind.JSDocNullableType;
         type: TypeNode;
@@ -2079,7 +2079,7 @@ namespace ts {
         type: TypeNode;
     }
 
-    export type JSDocTypeReferencingNode = JSDocVariadicType | JSDocOptionalType | JSDocNullableType | JSDocNonNullableType;
+    export type JSDocTypeReferencingNode = JSDocVariadicType | JSDocOptionalType | JSDocNullableType;
 
     export interface JSDoc extends Node {
         kind: SyntaxKind.JSDocComment;

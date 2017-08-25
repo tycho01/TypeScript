@@ -7540,6 +7540,10 @@ namespace ts {
             return links.resolvedType;
         }
 
+        function getTypeFromPostfixedTypeOperatorNode(node: NonNullTypeNode) { // TypeOperatorNode
+            return getNonNullableType(getTypeFromTypeNode(node.type));
+        }
+
         function createIndexedAccessType(objectType: Type, indexType: Type) {
             const type = <IndexedAccessType>createType(TypeFlags.IndexedAccess);
             type.objectType = objectType;
@@ -7985,7 +7989,6 @@ namespace ts {
                 case SyntaxKind.JSDocNullableType:
                     return getTypeFromJSDocNullableTypeNode(<JSDocNullableType>node);
                 case SyntaxKind.ParenthesizedType:
-                case SyntaxKind.JSDocNonNullableType:
                 case SyntaxKind.JSDocOptionalType:
                 case SyntaxKind.JSDocTypeExpression:
                     return getTypeFromTypeNode((<ParenthesizedTypeNode | JSDocTypeReferencingNode | JSDocTypeExpression>node).type);
@@ -7997,6 +8000,8 @@ namespace ts {
                     return getTypeFromTypeLiteralOrFunctionOrConstructorTypeNode(node);
                 case SyntaxKind.TypeOperator:
                     return getTypeFromTypeOperatorNode(<TypeOperatorNode>node);
+                case SyntaxKind.NonNullTypeNode:
+                    return getTypeFromPostfixedTypeOperatorNode(<NonNullTypeNode>node);
                 case SyntaxKind.IndexedAccessType:
                     return getTypeFromIndexedAccessTypeNode(<IndexedAccessTypeNode>node);
                 case SyntaxKind.MappedType:
@@ -18701,6 +18706,7 @@ namespace ts {
         }
 
         function checkTypeReferenceNode(node: TypeReferenceNode | ExpressionWithTypeArguments) {
+            // if (allowSyntheticDefaultImports) console.trace("checkTypeReferenceNode");
             checkGrammarTypeArguments(node, node.typeArguments);
             if (node.kind === SyntaxKind.TypeReference && node.typeName.jsdocDotPos !== undefined && !isInJavaScriptFile(node) && !isInJSDoc(node)) {
                 grammarErrorAtPos(node, node.typeName.jsdocDotPos, 1, Diagnostics.JSDoc_types_can_only_be_used_inside_documentation_comments);
@@ -22310,7 +22316,6 @@ namespace ts {
                     checkSignatureDeclaration(node as JSDocFunctionType);
                     // falls through
                 case SyntaxKind.JSDocVariadicType:
-                case SyntaxKind.JSDocNonNullableType:
                 case SyntaxKind.JSDocNullableType:
                 case SyntaxKind.JSDocAllType:
                 case SyntaxKind.JSDocUnknownType:

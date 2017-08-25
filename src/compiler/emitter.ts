@@ -797,6 +797,8 @@ namespace ts {
                     return emitAsExpression(<AsExpression>node);
                 case SyntaxKind.NonNullExpression:
                     return emitNonNullExpression(<NonNullExpression>node);
+                case SyntaxKind.NonNullTypeNode:
+                    return emitWithSuffix((<NonNullTypeNode>node).type, "!");
                 case SyntaxKind.MetaProperty:
                     return emitMetaProperty(<MetaProperty>node);
 

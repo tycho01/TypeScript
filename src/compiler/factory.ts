@@ -1261,6 +1261,18 @@ namespace ts {
             : node;
     }
 
+    export function createNonNullTypeNode(type: TypeNode) {
+        const node = <NonNullTypeNode>createSynthesizedNode(SyntaxKind.NonNullTypeNode);
+        node.type = parenthesizeElementTypeMember(type);
+        return node;
+    }
+
+    export function updateNonNullTypeNode(node: NonNullTypeNode, type: TypeNode) {
+        return node.type !== type
+            ? updateNode(createNonNullTypeNode(type), node)
+            : node;
+    }
+
     export function createMetaProperty(keywordToken: MetaProperty["keywordToken"], name: Identifier) {
         const node = <MetaProperty>createSynthesizedNode(SyntaxKind.MetaProperty);
         node.keywordToken = keywordToken;

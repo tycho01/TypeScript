@@ -1,5 +1,5 @@
 {
-    "kind": "JSDocNonNullableType",
+    "kind": "NonNullTypeNode",
     "pos": 1,
     "end": 8,
     "flags": "JSDoc",
