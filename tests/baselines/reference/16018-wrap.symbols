@@ -1,0 +1,46 @@
+=== tests/cases/compiler/16018-wrap.ts ===
+type Inc = { [k: string]: string; 0:'1',1:'2',2:'3',3:'4',4:'5'};
+>Inc : Symbol(Inc, Decl(16018-wrap.ts, 0, 0))
+>k : Symbol(k, Decl(16018-wrap.ts, 0, 14))
+
+type ObjectHasKey<O extends {}, K extends string> = ({[K in keyof O]: '1' } & { [k: string]: '0' })[K];
+>ObjectHasKey : Symbol(ObjectHasKey, Decl(16018-wrap.ts, 0, 65))
+>O : Symbol(O, Decl(16018-wrap.ts, 1, 18))
+>K : Symbol(K, Decl(16018-wrap.ts, 1, 31))
+>K : Symbol(K, Decl(16018-wrap.ts, 1, 55))
+>O : Symbol(O, Decl(16018-wrap.ts, 1, 18))
+>k : Symbol(k, Decl(16018-wrap.ts, 1, 81))
+>K : Symbol(K, Decl(16018-wrap.ts, 1, 31))
+
+type Length<R extends {}, I extends string = '0'> = { 1: Length<R, Inc[I]>, 0: I }[ObjectHasKey<R, I>];
+>Length : Symbol(Length, Decl(16018-wrap.ts, 1, 103))
+>R : Symbol(R, Decl(16018-wrap.ts, 2, 12))
+>I : Symbol(I, Decl(16018-wrap.ts, 2, 25))
+>Length : Symbol(Length, Decl(16018-wrap.ts, 1, 103))
+>R : Symbol(R, Decl(16018-wrap.ts, 2, 12))
+>Inc : Symbol(Inc, Decl(16018-wrap.ts, 0, 0))
+>I : Symbol(I, Decl(16018-wrap.ts, 2, 25))
+>I : Symbol(I, Decl(16018-wrap.ts, 2, 25))
+>ObjectHasKey : Symbol(ObjectHasKey, Decl(16018-wrap.ts, 0, 65))
+>R : Symbol(R, Decl(16018-wrap.ts, 2, 12))
+>I : Symbol(I, Decl(16018-wrap.ts, 2, 25))
+
+type TestLenA = Length<{ 0: 'a', 1: 'b' }>;
+>TestLenA : Symbol(TestLenA, Decl(16018-wrap.ts, 2, 103))
+>Length : Symbol(Length, Decl(16018-wrap.ts, 1, 103))
+
+// ^ ok, 2
+type Wrap<O> = Length<O>;
+>Wrap : Symbol(Wrap, Decl(16018-wrap.ts, 3, 43))
+>O : Symbol(O, Decl(16018-wrap.ts, 5, 10))
+>Length : Symbol(Length, Decl(16018-wrap.ts, 1, 103))
+>O : Symbol(O, Decl(16018-wrap.ts, 5, 10))
+
+// type Wrap<O, Len extends Length<O> = Length<O>> = Len;
+// ^ old work-around, same result here
+type TestLenB = Wrap<{ 0: 'a', 1: 'b' }>;
+>TestLenB : Symbol(TestLenB, Decl(16018-wrap.ts, 5, 25))
+>Wrap : Symbol(Wrap, Decl(16018-wrap.ts, 3, 43))
+
+// ^ 0 :(
+

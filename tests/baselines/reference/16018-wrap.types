@@ -1,0 +1,46 @@
+=== tests/cases/compiler/16018-wrap.ts ===
+type Inc = { [k: string]: string; 0:'1',1:'2',2:'3',3:'4',4:'5'};
+>Inc : Inc
+>k : string
+
+type ObjectHasKey<O extends {}, K extends string> = ({[K in keyof O]: '1' } & { [k: string]: '0' })[K];
+>ObjectHasKey : ({ [K in keyof O]: "1"; } & { [k: string]: "0"; })[K]
+>O : O
+>K : K
+>K : K
+>O : O
+>k : string
+>K : K
+
+type Length<R extends {}, I extends string = '0'> = { 1: Length<R, Inc[I]>, 0: I }[ObjectHasKey<R, I>];
+>Length : { 1: any[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })[Inc[I]]]; 0: I; }[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })[I]]
+>R : R
+>I : I
+>Length : { 1: any[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })[Inc[I]]]; 0: I; }[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })[I]]
+>R : R
+>Inc : Inc
+>I : I
+>I : I
+>ObjectHasKey : ({ [K in keyof O]: "1"; } & { [k: string]: "0"; })[K]
+>R : R
+>I : I
+
+type TestLenA = Length<{ 0: 'a', 1: 'b' }>;
+>TestLenA : "2"
+>Length : { 1: any[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })[Inc[I]]]; 0: I; }[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })[I]]
+
+// ^ ok, 2
+type Wrap<O> = Length<O>;
+>Wrap : { 1: any[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })["1"]]; 0: "0"; }[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })["0"]]
+>O : O
+>Length : { 1: any[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })[Inc[I]]]; 0: I; }[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })[I]]
+>O : O
+
+// type Wrap<O, Len extends Length<O> = Length<O>> = Len;
+// ^ old work-around, same result here
+type TestLenB = Wrap<{ 0: 'a', 1: 'b' }>;
+>TestLenB : "2"
+>Wrap : { 1: any[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })["1"]]; 0: "0"; }[({ [K in keyof O]: "1"; } & { [k: string]: "0"; })["0"]]
+
+// ^ 0 :(
+
