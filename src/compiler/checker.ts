@@ -299,6 +299,7 @@ namespace ts {
         let globalFunctionType: ObjectType;
         let globalArrayType: GenericType;
         let globalReadonlyArrayType: GenericType;
+        let globalTupleType: GenericType;
         let globalStringType: ObjectType;
         let globalNumberType: ObjectType;
         let globalBooleanType: ObjectType;
@@ -307,6 +308,7 @@ namespace ts {
         let anyArrayType: Type;
         let autoArrayType: Type;
         let anyReadonlyArrayType: Type;
+        let anyTupleType: Type;
 
         // The library files are only loaded when the feature is used.
         // This allows users to just specify library files they want to used through --lib
@@ -4915,7 +4917,7 @@ namespace ts {
         function getBaseTypes(type: InterfaceType): BaseType[] {
             if (!type.resolvedBaseTypes) {
                 if (type.objectFlags & ObjectFlags.Tuple) {
-                    type.resolvedBaseTypes = [createArrayType(getUnionType(type.typeParameters))];
+                    type.resolvedBaseTypes = [createTypeFromGenericGlobalType(globalTupleType, [getUnionType(type.typeParameters)])];
                 }
                 else if (type.symbol.flags & (SymbolFlags.Class | SymbolFlags.Interface)) {
                     if (type.symbol.flags & SymbolFlags.Class) {
@@ -7579,10 +7581,14 @@ namespace ts {
                 }
                 if (accessExpression && !isConstEnumObjectType(objectType)) {
                     if (noImplicitAny && !compilerOptions.suppressImplicitAnyIndexErrors) {
+                        const hasIndex = (tp: Type) => getPropertyOfObjectType(getApparentType(tp), typeToString(indexType) as __String);
                         if (getIndexTypeOfType(objectType, IndexKind.Number)) {
                             error(accessExpression.argumentExpression, Diagnostics.Element_implicitly_has_an_any_type_because_index_expression_is_not_of_type_number);
                         }
-                        else {
+                        else if (!(objectType.flags & TypeFlags.UnionOrIntersection ?
+                            forEach((<UnionOrIntersectionType>objectType).types, hasIndex) :
+                            hasIndex(objectType)
+                        )) {
                             error(accessExpression, Diagnostics.Element_implicitly_has_an_any_type_because_type_0_has_no_index_signature, typeToString(objectType));
                         }
                     }
@@ -10043,8 +10049,9 @@ namespace ts {
         function isArrayLikeType(type: Type): boolean {
             // A type is array-like if it is a reference to the global Array or global ReadonlyArray type,
             // or if it is not the undefined or null type and if it is assignable to ReadonlyArray<any>
-            return getObjectFlags(type) & ObjectFlags.Reference && ((<TypeReference>type).target === globalArrayType || (<TypeReference>type).target === globalReadonlyArrayType) ||
-                !(type.flags & TypeFlags.Nullable) && isTypeAssignableTo(type, anyReadonlyArrayType);
+            return getObjectFlags(type) & ObjectFlags.Reference && ((<TypeReference>type).target === globalArrayType ||
+            (<TypeReference>type).target === globalReadonlyArrayType || (<TypeReference>type).target === globalTupleType) ||
+                !(type.flags & TypeFlags.Nullable) && (isTypeAssignableTo(type, anyReadonlyArrayType) || isTypeAssignableTo(type, anyTupleType));
         }
 
         function isTupleLikeType(type: Type): boolean {
@@ -23845,6 +23852,8 @@ namespace ts {
 
             globalReadonlyArrayType = <GenericType>getGlobalTypeOrUndefined("ReadonlyArray" as __String, /*arity*/ 1);
             anyReadonlyArrayType = globalReadonlyArrayType ? createTypeFromGenericGlobalType(globalReadonlyArrayType, [anyType]) : anyArrayType;
+            globalTupleType = <GenericType>getGlobalTypeOrUndefined("Tuple" as __String, /*arity*/ 1);
+            anyTupleType = globalTupleType ? createTypeFromGenericGlobalType(globalTupleType, [anyType]) : anyArrayType;
             globalThisType = <GenericType>getGlobalTypeOrUndefined("ThisType" as __String, /*arity*/ 1);
         }
 

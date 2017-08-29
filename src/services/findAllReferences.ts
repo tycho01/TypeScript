@@ -1427,7 +1427,7 @@ namespace ts.FindAllReferences.Core {
         // Property Declaration symbol is a member of the class, so the symbol is stored in its class Declaration.symbol.members
         if (symbol.valueDeclaration && symbol.valueDeclaration.kind === SyntaxKind.Parameter &&
             isParameterPropertyDeclaration(<ParameterDeclaration>symbol.valueDeclaration)) {
-            addRange(result, checker.getSymbolsOfParameterPropertyDeclaration(<ParameterDeclaration>symbol.valueDeclaration, symbol.name));
+            addRange(result, <Symbol[]>checker.getSymbolsOfParameterPropertyDeclaration(<ParameterDeclaration>symbol.valueDeclaration, symbol.name));
         }
 
         // If this is symbol of binding element without propertyName declaration in Object binding pattern
