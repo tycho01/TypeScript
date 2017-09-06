@@ -5932,9 +5932,12 @@ namespace ts {
         function getConstraintOfType(type: TypeVariable | UnionOrIntersectionType | TypeCallType): Type {
             return type.flags & TypeFlags.TypeParameter ? getConstraintOfTypeParameter(<TypeParameter>type) :
                 type.flags & TypeFlags.IndexedAccess ? getConstraintOfIndexedAccess(<IndexedAccessType>type) :
-                type.flags & TypeFlags.TypeCall ? getBaseConstraintOfType(getReturnTypeOfSignature(getSignatureInstantiation(
-                    getSingleCallSignature((<TypeCallType>type).function), (<TypeCallType>type).typeArguments))) :
-                    getBaseConstraintOfType(type);
+                type.flags & TypeFlags.TypeCall ? getConstraintOfTypeCall(<TypeCallType>type) :
+                getBaseConstraintOfType(type);
+        }
+
+        function getConstraintOfTypeCall(type: TypeCallType): Type {
+            return getBaseConstraintOfType(getReturnTypeOfSignature(getSignatureInstantiation(getSingleCallSignature(type.function), type.typeArguments)));
         }
 
         function getConstraintOfTypeParameter(typeParameter: TypeParameter): Type {
@@ -7568,15 +7571,16 @@ namespace ts {
                 false;
         }
 
-        function getTypeCallType(fn: Type, typeArgs: Type[], args: Type[]): Type {
+        function createTypeCallType(fn: Type, typeArgs: Type[], args: Type[]): TypeCallType {
             const type = <TypeCallType>createType(TypeFlags.TypeCall);
             type.function = fn;
             type.typeArguments = typeArgs;
             type.arguments = args;
-            if (isGenericTypeCallType(fn) || some(typeArgs, isGenericTypeCallType) || some(args, isGenericTypeCallType)) {
                 return type;
             }
-            const calls = getSignaturesOfType(fn, SignatureKind.Call);
+
+        // overlap with typeToTypeNode?
+        function createTypeCallNodeFromType(type: TypeCallType): TypeCallTypeNode {
             const node = <TypeCallTypeNode>createNodeBuilder().typeToTypeNode(type);
             node.type.parent = node;
             const setParent = (arg: Node) => {
@@ -7584,6 +7588,16 @@ namespace ts {
             };
             forEach(node.arguments, setParent);
             forEach(node.typeArguments, setParent);
+            return node;
+        }
+
+        function getTypeCallType(fn: Type, typeArgs: Type[], args: Type[]): Type {
+            const type = createTypeCallType(fn, typeArgs, args);
+            if (isGenericTypeCallType(fn) || some(typeArgs, isGenericTypeCallType) || some(args, isGenericTypeCallType)) {
+                return type;
+            }
+            const calls = getSignaturesOfType(fn, SignatureKind.Call);
+            const node = createTypeCallNodeFromType(type);
             const sig = resolveCall(node, calls, []);
             if (sig.typeParameters && sig.typeParameters.length) {
                 let signature: Signature;
