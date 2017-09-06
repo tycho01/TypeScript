@@ -8475,8 +8475,8 @@ namespace ts {
             if (type.flags & TypeFlags.TypeCall) {
                 return getTypeCallType(
                     instantiateType((<TypeCallType>type).function, mapper),
-                    instantiateTypes((<TypeCallType>type).typeArguments, mapper),
-                    instantiateTypes((<TypeCallType>type).arguments, mapper)
+                    (<TypeCallType>type).typeArguments,
+                    (<TypeCallType>type).arguments
                 );
             }
             return type;
