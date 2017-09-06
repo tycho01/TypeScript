@@ -7586,12 +7586,7 @@ namespace ts {
         // overlap with typeToTypeNode?
         function createTypeCallNodeFromType(type: TypeCallType): TypeCallTypeNode {
             const node = <TypeCallTypeNode>createNodeBuilder().typeToTypeNode(type);
-            node.type.parent = node;
-            const setParent = (arg: Node) => {
-                arg.parent = node;
-            };
-            forEach(node.arguments, setParent);
-            forEach(node.typeArguments, setParent);
+            fixupParentReferences(node);
             return node;
         }
 
@@ -7653,9 +7648,8 @@ namespace ts {
 
         // null! as type
         function typeNodeToExpression(type: TypeNode): Expression {
-            const parent = type.parent;
             const expr = createAsExpression(createNonNullExpression(createNull()), type);
-            expr.parent = parent;
+            expr.parent = type.parent;
             return expr;
         }
 
@@ -7666,28 +7660,21 @@ namespace ts {
             return type;
         }
 
-        // // Parser.fixupParentReferences
-        // function fixupParentReferences(rootNode: Node) {
-        //     let parent: Node = rootNode;
-        //     forEachChild(rootNode, visitNode);
-        //     return;
-        //     function visitNode(n: Node): void {
-        //         if (n.parent !== parent) {
-        //             n.parent = parent;
-        //             const saveParent = parent;
-        //             parent = n;
-        //             forEachChild(n, visitNode);
-        //             if (n.jsDoc) {
-        //                 for (const jsDoc of n.jsDoc) {
-        //                     jsDoc.parent = n;
-        //                     parent = jsDoc;
-        //                     forEachChild(jsDoc, visitNode);
-        //                 }
-        //             }
-        //             parent = saveParent;
-        //         }
-        //     }
-        // }
+        // Parser.fixupParentReferences
+        function fixupParentReferences(rootNode: Node) {
+            let parent: Node = rootNode;
+            forEachChild(rootNode, visitNode);
+            return;
+            function visitNode(n: Node): void {
+                if (n.parent !== parent) {
+                    n.parent = parent;
+                    const saveParent = parent;
+                    parent = n;
+                    forEachChild(n, visitNode);
+                    parent = saveParent;
+                }
+            }
+        }
 
         function getPropertyTypeForIndexType(objectType: Type, indexType: Type, accessNode: ElementAccessExpression | IndexedAccessTypeNode, cacheSymbol: boolean) {
             const accessExpression = accessNode && accessNode.kind === SyntaxKind.ElementAccessExpression ? <ElementAccessExpression>accessNode : undefined;
@@ -22647,16 +22634,8 @@ namespace ts {
             const fn = typeNodeToExpression(node.type);
             const args = map(node.arguments, typeNodeToExpression);
             const callExpr = createCall(fn, node.typeArguments, args);
+            fixupParentReferences(callExpr);
             callExpr.parent = node;
-            callExpr.expression.parent = callExpr;
-            callExpr.expression.parent = callExpr.expression;
-            forEach(callExpr.arguments, (arg: Node) => {
-                arg.parent = callExpr;
-                (arg as ParenthesizedExpression).expression.parent = arg;
-            });
-            forEach(callExpr.typeArguments, (arg: Node) => {
-                arg.parent = callExpr;
-            });
             return callExpr;
         }
 
