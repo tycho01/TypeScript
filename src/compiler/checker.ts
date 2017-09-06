@@ -9452,6 +9452,15 @@ namespace ts {
                         }
                     }
                 }
+                else if (target.flags & TypeFlags.TypeCall) {
+                    const constraint = getConstraintOfTypeCall(<TypeCallType>target);
+                    if (constraint) {
+                        if (result = isRelatedTo(source, constraint, reportErrors)) {
+                            errorInfo = saveErrorInfo;
+                            return result;
+                        }
+                    }
+                }
 
                 if (source.flags & TypeFlags.TypeParameter) {
                     // A source type T is related to a target type { [P in keyof T]: X } if T[P] is related to X.
@@ -9495,6 +9504,15 @@ namespace ts {
                         // if we have indexed access types with identical index types, see if relationship holds for
                         // the two object types.
                         if (result = isRelatedTo((<IndexedAccessType>source).objectType, (<IndexedAccessType>target).objectType, reportErrors)) {
+                            return result;
+                        }
+                    }
+                }
+                else if (source.flags & TypeFlags.TypeCall) {
+                    const constraint = getConstraintOfTypeCall(<TypeCallType>source);
+                    if (constraint) {
+                        if (result = isRelatedTo(source, constraint, reportErrors)) {
+                            errorInfo = saveErrorInfo;
                             return result;
                         }
                     }
