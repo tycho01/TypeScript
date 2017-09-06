@@ -5937,7 +5937,11 @@ namespace ts {
         }
 
         function getConstraintOfTypeCall(type: TypeCallType): Type {
-            return getBaseConstraintOfType(getReturnTypeOfSignature(getSignatureInstantiation(getSingleCallSignature(type.function), type.typeArguments)));
+            const fn = type.function;
+            const typeArgs = map(type.typeArguments, getConstraintOfType);
+            const args = map(type.arguments, getConstraintOfType);
+            const call = createTypeCallType(fn, typeArgs, args);
+            return getTypeFromTypeCall(call);
         }
 
         function getConstraintOfTypeParameter(typeParameter: TypeParameter): Type {
