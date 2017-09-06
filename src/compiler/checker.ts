@@ -7576,8 +7576,8 @@ namespace ts {
             type.function = fn;
             type.typeArguments = typeArgs;
             type.arguments = args;
-                return type;
-            }
+            return type;
+        }
 
         // overlap with typeToTypeNode?
         function createTypeCallNodeFromType(type: TypeCallType): TypeCallTypeNode {
