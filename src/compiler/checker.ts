@@ -7599,21 +7599,19 @@ namespace ts {
             const calls = getSignaturesOfType(fn, SignatureKind.Call);
             const node = createTypeCallNodeFromType(type);
             const sig = resolveCall(node, calls, []);
-            if (sig.typeParameters && sig.typeParameters.length) {
-                let signature: Signature;
-                if (typeArgs && typeArgs.length) {
-                    signature = getSignatureInstantiation(sig, typeArgs);
-                }
-                else {
-                    const inferenceContext = createInferenceContext(sig, InferenceFlags.InferUnionTypes);
-                    const types = inferTypeArgumentsForTypeCall(sig, args, inferenceContext); // TODO: add Fn(this: A, B, C) syntax
-                    signature = getSignatureInstantiation(sig, types);
-                }
-                return getReturnTypeOfSignature(signature);
-            }
-            else {
+            if (!sig.typeParameters || !sig.typeParameters.length) {
                 return getReturnTypeOfSignature(sig);
             }
+            let signature: Signature;
+            if (typeArgs && typeArgs.length) {
+                signature = getSignatureInstantiation(sig, typeArgs);
+            }
+            else {
+                const inferenceContext = createInferenceContext(sig, InferenceFlags.InferUnionTypes);
+                const types = inferTypeArgumentsForTypeCall(sig, args, inferenceContext); // TODO: add Fn(this: A, B, C) syntax
+                signature = getSignatureInstantiation(sig, types);
+            }
+            return getReturnTypeOfSignature(signature);
         }
 
         function inferTypeArgumentsForTypeCall(signature: Signature, args: Type[], context: InferenceContext, thisArgumentType?: Type): Type[] {
