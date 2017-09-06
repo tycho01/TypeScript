@@ -7590,20 +7590,19 @@ namespace ts {
             return node;
         }
 
-        function getTypeCallType(fn: Type, typeArgs: Type[], args: Type[]): Type {
+        function getTypeCallType(fn: Type, typeArgs: Type[], args: Type[], node?: TypeCallTypeNode): Type {
             const type = createTypeCallType(fn, typeArgs, args);
             if (isGenericTypeCallType(fn) || some(typeArgs, isGenericTypeCallType) || some(args, isGenericTypeCallType)) {
                 return type;
             }
-            return getTypeFromTypeCall(type);
+            return getTypeFromTypeCall(type, node);
         }
 
-        function getTypeFromTypeCall(type: TypeCallType): Type {
+        function getTypeFromTypeCall(type: TypeCallType, node = createTypeCallNodeFromType(type)): Type {
             const fn = type.function;
             const typeArgs = type.typeArguments;
             const args = type.arguments;
             const calls = getSignaturesOfType(fn, SignatureKind.Call);
-            const node = createTypeCallNodeFromType(type);
             const sig = resolveCall(node, calls, []);
             if (!sig.typeParameters || !sig.typeParameters.length) {
                 return getReturnTypeOfSignature(sig);
@@ -7640,7 +7639,8 @@ namespace ts {
                 links.resolvedType = getTypeCallType(
                     getTypeFromTypeNode(node.type),
                     map(node.typeArguments, getTypeFromTypeNode),
-                    map(node.arguments, getTypeFromTypeNode)
+                    map(node.arguments, getTypeFromTypeNode),
+                    node
                 );
             }
             return links.resolvedType;
