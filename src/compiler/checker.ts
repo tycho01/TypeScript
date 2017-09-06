@@ -7596,6 +7596,13 @@ namespace ts {
             if (isGenericTypeCallType(fn) || some(typeArgs, isGenericTypeCallType) || some(args, isGenericTypeCallType)) {
                 return type;
             }
+            return getTypeFromTypeCall(type);
+        }
+
+        function getTypeFromTypeCall(type: TypeCallType): Type {
+            const fn = type.function;
+            const typeArgs = type.typeArguments;
+            const args = type.arguments;
             const calls = getSignaturesOfType(fn, SignatureKind.Call);
             const node = createTypeCallNodeFromType(type);
             const sig = resolveCall(node, calls, []);
