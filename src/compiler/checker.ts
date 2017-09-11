@@ -1,6 +1,8 @@
 /// <reference path="moduleNameResolver.ts"/>
 /// <reference path="binder.ts"/>
 /// <reference path="symbolWalker.ts" />
+/// <reference types="node"/>
+declare var console: Console;
 
 /* @internal */
 namespace ts {
@@ -13184,7 +13186,7 @@ namespace ts {
 
         // In a typed function call, an argument or substitution expression is contextually typed by the type of the corresponding parameter.
         function getContextualTypeForArgument(callTarget: CallLikeExpression, arg: Expression): Type {
-            const args = <ReadonlyArray<Expression>>getEffectiveCallArguments(callTarget);
+            const args = getEffectiveCallArguments(callTarget);
             const argIndex = indexOf(args, arg);
             if (argIndex >= 0) {
                 // If we're already in the process of resolving the given signature, don't resolve again as
@@ -15173,12 +15175,12 @@ namespace ts {
             return true;
         }
 
-        function callLikeExpressionMayHaveTypeArguments(node: CallLike): node is CallExpression | NewExpression {
+        function callLikeExpressionMayHaveTypeArguments(node: CallLikeExpression): node is CallExpression | NewExpression {
             // TODO: Also include tagged templates (https://github.com/Microsoft/TypeScript/issues/11947)
             return isCallOrNewExpression(node);
         }
 
-        function resolveUntypedCall(node: CallLike): Signature {
+        function resolveUntypedCall(node: CallLikeExpression): Signature {
             if (callLikeExpressionMayHaveTypeArguments(node)) {
                 // Check type arguments even though we will give an error that untyped calls may not accept type arguments.
                 // This gets us diagnostics for the type arguments and marks them as referenced.
@@ -15196,7 +15198,7 @@ namespace ts {
             return anySignature;
         }
 
-        function resolveErrorCall(node: CallLike): Signature {
+        function resolveErrorCall(node: CallLikeExpression): Signature {
             resolveUntypedCall(node);
             return unknownSignature;
         }
@@ -15255,7 +15257,7 @@ namespace ts {
             }
         }
 
-        function getSpreadArgumentIndex(args: Arguments): number {
+        function getSpreadArgumentIndex(args: ReadonlyArray<Expression>): number {
             for (let i = 0; i < args.length; i++) {
                 const arg = args[i];
                 if (arg && arg.kind === SyntaxKind.SpreadElement) {
@@ -15265,7 +15267,7 @@ namespace ts {
             return -1;
         }
 
-        function hasCorrectArity(node: CallLike, args: Arguments, signature: Signature, signatureHelpTrailingComma = false) {
+        function hasCorrectArity(node: CallLikeExpression, args: ReadonlyArray<Expression>, signature: Signature, signatureHelpTrailingComma = false) {
             let argCount: number;            // Apparent number of arguments we will have in this call
             let typeArguments: NodeArray<TypeNode>;  // Type arguments (undefined if none)
             let callIsIncomplete: boolean;           // In incomplete call we want to be lenient when we have too few arguments
@@ -15376,7 +15378,7 @@ namespace ts {
             return getSignatureInstantiation(signature, getInferredTypes(context));
         }
 
-        function inferTypeArguments(node: CallLike, signature: Signature, args: Arguments, excludeArgument: boolean[], context: InferenceContext): Type[] {
+        function inferTypeArguments(node: CallLikeExpression, signature: Signature, args: ReadonlyArray<Expression>, excludeArgument: boolean[], context: InferenceContext): Type[] {
             // Clear out all the inference results from the last time inferTypeArguments was called on this context
             for (const inference of context.inferences) {
                 // As an optimization, we don't have to clear (and later recompute) inferred types
@@ -15392,7 +15394,7 @@ namespace ts {
             // example, given a 'function wrap<T, U>(cb: (x: T) => U): (x: T) => U' and a call expression
             // 'let f: (x: string) => number = wrap(s => s.length)', we infer from the declared type of 'f' to the
             // return type of 'wrap'.
-            if (node.kind !== SyntaxKind.Decorator && node.kind !== SyntaxKind.TypeCall) {
+            if (node.kind !== SyntaxKind.Decorator) {
                 const contextualType = getContextualType(node);
                 if (contextualType) {
                     // We clone the contextual mapper to avoid disturbing a resolution in progress for an
@@ -15429,13 +15431,13 @@ namespace ts {
             for (let i = 0; i < argCount; i++) {
                 const arg = getEffectiveArgument(node, args, i);
                 // If the effective argument is 'undefined', then it is an argument that is present but is synthetic.
-                if (isTypeCallTypeNode(node) || arg === undefined || arg.kind !== SyntaxKind.OmittedExpression) {
+                if (arg === undefined || arg.kind !== SyntaxKind.OmittedExpression) {
                     const paramType = getTypeAtPosition(signature, i);
                     let argType = getEffectiveArgumentType(node, i);
 
                     // If the effective argument type is 'undefined', there is no synthetic type
                     // for the argument. In that case, we should check the argument.
-                    if (!isTypeCallTypeNode(node) && argType === undefined) {
+                    if (argType === undefined) {
                         // For context sensitive arguments we pass the identityMapper, which is a signal to treat all
                         // context sensitive function expressions as wildcards
                         const mapper = excludeArgument && excludeArgument[i] !== undefined ? identityMapper : context;
@@ -15451,13 +15453,13 @@ namespace ts {
             // as we construct types for contextually typed parameters)
             // Decorators will not have `excludeArgument`, as their arguments cannot be contextually typed.
             // Tagged template expressions will always have `undefined` for `excludeArgument[0]`.
-            if (!isTypeCallTypeNode(node) && excludeArgument) {
+            if (excludeArgument) {
                 for (let i = 0; i < argCount; i++) {
                     // No need to check for omitted args and template expressions, their exclusion value is always undefined
                     if (excludeArgument[i] === false) {
                         const arg = args[i];
                         const paramType = getTypeAtPosition(signature, i);
-                        inferTypes(context.inferences, checkExpressionWithContextualType(<Expression>arg, paramType, context), paramType);
+                        inferTypes(context.inferences, checkExpressionWithContextualType(arg, paramType, context), paramType);
                     }
                 }
             }
@@ -15529,8 +15531,8 @@ namespace ts {
         }
 
         function checkApplicableSignature(
-            node: CallLike,
-            args: Arguments,
+            node: CallLikeExpression,
+            args: ReadonlyArray<Expression>,
             signature: Signature,
             relation: Map<RelationComparisonResult>,
             excludeArgument: boolean[],
@@ -15556,7 +15558,7 @@ namespace ts {
             for (let i = 0; i < argCount; i++) {
                 const arg = <Expression>getEffectiveArgument(node, args, i);
                 // If the effective argument is 'undefined', then it is an argument that is present but is synthetic.
-                if (!isTypeCallTypeNode(node) && arg === undefined || arg.kind !== SyntaxKind.OmittedExpression) {
+                if (arg === undefined || arg.kind !== SyntaxKind.OmittedExpression) {
                     // Check spread elements against rest type (from arity check we know spread argument corresponds to a rest parameter)
                     const paramType = getTypeAtPosition(signature, i);
                     // If the effective argument type is undefined, there is no synthetic type for the argument.
@@ -15581,7 +15583,7 @@ namespace ts {
         /**
          * Returns the this argument in calls like x.f(...) and x[f](...). Undefined otherwise.
          */
-        function getThisArgumentOfCall(node: CallLike): LeftHandSideExpression {
+        function getThisArgumentOfCall(node: CallLikeExpression): LeftHandSideExpression {
             if (node.kind === SyntaxKind.CallExpression) {
                 const callee = (<CallExpression>node).expression;
                 if (callee.kind === SyntaxKind.PropertyAccessExpression) {
@@ -15602,7 +15604,7 @@ namespace ts {
          * If 'node' is a Decorator, the argument list will be `undefined`, and its arguments and types
          *    will be supplied from calls to `getEffectiveArgumentCount` and `getEffectiveArgumentType`.
          */
-        function getEffectiveCallArguments(node: CallLike): Arguments {
+        function getEffectiveCallArguments(node: CallLikeExpression): ReadonlyArray<Expression> {
             if (node.kind === SyntaxKind.TaggedTemplateExpression) {
                 const template = (<TaggedTemplateExpression>node).template;
                 const args: Expression[] = [undefined];
@@ -15641,7 +15643,7 @@ namespace ts {
          *       us to match a property decorator.
          * Otherwise, the argument count is the length of the 'args' array.
          */
-        function getEffectiveArgumentCount(node: CallLike, args: Arguments, signature: Signature) {
+        function getEffectiveArgumentCount(node: CallLikeExpression, args: ReadonlyArray<Expression>, signature: Signature) {
             if (node.kind === SyntaxKind.Decorator) {
                 switch (node.parent.kind) {
                     case SyntaxKind.ClassDeclaration:
@@ -15854,7 +15856,7 @@ namespace ts {
         /**
          * Gets the effective argument type for an argument in a call expression.
          */
-        function getEffectiveArgumentType(node: CallLike, argIndex: number): Type {
+        function getEffectiveArgumentType(node: CallLikeExpression, argIndex: number): Type {
             // Decorators provide special arguments, a tagged template expression provides
             // a special first argument, and string literals get string literal types
             // unless we're reporting errors
@@ -15863,9 +15865,6 @@ namespace ts {
             }
             else if (argIndex === 0 && node.kind === SyntaxKind.TaggedTemplateExpression) {
                 return getGlobalTemplateStringsArrayType();
-            }
-            else if (node.kind === SyntaxKind.TypeCall) {
-                return getTypeFromTypeNode((<TypeCallTypeNode>node).arguments[argIndex]);
             }
 
             // This is not a synthetic argument, so we return 'undefined'
@@ -15876,7 +15875,7 @@ namespace ts {
         /**
          * Gets the effective argument expression for an argument in a call expression.
          */
-        function getEffectiveArgument(node: CallLike, args: Arguments, argIndex: number) {
+        function getEffectiveArgument(node: CallLikeExpression, args: ReadonlyArray<Expression>, argIndex: number) {
             // For a decorator or the first argument of a tagged template expression we return undefined.
             if (node.kind === SyntaxKind.Decorator ||
                 (argIndex === 0 && node.kind === SyntaxKind.TaggedTemplateExpression)) {
@@ -15889,7 +15888,7 @@ namespace ts {
         /**
          * Gets the error node to use when reporting errors for an effective argument.
          */
-        function getEffectiveArgumentErrorNode(node: CallLike, argIndex: number, arg: Expression) {
+        function getEffectiveArgumentErrorNode(node: CallLikeExpression, argIndex: number, arg: Expression) {
             if (node.kind === SyntaxKind.Decorator) {
                 // For a decorator, we use the expression of the decorator for error reporting.
                 return (<Decorator>node).expression;
@@ -15903,7 +15902,7 @@ namespace ts {
             }
         }
 
-        function resolveCall(node: CallLike, signatures: Signature[], candidatesOutArray: Signature[], fallbackError?: DiagnosticMessage): Signature {
+        function resolveCall(node: CallLikeExpression, signatures: Signature[], candidatesOutArray: Signature[], fallbackError?: DiagnosticMessage): Signature {
             const isTaggedTemplate = node.kind === SyntaxKind.TaggedTemplateExpression;
             const isDecorator = node.kind === SyntaxKind.Decorator;
             const isJsxOpeningOrSelfClosingElement = isJsxOpeningLikeElement(node);
@@ -15914,7 +15913,7 @@ namespace ts {
                 typeArguments = (<CallExpression>node).typeArguments;
 
                 // We already perform checking on the type arguments on the class declaration itself.
-                if (!isTypeCallTypeNode(node) && (<CallExpression>node).expression.kind !== SyntaxKind.SuperKeyword) {
+                if ((<CallExpression>node).expression.kind !== SyntaxKind.SuperKeyword) {
                     forEach(typeArguments, checkSourceElement);
                 }
             }
@@ -15946,11 +15945,11 @@ namespace ts {
             const isSingleNonGenericCandidate = candidates.length === 1 && !candidates[0].typeParameters;
             let excludeArgument: boolean[];
             let excludeCount = 0;
-            if (!isDecorator && !isSingleNonGenericCandidate && !isTypeCallTypeNode(node)) {
+            if (!isDecorator && !isSingleNonGenericCandidate) {
                 // We do not need to call `getEffectiveArgumentCount` here as it only
                 // applies when calculating the number of arguments for a decorator.
                 for (let i = isTaggedTemplate ? 1 : 0; i < args.length; i++) {
-                    if (isContextSensitive(<Expression>args[i])) {
+                    if (isContextSensitive(args[i])) {
                         if (!excludeArgument) {
                             excludeArgument = new Array(args.length);
                         }

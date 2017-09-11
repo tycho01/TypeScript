@@ -618,8 +618,6 @@ namespace ts {
 
     export type DeclarationName = Identifier | StringLiteral | NumericLiteral | ComputedPropertyName | BindingPattern;
 
-    export type Arguments = ReadonlyArray<Expression> | ReadonlyArray<TypeNode>;
-
     export interface Declaration extends Node {
         _declarationBrand: any;
     }
@@ -1534,8 +1532,6 @@ namespace ts {
     }
 
     export type CallLikeExpression = CallExpression | NewExpression | TaggedTemplateExpression | Decorator | JsxOpeningLikeElement;
-
-    export type CallLike = CallLikeExpression | TypeCallTypeNode;
 
     export interface AsExpression extends Expression {
         kind: SyntaxKind.AsExpression;
