@@ -67,8 +67,7 @@ safeDivide(3, 0); // fails, should error but doesn't
 type map = <Fn extends (v: T) => any, O extends { [k: string]: T }, T>(fn: Fn, obj: O) => { [P in keyof O]: Fn(O[P]) };
 type z = map(<T>(v: T) => [T], { a: 1, b: 2, c: 3 });
 declare function map<Fn extends (v: T) => any, O extends { [k: string]: T }, T>(fn: Fn, obj: O): map(Fn, O);
-// let z = map(<T>(v: T) => [T], { a: 1, b: 2, c: 3 });
-// // fails with error: Cannot read property 'parent' of undefined at createDiagnosticForNodeFromMessageChain
+let z = map(<T>(v: T) => [v] as [T], { a: 1, b: 2, c: 3 } as { a: 1, b: 2, c: 3 });
 
 type Inc = { [k: string]: string; 0:'1', 1:'2', 2:'3', 3:'4', 4:'5', 5:'6', 6:'7', 7:'8', 8:'9' };
 type StringToNumber = { [k: string]: number; 0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8};
@@ -88,7 +87,7 @@ const pathTest = path(obj, keys);
 //     R extends any[],
 //     I extends string = '0'
 // > = { 1: Reduce<Fn(T, R[StringToNumber[I]], I, R), R, Inc[I]>, 0: T }[TupleHasIndex<R, I>];
-// // fails with error: Cannot read property 'kind' of undefined at resolveCall
+// // fails with error: Cannot read property 'flags' of undefined at isRelatedTo
 // declare function reduce<
 //     Fn extends (previousValue: any, currentValue: R[number], currentIndex?: number, array?: R) => any,
 //     R extends any[],
@@ -106,14 +105,9 @@ type Fn2 = <T2>(v2: { [k: string]: T2 }) => ReadonlyArray<T2>;
 let fn1 = null! as Fn1;
 let fn2 = null! as Fn2;
 type Fn3 = <T3 extends number[]>(v3: T3) => Fn2(Fn1(T3));
-// type Fn4 = Fn3(1); // errors, ok
 let ones = null! as 1[];
 type Fn4b = Fn3(typeof ones);
-// FAILS, wanted `ReadonlyArray<1>`, got `ReadonlyArray<{}>`.
 type Fn4c = Fn3(1[]);
-// FAILS, wanted `ReadonlyArray<1>`, got `ReadonlyArray<{}>`.
-// let x = fn2(fn1(1)); // errors with not assignable, ok
-// type X = Fn2(Fn1(1)); // errors with not assignable, ok
 let y = fn2(fn1(ones));
 type Y = Fn2(Fn1(1[]));
 
@@ -231,12 +225,6 @@ function assignability<T>(x: T, y: () => T) {
     const b: T = y();
 }
 
-function comparability<T>(x: T, y: () => T) {
-    x === x;
-    y === y;
-    // x === y; // rightfully errors
-}
-
 // function mappedAssignability<T>(x: T, y: CallMember<T>) {
 //     const d: T() = y;
 // }
@@ -278,11 +266,7 @@ var keys = null;
 var pathTest = path(obj, keys);
 var fn1 = null;
 var fn2 = null;
-// type Fn4 = Fn3(1); // errors, ok
 var ones = null;
-// FAILS, wanted `ReadonlyArray<1>`, got `ReadonlyArray<{}>`.
-// let x = fn2(fn1(1)); // errors with not assignable, ok
-// type X = Fn2(Fn1(1)); // errors with not assignable, ok
 var y = fn2(fn1(ones));
 var falseBool; // 1
 var trueBool; // 1
@@ -312,11 +296,6 @@ infer4(5, function () { return 5; });
 function assignability(x, y) {
     var a = x;
     var b = y();
-}
-function comparability(x, y) {
-    x === x;
-    y === y;
-    // x === y; // rightfully errors
 }
 // function mappedAssignability<T>(x: T, y: CallMember<T>) {
 //     const d: T() = y;

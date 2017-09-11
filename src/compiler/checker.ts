@@ -7575,26 +7575,21 @@ namespace ts {
             return type;
         }
 
-        function getTypeCallType(fn: Type, args: Type[], node?: TypeCallTypeNode): Type {
+        function getTypeCallType(fn: Type, args: Type[]): Type {
             const type = createTypeCallType(fn, args);
             if (isGenericTypeCallType(fn) || some(args, isGenericTypeCallType)) {
                 return type;
             }
-            return getTypeFromTypeCall(type, node);
+            return getTypeFromTypeCall(type);
         }
 
-        function getTypeFromTypeCall(type: TypeCallType, node = <TypeCallTypeNode>nodeBuilder.typeToTypeNode(type)): Type {
+        function getTypeFromTypeCall(type: TypeCallType): Type {
             const fn = type.function;
-            const args = type.arguments;
-            const calls = getSignaturesOfType(fn, SignatureKind.Call);
-            const sig = resolveCall(node, calls, []);
-            if (!sig.typeParameters || !sig.typeParameters.length) {
-                return getReturnTypeOfSignature(sig);
-            }
-            const inferenceContext = createInferenceContext(sig, InferenceFlags.InferUnionTypes);
-            const types = inferTypeArgumentsForTypeCall(sig, args, inferenceContext); // TODO: add Fn(this: A, B, C) syntax
-            const signature = getSignatureInstantiation(sig, types);
-            return getReturnTypeOfSignature(signature);
+            const signatures = getSignaturesOfType(fn, SignatureKind.Call);
+            const candidates: Signature[] = [];
+            reorderCandidates(signatures, candidates);
+            const sig = chooseOverloadTypeCall(type.arguments, candidates, candidates.length > 1 ? subtypeRelation : assignableRelation);
+            return sig ? getReturnTypeOfSignature(sig) : unknownType;
         }
 
         function inferTypeArgumentsForTypeCall(signature: Signature, args: Type[], context: InferenceContext, thisArgumentType?: Type): Type[] {
@@ -7616,13 +7611,77 @@ namespace ts {
             if (!links.resolvedType) {
                 links.resolvedType = getTypeCallType(
                     getTypeFromTypeNode(node.function),
-                    map(node.arguments, getTypeFromTypeNode),
-                    node
+                    map(node.arguments, getTypeFromTypeNode)
                 );
             }
             return links.resolvedType;
         }
 
+        function chooseOverloadTypeCall(args: Type[], candidates: Signature[], relation: Map<RelationComparisonResult>) {
+            const isSingleNonGenericCandidate = candidates.length === 1 && !candidates[0].typeParameters;
+            if (isSingleNonGenericCandidate) {
+                const candidate = candidates[0];
+                return typeCallHasCorrectArity(args, candidate) && checkApplicableSignatureTypeCall(args, candidate, relation) ? candidate : undefined;
+            }
+
+            for (let candidateIndex = 0; candidateIndex < candidates.length; candidateIndex++) {
+                const originalCandidate = candidates[candidateIndex];
+                if (!typeCallHasCorrectArity(args, originalCandidate)) {
+                    continue;
+                }
+
+                let candidate: Signature;
+                const inferenceContext = originalCandidate.typeParameters ?
+                    createInferenceContext(originalCandidate, 0) :
+                    undefined;
+
+                while (true) {
+                    candidate = originalCandidate;
+                    if (candidate.typeParameters) {
+                        const typeArgumentTypes = inferTypeArgumentsForTypeCall(candidate, args, inferenceContext, /*thisType*/ undefined); // TODO: add Fn(this: A, B, C) syntax
+                        candidate = getSignatureInstantiation(candidate, typeArgumentTypes);
+                    }
+                    if (!checkApplicableSignatureTypeCall(args, candidate, relation)) {
+                        break;
+                    }
+                    candidates[candidateIndex] = candidate;
+                    return candidate;
+                }
+            }
+            return undefined;
+        }
+
+        function typeCallHasCorrectArity(args: Type[], signature: Signature) {
+            // const spreadArgIndex = getSpreadArgumentIndex(args);
+            // if (spreadArgIndex >= 0) {
+            //     return isRestParameterIndex(signature, spreadArgIndex) || spreadArgIndex >= signature.minArgumentCount;
+            // }
+            return args.length >= signature.minArgumentCount && (signature.hasRestParameter || args.length <= signature.parameters.length);
+        }
+
+        function checkApplicableSignatureTypeCall(
+            argTypes: Type[],
+            signature: Signature,
+            relation: Map<RelationComparisonResult>,
+            thisArgumentType: Type = voidType) {
+            const thisType = getThisTypeOfSignature(signature);
+            if (thisType && thisType !== voidType) {
+                const headMessage = Diagnostics.The_this_context_of_type_0_is_not_assignable_to_method_s_this_of_type_1;
+                if (!checkTypeRelatedTo(thisArgumentType, getThisTypeOfSignature(signature), relation, /*errorNode*/ undefined, headMessage)) {
+                    return false;
+                }
+            }
+            const headMessage = Diagnostics.Argument_of_type_0_is_not_assignable_to_parameter_of_type_1;
+            const argCount = argTypes.length; // getEffectiveArgumentCount;
+            for (let i = 0; i < argCount; i++) {
+                const paramType = getTypeAtPosition(signature, i);
+                const argType = argTypes[i];
+                if (!checkTypeRelatedTo(argType, paramType, relation, /*errorNode*/ undefined, headMessage)) {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         function createIndexedAccessType(objectType: Type, indexType: Type) {
             const type = <IndexedAccessType>createType(TypeFlags.IndexedAccess);
