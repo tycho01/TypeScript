@@ -8462,6 +8462,7 @@ namespace ts {
             }
             if (type.flags & TypeFlags.TypeCall) {
                 const typeCallNode = <TypeCallTypeNode>nodeBuilder.typeToTypeNode(type);
+                fixupParentReferences(typeCallNode);
                 typeCallNode.parent = (type as TypeCallType).node;
                 return getTypeCallType(
                     instantiateType((<TypeCallType>type).function, mapper),
@@ -8470,6 +8471,30 @@ namespace ts {
                 );
             }
             return type;
+        }
+
+        // Parser.fixupParentReferences
+        function fixupParentReferences(rootNode: Node) {
+            let parent: Node = rootNode;
+            forEachChild(rootNode, visitNode);
+            return;
+            function visitNode(n: Node): void {
+                if (n.parent !== parent) {
+                    n.parent = parent;
+
+                    const saveParent = parent;
+                    parent = n;
+                    forEachChild(n, visitNode);
+                    if (n.jsDoc) {
+                        for (const jsDoc of n.jsDoc) {
+                            jsDoc.parent = n;
+                            parent = jsDoc;
+                            forEachChild(jsDoc, visitNode);
+                        }
+                    }
+                    parent = saveParent;
+                }
+            }
         }
 
         function instantiateIndexInfo(info: IndexInfo, mapper: TypeMapper): IndexInfo {
@@ -15513,7 +15538,7 @@ namespace ts {
                 // If the expression is a new expression, then the check is skipped.
                 const thisArgumentNode = getThisArgumentOfCall(node);
                 const thisArgumentType = thisArgumentNode ? checkExpression(thisArgumentNode) : voidType; // type calls: TODO
-                const errorNode = reportErrors ? (thisArgumentNode || node) : undefined;
+                const errorNode = reportErrors || isTypeCallTypeNode(node) ? (thisArgumentNode || node) : undefined;
                 const headMessage = Diagnostics.The_this_context_of_type_0_is_not_assignable_to_method_s_this_of_type_1;
                 if (!checkTypeRelatedTo(thisArgumentType, getThisTypeOfSignature(signature), relation, errorNode, headMessage)) {
                     return false;
@@ -15536,7 +15561,7 @@ namespace ts {
                     // parameter types yet and therefore excess property checks may yield false positives (see #17041).
                     const checkArgType = excludeArgument ? getRegularTypeOfObjectLiteral(argType) : argType;
                     // Use argument expression as error location when reporting errors
-                    const errorNode = reportErrors ? getEffectiveArgumentErrorNode(node, i, arg) : undefined;
+                    const errorNode = reportErrors || isTypeCallTypeNode(node) ? getEffectiveArgumentErrorNode(node, i, arg) : undefined;
                     if (!checkTypeRelatedTo(checkArgType, paramType, relation, errorNode, headMessage)) {
                         return false;
                     }
