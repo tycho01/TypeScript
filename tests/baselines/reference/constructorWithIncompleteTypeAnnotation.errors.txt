@@ -12,12 +12,12 @@ tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(31,18): error TS
 tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(34,17): error TS2363: The right-hand side of an arithmetic operation must be of type 'any', 'number' or an enum type.
 tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(34,26): error TS1005: ';' expected.
 tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(34,28): error TS2304: Cannot find name 'bfs'.
-tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(35,21): error TS2365: Operator '!=' cannot be applied to types 'boolean' and '0'.
+tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(35,21): error TS2365: Operator '!=' cannot be applied to types 'Boolean' and 'Number'.
 tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(38,17): error TS1109: Expression expected.
 tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(40,28): error TS2304: Cannot find name 'bfs'.
 tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(40,41): error TS1005: ';' expected.
 tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(40,45): error TS1002: Unterminated string literal.
-tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(41,21): error TS2365: Operator '!=' cannot be applied to types 'boolean' and '0'.
+tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(41,21): error TS2365: Operator '!=' cannot be applied to types 'Boolean' and 'Number'.
 tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(47,17): error TS2304: Cannot find name 'console'.
 tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(49,13): error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
 tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(53,13): error TS2304: Cannot find name 'console'.
@@ -155,7 +155,7 @@ tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(261,1): error TS
 !!! error TS2304: Cannot find name 'bfs'.
                     if (retValue != 0) {
                         ~~~~~~~~~~~~~
-!!! error TS2365: Operator '!=' cannot be applied to types 'boolean' and '0'.
+!!! error TS2365: Operator '!=' cannot be applied to types 'Boolean' and 'Number'.
     
                         return 1 && 
                     }
@@ -171,7 +171,7 @@ tests/cases/compiler/constructorWithIncompleteTypeAnnotation.ts(261,1): error TS
 !!! error TS1002: Unterminated string literal.
                     if (retValue != 0) {
                         ~~~~~~~~~~~~~
-!!! error TS2365: Operator '!=' cannot be applied to types 'boolean' and '0'.
+!!! error TS2365: Operator '!=' cannot be applied to types 'Boolean' and 'Number'.
     
                         return 1;
                     }
