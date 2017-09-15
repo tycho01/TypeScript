@@ -17645,6 +17645,8 @@ namespace ts {
                         leftType = leftIsLiteral ? getBaseTypeOfLiteralType(leftType) : leftType;
                         rightType = rightIsLiteral ? getBaseTypeOfLiteralType(rightType) : rightType;
                     }
+                    leftType = getApparentType(leftType);
+                    rightType = getApparentType(rightType);
                     if (!isTypeEqualityComparableTo(leftType, rightType) && !isTypeEqualityComparableTo(rightType, leftType)) {
                         reportOperatorError();
                     }

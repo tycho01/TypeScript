@@ -1,0 +1,15 @@
+=== tests/cases/compiler/test-17428.ts ===
+function Generic<T extends string, U extends string>(a: T, b: U) {
+>Generic : Symbol(Generic, Decl(test-17428.ts, 0, 0))
+>T : Symbol(T, Decl(test-17428.ts, 0, 17))
+>U : Symbol(U, Decl(test-17428.ts, 0, 34))
+>a : Symbol(a, Decl(test-17428.ts, 0, 53))
+>T : Symbol(T, Decl(test-17428.ts, 0, 17))
+>b : Symbol(b, Decl(test-17428.ts, 0, 58))
+>U : Symbol(U, Decl(test-17428.ts, 0, 34))
+
+    a == b;
+>a : Symbol(a, Decl(test-17428.ts, 0, 53))
+>b : Symbol(b, Decl(test-17428.ts, 0, 58))
+}
+

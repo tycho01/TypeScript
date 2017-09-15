@@ -1,0 +1,16 @@
+=== tests/cases/compiler/test-17428.ts ===
+function Generic<T extends string, U extends string>(a: T, b: U) {
+>Generic : <T extends string, U extends string>(a: T, b: U) => void
+>T : T
+>U : U
+>a : T
+>T : T
+>b : U
+>U : U
+
+    a == b;
+>a == b : boolean
+>a : T
+>b : U
+}
+
