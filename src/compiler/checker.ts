@@ -17581,6 +17581,54 @@ namespace ts {
                         }
                     }
 
+                    if (leftType.flags & TypeFlags.TypeVariable || leftType.flags & TypeFlags.Intersection) {
+                        leftType = getConstraintOfType(<UnionOrIntersectionType>leftType);
+                    }
+                    if (rightType.flags & TypeFlags.TypeVariable || rightType.flags & TypeFlags.Intersection) {
+                        rightType = getConstraintOfType(<UnionOrIntersectionType>rightType);
+                    }
+                    if (leftType.flags & rightType.flags & TypeFlags.NumberLiteral) {
+                        const lhs = (leftType as NumberLiteralType).value;
+                        const rhs = (rightType as NumberLiteralType).value;
+                        let newNumber: number;
+                        switch (operator) {
+                            case SyntaxKind.AsteriskAsteriskToken:
+                                newNumber = lhs ** rhs;
+                                break;
+                            case SyntaxKind.AsteriskToken:
+                                newNumber = lhs * rhs;
+                                break;
+                            case SyntaxKind.SlashToken:
+                                newNumber = lhs / rhs;
+                                break;
+                            case SyntaxKind.PercentToken:
+                                newNumber = lhs % rhs;
+                                break;
+                            case SyntaxKind.MinusToken:
+                                newNumber = lhs - rhs;
+                                break;
+                            case SyntaxKind.LessThanLessThanToken:
+                                newNumber = lhs << rhs;
+                                break;
+                            case SyntaxKind.GreaterThanGreaterThanToken:
+                                newNumber = lhs >> rhs;
+                                break;
+                            case SyntaxKind.GreaterThanGreaterThanGreaterThanToken:
+                                newNumber = lhs >>> rhs;
+                                break;
+                            case SyntaxKind.BarToken:
+                                newNumber = lhs | rhs;
+                                break;
+                            case SyntaxKind.CaretToken:
+                                newNumber = lhs ^ rhs;
+                                break;
+                            case SyntaxKind.AmpersandToken:
+                                newNumber = lhs & rhs;
+                                break;
+                        }
+                        return newNumber ? getLiteralType(newNumber) : numberType;
+                    }
+
                     return numberType;
                 case SyntaxKind.PlusToken:
                 case SyntaxKind.PlusEqualsToken:
@@ -17593,15 +17641,38 @@ namespace ts {
                         rightType = checkNonNullType(rightType, right);
                     }
 
+                    if (leftType.flags & TypeFlags.TypeVariable || leftType.flags & TypeFlags.Intersection) {
+                        leftType = getConstraintOfType(<UnionOrIntersectionType>leftType);
+                    }
+                    if (rightType.flags & TypeFlags.TypeVariable || rightType.flags & TypeFlags.Intersection) {
+                        rightType = getConstraintOfType(<UnionOrIntersectionType>rightType);
+                    }
                     let resultType: Type;
+
                     if (isTypeAssignableToKind(leftType, TypeFlags.NumberLike, /*strict*/ true) && isTypeAssignableToKind(rightType, TypeFlags.NumberLike, /*strict*/ true)) {
                         // Operands of an enum type are treated as having the primitive type Number.
                         // If both operands are of the Number primitive type, the result is of the Number primitive type.
-                        resultType = numberType;
+                        if (leftType.flags & rightType.flags & TypeFlags.NumberLiteral && operator === SyntaxKind.PlusToken) {
+                            const lhs = (leftType as NumberLiteralType).value;
+                            const rhs = (rightType as NumberLiteralType).value;
+                            const newNumber = lhs + rhs;
+                            resultType = getLiteralType(newNumber);
+                        }
+                        else {
+                            resultType = numberType;
+                        }
                     }
                     else if (isTypeAssignableToKind(leftType, TypeFlags.StringLike, /*strict*/ true) || isTypeAssignableToKind(rightType, TypeFlags.StringLike, /*strict*/ true)) {
                             // If one or both operands are of the String primitive type, the result is of the String primitive type.
-                            resultType = stringType;
+                            if (leftType.flags & rightType.flags & TypeFlags.StringLiteral && operator === SyntaxKind.PlusToken) {
+                                const lhs = (leftType as StringLiteralType).value;
+                                const rhs = (rightType as StringLiteralType).value;
+                                const newString = lhs + rhs;
+                                resultType = getLiteralType(newString);
+                            }
+                            else {
+                                resultType = stringType;
+                            }
                     }
                     else if (isTypeAny(leftType) || isTypeAny(rightType)) {
                         // Otherwise, the result is of type Any.
@@ -17627,6 +17698,7 @@ namespace ts {
                 case SyntaxKind.GreaterThanToken:
                 case SyntaxKind.LessThanEqualsToken:
                 case SyntaxKind.GreaterThanEqualsToken:
+                    // TODO: type
                     if (checkForDisallowedESSymbolOperand(operator)) {
                         leftType = getBaseTypeOfLiteralType(checkNonNullType(leftType, left));
                         rightType = getBaseTypeOfLiteralType(checkNonNullType(rightType, right));
@@ -17639,6 +17711,7 @@ namespace ts {
                 case SyntaxKind.ExclamationEqualsToken:
                 case SyntaxKind.EqualsEqualsEqualsToken:
                 case SyntaxKind.ExclamationEqualsEqualsToken:
+                    // TODO: type
                     const leftIsLiteral = isLiteralType(leftType);
                     const rightIsLiteral = isLiteralType(rightType);
                     if (!leftIsLiteral || !rightIsLiteral) {

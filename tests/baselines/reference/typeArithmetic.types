@@ -1,0 +1,29 @@
+=== tests/cases/compiler/typeArithmetic.ts ===
+function add<A extends number, B extends number>(a: A, b: B) {
+>add : <A extends number, B extends number>(a: A, b: B) => number
+>A : A
+>B : B
+>a : A
+>A : A
+>b : B
+>B : B
+
+    return a + b;
+>a + b : number
+>a : A
+>b : B
+}
+
+const addFixed = <A extends 1, B extends 2>(a: A, b: B) => a + b;
+>addFixed : <A extends 1, B extends 2>(a: A, b: B) => 3
+><A extends 1, B extends 2>(a: A, b: B) => a + b : <A extends 1, B extends 2>(a: A, b: B) => 3
+>A : A
+>B : B
+>a : A
+>A : A
+>b : B
+>B : B
+>a + b : 3
+>a : A
+>b : B
+

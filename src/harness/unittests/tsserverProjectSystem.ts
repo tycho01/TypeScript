@@ -4179,7 +4179,7 @@ namespace ts.projectSystem {
 
             const configFile = {
                 path: "/a/b/tsconfig.json",
-                content: configFileContentWithComment
+                content: <string>configFileContentWithComment
             };
             const host = createServerHost([file, libFile, configFile]);
             const session = createSession(host);
