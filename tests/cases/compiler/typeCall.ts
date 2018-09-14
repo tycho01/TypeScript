@@ -59,16 +59,16 @@ type strEither = BoolToString(true | false);
 type strBool = BoolToString(boolean);
 type strAny = BoolToString(any); // fails, want the fallback, but yields 'false'
 
-// declare function safeDivide<
-//   B extends number,
-//   NotZero = ((v: '1') => 'whatever')({
-//     (v: 0): '0';
-//     (v: number): '1';
-//   }(B))
-// >(a: number, b: B): number;
-// // Argument of type '"0"' is not assignable to parameter of type '"1"'
-// safeDivide(3, 1);
-// safeDivide(3, 0); // should error
+interface Widen {
+  (v: number): number;
+  (v: string): string;
+  (v: boolean): boolean;
+  (v: symbol): symbol;
+  (v: any[]): Array<{}>;
+  (v: {}): object;
+  (v: any): any;
+}
+type TestWiden = Widen(123); // number
 
 type map = <Fn extends (v: T) => any, O extends { [k: string]: T }, T>(fn: Fn, obj: O) => { [P in keyof O]: Fn(O[P]) };
 type z = map(<T>(v: T) => [T], { a: 1, b: 2, c: 3 });
@@ -110,13 +110,33 @@ type Fn1 = <T1 extends number>(v1: T1[]) => { [k: string]: T1 };
 type Fn2 = <T2>(v2: { [k: string]: T2 }) => ReadonlyArray<T2>;
 let fn1 = null! as Fn1;
 let fn2 = null! as Fn2;
-type Fn3 = <T3 extends number[]>(v3: T3) => Fn2(Fn1(T3));
-declare function fn3<Fun1 extends (/*...args: any[]*/ p1: P1) => T, Fun2 extends (v: T) => any, P1, T>(fun1: Fun1, fun2: Fun2): (...args: any[] /* todo: specify*/) => Fn2(Fn1(P1));
+type Param1 = <Fun extends (v1: T) => any, T>(f: Fun) => T;
+type Par1 = Param1(Fn1);
+// type Fn3 = <T3 extends number[]>(v3: T3) => Fn2(Fn1(T3));
+type Pipe1 = <Fun1 extends <U>(/*...args: any[]*/ p1: P1) => T, Fun2 extends <U>(v: T) => any, P1, T>(fun1: Fun1, fun2: Fun2) => (/*...args: any[]*/ p1: P1) => Fun2(Fun1(P1));
+type Pipe4 = <Fun1 extends <U>(/*...args: any[]*/ p1: P1) => any, Fun2 extends <T>(v: any) => any, P1>(fun1: Fun1, fun2: Fun2) => (/*...args: any[]*/ p1: P1) => Fun2(Fun1(P1));
+type Compose1 = <Fun2 extends <U>(v: T) => any, Fun1 extends <U>(/*...args: any[]*/ p1: P1) => T, P1, T>(fun2: Fun2, fun1: Fun1) => (/*...args: any[]*/ p1: P1) => Fun2(Fun1(P1));
+// type Compose2 = <Fun2 extends <T>(v: T) => any, Fun1 extends <U>(/*...args: any[]*/ p1: P1) => T, P1>(fun2: Fun2, fun1: Fun1) => (/*...args: any[]*/ p1: P1) => Fun2(Fun1(P1));
+type Compose3 = <Fun2 extends <T>(v: T) => any, Fun1 extends <U>(/*...args: any[]*/ p1: P1) => any, P1>(fun2: Fun2, fun1: Fun1) => (/*...args: any[]*/ p1: P1) => Fun2(Fun1(P1));
+type Compose4 = <Fun2 extends <T>(v: any) => any, Fun1 extends <U>(/*...args: any[]*/ p1: P1) => any, P1>(fun2: Fun2, fun1: Fun1) => (/*...args: any[]*/ p1: P1) => Fun2(Fun1(P1));
+// declare function fn3<Fun1 extends <P1>(/*...args: any[]*/ p1: P1) => T, Fun2 extends <P2>(v: T) => any, P1, T>(fun1: Fun1, fun2: Fun2): (...args: any[] /* todo: specify*/) => Fn2(Fn1(P1));
 let ones = null! as 1[];
-type Fn4b = Fn3(typeof ones);
-type Fn4c = Fn3(1[]);
-let y = fn2(fn1(ones));
-type Y = Fn2(Fn1(1[]));
+// type Fn4b = Fn3(typeof ones);
+// type Fn4c = Fn3(1[]);
+type Fn3d = Pipe1(Fn1, Fn2);
+type Fn4d = Fn3d(1[]);
+type Fn3i = Pipe4(Fn1, Fn2);
+type Fn4i = Fn3i(1[]);
+type Fn3e = Compose1(Fn2, Fn1);
+type Fn4e = Fn3e(1[]);
+// type Fn3f = Compose2(Fn2, Fn1);
+// type Fn4f = Fn3f(1[]);
+type Fn3g = Compose3(Fn2, Fn1);
+type Fn4g = Fn3g(1[]);
+type Fn3h = Compose4(Fn2, Fn1);
+type Fn4h = Fn3h(1[]);
+// let y = fn2(fn1(ones));
+// type Y = Fn2(Fn1(1[]));
 // let z2 = fn3(fn1, fn2)(ones); // Cannot read property 'parent' of undefined
 
 interface isT<T> {

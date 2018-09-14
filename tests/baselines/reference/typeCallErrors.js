@@ -10,6 +10,18 @@ type Fn4 = Fn3(1); // errors, ok
 let x = fn2(fn1(1)); // errors with not assignable, ok
 type X = Fn2(Fn1(1)); // errors with not assignable, ok
 
+declare function safeDivide<
+  B extends number,
+  NotZero = ((v: '1') => 'whatever')({
+    (v: 0): '0';
+    (v: number): '1';
+    (v: any): '2';
+  }(B))
+>(a: number, b: B): number;
+safeDivide(3, 1); // not ok, fails with error: Argument of type '1' is not assignable to parameter of type '0'
+safeDivide(3, 0); // successfully errors: Argument of type '"0"' is not assignable to parameter of type '"1"'
+// errors accidentally pointed at the type call node instead of the external call site...
+
 function comparability<T>(x: T, y: () => T) {
     x === x;
     y === y;
@@ -22,6 +34,9 @@ var fn1 = null;
 var fn2 = null;
 var ones = null;
 var x = fn2(fn1(1)); // errors with not assignable, ok
+safeDivide(3, 1); // not ok, fails with error: Argument of type '1' is not assignable to parameter of type '0'
+safeDivide(3, 0); // successfully errors: Argument of type '"0"' is not assignable to parameter of type '"1"'
+// errors accidentally pointed at the type call node instead of the external call site...
 function comparability(x, y) {
     x === x;
     y === y;

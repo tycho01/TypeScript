@@ -1,6 +1,8 @@
 /// <reference path="moduleNameResolver.ts"/>
 /// <reference path="binder.ts"/>
 /// <reference path="symbolWalker.ts" />
+/// <reference types="node"/>
+declare var console: Console;
 
 /* @internal */
 namespace ts {
@@ -7587,52 +7589,57 @@ namespace ts {
         function getTypeFromTypeCall(type: TypeCallType, node: TypeCallTypeNode): Type {
             const fn = type.function;
             const args = type.arguments;
+            // if (allowSyntheticDefaultImports) console.log("getTypeFromTypeCall", typeToString(fn), map(args, (tp: Type) => typeToString(tp)));
             const candidates = getSignaturesOfType(fn, SignatureKind.Call);
-            const isSingleNonGenericCandidate = candidates.length === 1 && !candidates[0].typeParameters;
-            if (isSingleNonGenericCandidate) {
+            // const isSingleNonGenericCandidate = candidates.length === 1 && !candidates[0].typeParameters;
+            // if (isSingleNonGenericCandidate) {
                 const sig = resolveCall(node, candidates, /*candidatesOutArray*/ [], /*fallBackError*/ undefined, args);
-                return sig ? getReturnTypeOfSignature(sig) : unknownType;
-            }
-            else {
-                // we have unions and they matter -- separately calculate the result for each permutation
-                const types: Type[] = [];
-                const indices: number[] = map(args, (tp: Type, i: number) => tp.flags & TypeFlags.Union &&
-                    some(candidates, (sig: Signature) => isGenericObjectType(getTypeAtPosition(sig, i))) ?
-                    // ^ future consideration: argument/parameter i correspondence breaks down with tuple spreads
-                        0 : undefined);
-                const argTypes: Array<Type[] | Type> = map(args, (tp: Type, i: number) => indices[i] !== undefined ? (<UnionType>tp).types : tp);
-                checkParams: while (true) {
-                    const myArgs = map(argTypes, (tp: Type[] | Type, i: number) => {
-                        const argIdx = indices[i];
-                        return argIdx === undefined ? <Type>tp : (<Type[]>tp)[argIdx];
-                    });
-                    const sig = resolveCall(node, candidates, /*candidatesOutArray*/ [], /*fallBackError*/ undefined, myArgs);
-                    if (sig) {
-                        types.push(getReturnTypeOfSignature(sig));
-                    }
-                    // increment the next index to try the next permutation
-                    for (let i = 0; i < indices.length; i++) {
-                        const idx = indices[i];
-                        if (idx === undefined) {
-                            // nothing to do here, try switching the next argument
-                            continue;
-                        }
-                        else if (idx < (<Type[]>argTypes[i]).length - 1) {
-                            // can increment without overflow
-                            indices[i] = indices[i] + 1;
-                            continue checkParams;
-                        }
-                        else {
-                            // overflow, try switching the next argument as well
-                            indices[i] = 0;
-                            continue;
-                        }
-                    }
-                    // all options tried, full overflow throughout for-loop, done
-                    break;
-                }
-                return getUnionType(types);
-            }
+                const ret = sig ? getReturnTypeOfSignature(sig) : unknownType;
+                if (allowSyntheticDefaultImports) console.log("getTypeFromTypeCall:ret1", typeToString(ret));
+                return ret;
+            // }
+            // else {
+            //     // we have unions and they matter -- separately calculate the result for each permutation
+            //     const types: Type[] = [];
+            //     const indices: number[] = map(args, (tp: Type, i: number) => tp.flags & TypeFlags.Union &&
+            //         some(candidates, (sig: Signature) => isGenericObjectType(getTypeAtPosition(sig, i))) ?
+            //         // ^ future consideration: argument/parameter i correspondence breaks down with tuple spreads
+            //             0 : undefined);
+            //     const argTypes: Array<Type[] | Type> = map(args, (tp: Type, i: number) => indices[i] !== undefined ? (<UnionType>tp).types : tp);
+            //     checkParams: while (true) {
+            //         const myArgs = map(argTypes, (tp: Type[] | Type, i: number) => {
+            //             const argIdx = indices[i];
+            //             return argIdx === undefined ? <Type>tp : (<Type[]>tp)[argIdx];
+            //         });
+            //         const sig = resolveCall(node, candidates, /*candidatesOutArray*/ [], /*fallBackError*/ undefined, myArgs);
+            //         if (sig) {
+            //             types.push(getReturnTypeOfSignature(sig));
+            //         }
+            //         // increment the next index to try the next permutation
+            //         for (let i = 0; i < indices.length; i++) {
+            //             const idx = indices[i];
+            //             if (idx === undefined) {
+            //                 // nothing to do here, try switching the next argument
+            //                 continue;
+            //             }
+            //             else if (idx < (<Type[]>argTypes[i]).length - 1) {
+            //                 // can increment without overflow
+            //                 indices[i] = indices[i] + 1;
+            //                 continue checkParams;
+            //             }
+            //             else {
+            //                 // overflow, try switching the next argument as well
+            //                 indices[i] = 0;
+            //                 continue;
+            //             }
+            //         }
+            //         // all options tried, full overflow throughout for-loop, done
+            //         break;
+            //     }
+            //     const ret = getUnionType(types);
+            //     if (allowSyntheticDefaultImports) console.log("getTypeFromTypeCall:ret2", typeToString(ret));
+            //     return ret;
+            // }
          }
 
         function getTypeFromTypeCallNode(node: TypeCallTypeNode): Type {
@@ -9069,6 +9076,8 @@ namespace ts {
                 if (getObjectFlags(source) & ObjectFlags.ObjectLiteral && source.flags & TypeFlags.FreshLiteral) {
                     if (hasExcessProperties(<FreshObjectLiteralType>source, target, reportErrors)) {
                         if (reportErrors) {
+                            console.log("isRelatedTo:error");
+                            console.trace("isRelatedTo:error");
                             reportRelationError(headMessage, source, target);
                         }
                         return Ternary.False;
@@ -16118,6 +16127,7 @@ namespace ts {
 
                     while (true) {
                         candidate = originalCandidate;
+                        if (allowSyntheticDefaultImports) console.log("chooseOverload:candidate.typeParameters", map(candidate.typeParameters, (tp: Type) => typeToString(tp)));
                         if (candidate.typeParameters) {
                             let typeArgumentTypes: Type[];
                             if (typeArguments && typeArguments.length) {
@@ -16130,6 +16140,7 @@ namespace ts {
                             else {
                                 typeArgumentTypes = inferTypeArguments(node, candidate, args, excludeArgument, inferenceContext, argTypes);
                             }
+                            if (allowSyntheticDefaultImports) console.log("chooseOverload:candidate.typeArgumentTypes", map(typeArgumentTypes, (tp: Type) => typeToString(tp)));
                             candidate = getSignatureInstantiation(candidate, typeArgumentTypes);
                         }
                         if (!checkApplicableSignature(node, args, candidate, relation, excludeArgument, /*reportErrors*/ false, argTypes)) {

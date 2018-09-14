@@ -1,10 +1,12 @@
 tests/cases/compiler/typeCallErrors.ts(8,16): error TS2345: Argument of type '1' is not assignable to parameter of type 'number[]'.
 tests/cases/compiler/typeCallErrors.ts(9,17): error TS2345: Argument of type '1' is not assignable to parameter of type 'number[]'.
 tests/cases/compiler/typeCallErrors.ts(10,18): error TS2345: Argument of type '1' is not assignable to parameter of type 'number[]'.
-tests/cases/compiler/typeCallErrors.ts(15,5): error TS2365: Operator '===' cannot be applied to types 'T' and '() => T'.
+tests/cases/compiler/typeCallErrors.ts(14,13): error TS2345: Argument of type '"0"' is not assignable to parameter of type '"1"'.
+tests/cases/compiler/typeCallErrors.ts(14,38): error TS2345: Argument of type '1' is not assignable to parameter of type '0'.
+tests/cases/compiler/typeCallErrors.ts(27,5): error TS2365: Operator '===' cannot be applied to types 'T' and '() => T'.
 
 
-==== tests/cases/compiler/typeCallErrors.ts (4 errors) ====
+==== tests/cases/compiler/typeCallErrors.ts (6 errors) ====
     // binary function composition
     type Fn1 = <T1 extends number>(v1: T1[]) => { [k: string]: T1 };
     type Fn2 = <T2>(v2: { [k: string]: T2 }) => ReadonlyArray<T2>;
@@ -21,6 +23,30 @@ tests/cases/compiler/typeCallErrors.ts(15,5): error TS2365: Operator '===' canno
     type X = Fn2(Fn1(1)); // errors with not assignable, ok
                      ~
 !!! error TS2345: Argument of type '1' is not assignable to parameter of type 'number[]'.
+    
+    declare function safeDivide<
+      B extends number,
+      NotZero = ((v: '1') => 'whatever')({
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                         ~
+        (v: 0): '0';
+    ~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~
+        (v: number): '1';
+    ~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~
+        (v: any): '2';
+    ~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~
+      }(B))
+    ~~~~~~~
+!!! error TS2345: Argument of type '"0"' is not assignable to parameter of type '"1"'.
+    ~~~~~~
+!!! error TS2345: Argument of type '1' is not assignable to parameter of type '0'.
+    >(a: number, b: B): number;
+    safeDivide(3, 1); // not ok, fails with error: Argument of type '1' is not assignable to parameter of type '0'
+    safeDivide(3, 0); // successfully errors: Argument of type '"0"' is not assignable to parameter of type '"1"'
+    // errors accidentally pointed at the type call node instead of the external call site...
     
     function comparability<T>(x: T, y: () => T) {
         x === x;

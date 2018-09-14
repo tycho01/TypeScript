@@ -1,0 +1,279 @@
+node lib/tsc.js --noImplicitAny --noImplicitThis --alwaysStrict --noEmitOnError --types  --pretty --preserveConstEnums --out built/local/tsc.js -sourcemap --target es5 --lib es5 --noUnusedLocals --noUnusedParameters src/compiler/core.ts src/compiler/performance.ts src/compiler/sys.ts src/compiler/types.ts src/compiler/scanner.ts src/compiler/parser.ts src/compiler/utilities.ts src/compiler/binder.ts src/compiler/symbolWalker.ts src/compiler/checker.ts src/compiler/factory.ts src/compiler/visitor.ts src/compiler/transformers/utilities.ts src/compiler/transformers/ts.ts src/compiler/transformers/jsx.ts src/compiler/transformers/esnext.ts src/compiler/transformers/es2017.ts src/compiler/transformers/es2016.ts src/compiler/transformers/es2015.ts src/compiler/transformers/es5.ts src/compiler/transformers/generators.ts src/compiler/transformers/destructuring.ts src/compiler/transformers/module/module.ts src/compiler/transformers/module/system.ts src/compiler/transformers/module/es2015.ts src/compiler/transformer.ts src/compiler/comments.ts src/compiler/sourcemap.ts src/compiler/declarationEmitter.ts src/compiler/emitter.ts src/compiler/program.ts src/compiler/commandLineParser.ts src/compiler/tsc.ts src/compiler/diagnosticInformationMap.generated.ts
+
+node built/local/tsc.js --noImplicitAny --noImplicitThis --alwaysStrict --noEmitOnError --types  --pretty --declaration --preserveConstEnums --out built/local/typescriptServices.js -sourcemap --stripInternal --target es5 --lib es5 --noUnusedLocals --noUnusedParameters src/services/../compiler/core.ts src/services/../compiler/performance.ts src/services/../compiler/sys.ts src/services/../compiler/types.ts src/services/../compiler/scanner.ts src/services/../compiler/parser.ts src/services/../compiler/utilities.ts src/services/../compiler/binder.ts src/services/../compiler/symbolWalker.ts src/services/../compiler/checker.ts src/services/../compiler/factory.ts src/services/../compiler/visitor.ts src/services/../compiler/transformers/utilities.ts src/services/../compiler/transformers/ts.ts src/services/../compiler/transformers/jsx.ts src/services/../compiler/transformers/esnext.ts src/services/../compiler/transformers/es2017.ts src/services/../compiler/transformers/es2016.ts src/services/../compiler/transformers/es2015.ts src/services/../compiler/transformers/es5.ts src/services/../compiler/transformers/generators.ts src/services/../compiler/transformers/destructuring.ts src/services/../compiler/transformers/module/module.ts src/services/../compiler/transformers/module/system.ts src/services/../compiler/transformers/module/es2015.ts src/services/../compiler/transformer.ts src/services/../compiler/comments.ts src/services/../compiler/sourcemap.ts src/services/../compiler/declarationEmitter.ts src/services/../compiler/emitter.ts src/services/../compiler/program.ts src/services/../compiler/commandLineParser.ts src/services/../compiler/diagnosticInformationMap.generated.ts src/services/types.ts src/services/utilities.ts src/services/breakpoints.ts src/services/classifier.ts src/services/completions.ts src/services/documentHighlights.ts src/services/documentRegistry.ts src/services/findAllReferences.ts src/services/importTracker.ts src/services/goToDefinition.ts src/services/jsDoc.ts src/services/jsTyping.ts src/services/navigateTo.ts src/services/navigationBar.ts src/services/outliningElementsCollector.ts src/services/pathCompletions.ts src/services/patternMatcher.ts src/services/preProcess.ts src/services/rename.ts src/services/services.ts src/services/transform.ts src/services/transpile.ts src/services/shims.ts src/services/signatureHelp.ts src/services/symbolDisplay.ts src/services/textChanges.ts src/services/refactorProvider.ts src/services/codeFixProvider.ts src/services/formatting/formatting.ts src/services/formatting/formattingContext.ts src/services/formatting/formattingRequestKind.ts src/services/formatting/formattingScanner.ts src/services/formatting/references.ts src/services/formatting/rule.ts src/services/formatting/ruleAction.ts src/services/formatting/ruleDescriptor.ts src/services/formatting/ruleFlag.ts src/services/formatting/ruleOperation.ts src/services/formatting/ruleOperationContext.ts src/services/formatting/rules.ts src/services/formatting/rulesMap.ts src/services/formatting/rulesProvider.ts src/services/formatting/smartIndenter.ts src/services/formatting/tokenRange.ts src/services/codefixes/correctQualifiedNameToIndexedAccessType.ts src/services/codefixes/disableJsDiagnostics.ts src/services/codefixes/fixAddMissingMember.ts src/services/codefixes/fixClassDoesntImplementInheritedAbstractMember.ts src/services/codefixes/fixClassIncorrectlyImplementsInterface.ts src/services/codefixes/fixClassSuperMustPrecedeThisAccess.ts src/services/codefixes/fixConstructorForDerivedNeedSuperCall.ts src/services/codefixes/fixExtendsInterfaceBecomesImplements.ts src/services/codefixes/fixForgottenThisPropertyAccess.ts src/services/codefixes/fixJSDocTypes.ts src/services/codefixes/fixSpelling.ts src/services/codefixes/fixUnusedIdentifier.ts src/services/codefixes/fixes.ts src/services/codefixes/helpers.ts src/services/codefixes/importFixes.ts src/services/refactors/convertFunctionToEs6Class.ts src/services/refactors/extractMethod.ts src/services/refactors/refactors.ts
+
+node built/local/tsc.js --noImplicitAny --noImplicitThis --alwaysStrict --noEmitOnError --types node --pretty --preserveConstEnums --out built/local/tsserver.js -sourcemap --target es5 --lib es6 --noUnusedLocals --noUnusedParameters src/server/../services/shims.ts src/server/../services/utilities.ts src/server/shared.ts src/server/utilities.ts src/server/scriptVersionCache.ts src/server/scriptInfo.ts src/server/lsHost.ts src/server/typingsCache.ts src/server/project.ts src/server/editorServices.ts src/server/protocol.ts src/server/session.ts src/server/server.ts
+
+node scripts/buildProtocol.js src/server/protocol.ts built/local/typescriptServices.d.ts built/local/protocol.d.ts
+node built/local/tsc.js --noImplicitAny --noImplicitThis --alwaysStrict --noEmitOnError --types  --pretty --declaration --preserveConstEnums --out built/local/tsserverlibrary.js -sourcemap --stripInternal --target es5 --lib es5 --noUnusedLocals --noUnusedParameters src/server/editorServices.ts src/server/lsHost.ts src/server/project.ts src/server/protocol.ts src/server/scriptInfo.ts src/server/scriptVersionCache.ts src/server/session.ts src/server/shared.ts src/server/types.ts src/server/typingsCache.ts src/server/utilities.ts src/server/../services/shims.ts src/server/../services/utilities.ts
+
+node built/local/tsc.js --noImplicitAny --noImplicitThis --alwaysStrict --noEmitOnError --types node,mocha,chai --pretty --preserveConstEnums --out built/local/run.js -sourcemap --target es5 --lib es6 --noUnusedLocals --noUnusedParameters src/harness/harness.ts src/harness/virtualFileSystem.ts src/harness/sourceMapRecorder.ts src/harness/harnessLanguageService.ts src/harness/fourslash.ts src/harness/runnerbase.ts src/harness/compilerRunner.ts src/harness/typeWriter.ts src/harness/fourslashRunner.ts src/harness/projectsRunner.ts src/harness/loggedIO.ts src/harness/rwcRunner.ts src/harness/test262Runner.ts src/harness/runner.ts src/harness/unittests/incrementalParser.ts src/harness/unittests/jsDocParsing.ts src/harness/unittests/services/colorization.ts src/harness/unittests/services/documentRegistry.ts src/harness/unittests/services/preProcessFile.ts src/harness/unittests/services/patternMatcher.ts src/harness/unittests/session.ts src/harness/unittests/versionCache.ts src/harness/unittests/convertToBase64.ts src/harness/unittests/transpile.ts src/harness/unittests/reuseProgramStructure.ts src/harness/unittests/textStorage.ts src/harness/unittests/cachingInServerLSHost.ts src/harness/unittests/moduleResolution.ts src/harness/unittests/tsconfigParsing.ts src/harness/unittests/commandLineParsing.ts src/harness/unittests/configurationExtension.ts src/harness/unittests/convertCompilerOptionsFromJson.ts src/harness/unittests/convertTypeAcquisitionFromJson.ts src/harness/unittests/tsserverProjectSystem.ts src/harness/unittests/compileOnSave.ts src/harness/unittests/typingsInstaller.ts src/harness/unittests/projectErrors.ts src/harness/unittests/matchFiles.ts src/harness/unittests/initializeTSConfig.ts src/harness/unittests/extractMethods.ts src/harness/unittests/printer.ts src/harness/unittests/textChanges.ts src/harness/unittests/telemetry.ts src/harness/unittests/transform.ts src/harness/unittests/customTransforms.ts src/harness/unittests/programMissingFiles.ts src/harness/unittests/symbolWalker.ts src/server/protocol.ts src/server/utilities.ts src/server/scriptVersionCache.ts src/server/scriptInfo.ts src/server/lsHost.ts src/server/project.ts src/server/typingsCache.ts src/server/editorServices.ts src/server/session.ts
+
+rm -rf tests/baselines/local/
+rm -rf internal/baselines/rwc/local
+mocha -R mocha-fivemat-progress-reporter -g "typeCall" --colors -t 40000 built/local/run.js
+
+    [0mcompiler tests[0m
+getTypeFromTypeCall:ret1 1
+getTypeFromTypeCall:ret1 1
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 1
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 2
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 3
+getTypeFromTypeCall:ret1 1
+getTypeFromTypeCall:ret1 1
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ '123' ]
+getTypeFromTypeCall:ret1 123
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ '123' ]
+getTypeFromTypeCall:ret1 123
+getTypeFromTypeCall:ret1 () => { a: () => 1; }
+getTypeFromTypeCall:ret1 { a: () => 1; }
+getTypeFromTypeCall:ret1 1
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "1"
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "0"
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ 'string' ]
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "1"
+getTypeFromTypeCall:ret1 "1"
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ 'RegExp' ]
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "0"
+getTypeFromTypeCall:ret1 "0"
+chooseOverload:candidate.typeParameters [ 'G', 'R' ]
+chooseOverload:candidate.typeArgumentTypes [ '(...args: any[]) => <T>(foo: T) => [T]',
+  '<T>(foo: T) => T[]' ]
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ '123' ]
+getTypeFromTypeCall:ret1 123[]
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "true"
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "false"
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "false" | "true"
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "false" | "true"
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "false"
+chooseOverload:candidate.typeParameters [ 'Fn', 'O', 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ '<T>(v: T) => [T]', '{ a: 1; b: 2; c: 3; }', '{}' ]
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ '1' ]
+getTypeFromTypeCall:ret1 [1]
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ '2' ]
+getTypeFromTypeCall:ret1 [2]
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ '3' ]
+getTypeFromTypeCall:ret1 [3]
+getTypeFromTypeCall:ret1 { a: [1]; b: [2]; c: [3]; }
+chooseOverload:candidate.typeParameters [ 'Fn', 'O', 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ '<T>(v: T) => [T]', '{ a: 1; b: 2; c: 3; }', '{}' ]
+chooseOverload:candidate.typeParameters [ 'T', 'R' ]
+chooseOverload:candidate.typeArgumentTypes [ '{ a: { b: ["c", { d: "e"; }]; }; }', '["a", "b", "1", "d"]' ]
+chooseOverload:candidate.typeParameters [ 'Fun', 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ 'Fn1', '{}' ]
+getTypeFromTypeCall:ret1 {}
+chooseOverload:candidate.typeParameters [ 'Fun1', 'Fun2', 'P1', 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ 'Fn1', 'Fn2', '{}', '{}' ]
+chooseOverload:candidate.typeParameters [ 'T1' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number' ]
+getTypeFromTypeCall:ret1 any
+chooseOverload:candidate.typeParameters [ 'T2' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+getTypeFromTypeCall:ret1 ReadonlyArray<{}>
+getTypeFromTypeCall:ret1 (p1: {}) => ReadonlyArray<{}>
+getTypeFromTypeCall:ret1 ReadonlyArray<{}>
+chooseOverload:candidate.typeParameters [ 'Fun1', 'Fun2', 'P1' ]
+chooseOverload:candidate.typeArgumentTypes [ 'Fn1', 'Fn2', '{}' ]
+chooseOverload:candidate.typeParameters [ 'T1' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number' ]
+getTypeFromTypeCall:ret1 any
+chooseOverload:candidate.typeParameters [ 'T2' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+getTypeFromTypeCall:ret1 ReadonlyArray<{}>
+getTypeFromTypeCall:ret1 (p1: {}) => ReadonlyArray<{}>
+getTypeFromTypeCall:ret1 ReadonlyArray<{}>
+chooseOverload:candidate.typeParameters [ 'Fun2', 'Fun1', 'P1', 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ 'Fn2', 'Fn1', '{}', '{}' ]
+chooseOverload:candidate.typeParameters [ 'T1' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number' ]
+getTypeFromTypeCall:ret1 any
+chooseOverload:candidate.typeParameters [ 'T2' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+getTypeFromTypeCall:ret1 ReadonlyArray<{}>
+getTypeFromTypeCall:ret1 (p1: {}) => ReadonlyArray<{}>
+getTypeFromTypeCall:ret1 ReadonlyArray<{}>
+chooseOverload:candidate.typeParameters [ 'Fun2', 'Fun1', 'P1' ]
+chooseOverload:candidate.typeArgumentTypes [ '<T>(v: T) => any', 'Fn1', '{}' ]
+getTypeFromTypeCall:ret1 any
+getTypeFromTypeCall:ret1 any
+chooseOverload:candidate.typeParameters [ 'Fun2', 'Fun1', 'P1' ]
+chooseOverload:candidate.typeArgumentTypes [ 'Fn2', 'Fn1', '{}' ]
+chooseOverload:candidate.typeParameters [ 'T1' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number' ]
+getTypeFromTypeCall:ret1 any
+chooseOverload:candidate.typeParameters [ 'T2' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+getTypeFromTypeCall:ret1 ReadonlyArray<{}>
+getTypeFromTypeCall:ret1 (p1: {}) => ReadonlyArray<{}>
+getTypeFromTypeCall:ret1 ReadonlyArray<{}>
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "1"
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "1"
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "0"
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "0"
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "0"
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'string | undefined' ]
+getTypeFromTypeCall:ret1 string | undefined
+chooseOverload:candidate.typeParameters undefined
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'string | number' ]
+getTypeFromTypeCall:ret1 string | number
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'string' ]
+getTypeFromTypeCall:ret1 string
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'any' ]
+getTypeFromTypeCall:ret1 any
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'any' ]
+getTypeFromTypeCall:ret1 any
+chooseOverload:candidate.typeArgumentTypes [ 'string' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'string' ]
+getTypeFromTypeCall:ret1 string
+getTypeFromTypeCall:ret1 string
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'string' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'boolean | Promise<string>' ]
+getTypeFromTypeCall:ret1 boolean | Promise<string>
+chooseOverload:candidate.typeParameters [ 'T', 'TResult1', 'TResult2' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number', 'Promise<string>', 'number | Promise<boolean>' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'string' ]
+getTypeFromTypeCall:ret1 string
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'any' ]
+getTypeFromTypeCall:ret1 any
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'any' ]
+getTypeFromTypeCall:ret1 any
+chooseOverload:candidate.typeArgumentTypes [ 'boolean' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number | Promise<boolean>' ]
+getTypeFromTypeCall:ret1 number | Promise<boolean>
+chooseOverload:candidate.typeParameters [ 'TResult1', 'TResult2' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number | Promise<string>', 'never' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'string' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number | Promise<string>' ]
+getTypeFromTypeCall:ret1 number | Promise<string>
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+chooseOverload:candidate.typeParameters [ 'U' ]
+chooseOverload:candidate.typeArgumentTypes [ '{}' ]
+getTypeFromTypeCall:ret1 {}
+getTypeFromTypeCall:ret1 {}
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "1"
+chooseOverload:candidate.typeParameters undefined
+getTypeFromTypeCall:ret1 "1"
+getTypeFromTypeCall:ret1 { [k: string]: any; }
+getTypeFromTypeCall:ret1 any
+getTypeFromTypeCall:ret1 { [k: string]: () => any; }
+getTypeFromTypeCall:ret1 number
+getTypeFromTypeCall:ret1 number
+getTypeFromTypeCall:ret1 Obj
+getTypeFromTypeCall:ret1 Obj
+getTypeFromTypeCall:ret1 Obj
+getTypeFromTypeCall:ret1 Obj
+getTypeFromTypeCall:ret1 { kind: "Just"; value: string; }
+getTypeFromTypeCall:ret1 string
+getTypeFromTypeCall:ret1 string
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ '() => number' ]
+getTypeFromTypeCall:ret1 number
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ '() => number' ]
+getTypeFromTypeCall:ret1 number
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number' ]
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number' ]
+chooseOverload:candidate.typeParameters [ 'T' ]
+chooseOverload:candidate.typeArgumentTypes [ 'number' ]
+[31m
+Test failure:
+Correct errors for tests/cases/compiler/typeCall.ts
+[0m[J[90m  [[0m[31m[0m․․․․․․․․․․․․․․․․․․․․․․․․․․․․․․․․․․․[90m][0m
+
+[92m [0m[32m 11 passing[0m[90m (3s)[0m
+[31m  1 failing[0m
+
+[0m  1) compiler tests compiler tests for tests/cases/compiler/typeCall.ts Correct errors for tests/cases/compiler/typeCall.ts:
+[0m[31m     Error: The baseline file typeCall.errors.txt has changed.[0m[90m
+      at writeComparison (src/harness/harness.ts:1995:23)
+      at Object.runBaseline (src/harness/harness.ts:2003:13)
+      at Object.doErrorBaseline (src/harness/harness.ts:1416:30)
+      at Context.<anonymous> (src/harness/compilerRunner.ts:144:34)
+[0m
+
+
+jake aborted.
+Error: Process exited with code 1
+    at api.fail (/home/tycho/.nvm/versions/node/v7.10.0/lib/node_modules/jake/lib/api.js:336:18)
+    at failWithStatus (/media/tycho/Drogon/Coding/js/TypeScript/Jakefile.js:913:9)
+(See full trace by running task with --trace)
